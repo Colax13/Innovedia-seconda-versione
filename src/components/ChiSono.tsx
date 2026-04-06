@@ -20,24 +20,25 @@ function VStep({ num, title, description, isFirst, progress, index, isMobile }: 
   const startOffset = baseDelay + (index * (isMobile ? 0.04 : 0.07));
   const endOffset = index * 0.03;
 
-  // Entrance: delayed start
+  // Entrance: adjusted speed
   // Exit: 0.9 to 1.0 (staggered) - Delayed on desktop
   const exitStart = isMobile ? 0.8 : 0.92;
+  const entranceDuration = isMobile ? 0.28 : 0.22;
   const x = useTransform(
     progress, 
-    [0 + startOffset, 0.28 + startOffset, exitStart - endOffset, 1 - endOffset], 
+    [0 + startOffset, entranceDuration + startOffset, exitStart - endOffset, 1 - endOffset], 
     [-400, 0, 0, -400]
   );
   
   const opacity = useTransform(
     progress, 
-    [0 + startOffset, 0.22 + startOffset, exitStart + 0.05 - endOffset, 1 - endOffset], 
+    [0 + startOffset, (entranceDuration * 0.8) + startOffset, exitStart + 0.05 - endOffset, 1 - endOffset], 
     [0, 1, 1, 0]
   );
 
   const dividerScale = useTransform(
     progress, 
-    [0 + startOffset, 0.28 + startOffset, exitStart - endOffset, 1 - endOffset], 
+    [0 + startOffset, entranceDuration + startOffset, exitStart - endOffset, 1 - endOffset], 
     [0, 1, 1, 0]
   );
 

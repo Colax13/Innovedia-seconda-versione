@@ -526,7 +526,7 @@ export default function ProjectSection() {
 
         <div 
           className="relative w-full h-full cursor-grab active:cursor-grabbing overflow-visible flex items-center justify-center"
-          style={{ perspective: '1200px', perspectiveOrigin: '50% 50%', touchAction: 'none' }}
+          style={{ perspective: '1200px', perspectiveOrigin: '50% 50%', touchAction: 'pan-y' }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}

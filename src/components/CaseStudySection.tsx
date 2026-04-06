@@ -164,7 +164,7 @@ const CaseStudySection: React.FC = () => {
     },
     {
       value: (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center md:justify-start gap-2">
           <span className="text-white/20">€20</span>
           <span className="text-pixar-cyan text-[0.6em]">→</span>
           <span>€<Counter value={2} delay={0.9} />k</span>
@@ -178,12 +178,12 @@ const CaseStudySection: React.FC = () => {
     <section 
       ref={sectionRef}
       id="caso-studio"
-      className="relative pt-20 md:pt-32 pb-5 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent border-t border-white/5 overflow-hidden z-30"
+      className="relative pt-20 md:pt-32 pb-24 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent border-t border-white/5 overflow-hidden z-30"
       style={{ perspective: '2000px' }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Title Section */}
-        <div className="grid lg:grid-cols-5 gap-12 lg:gap-20 items-start">
+        <div className="grid lg:grid-cols-5 gap-2 md:gap-20 items-start">
           {/* Left Column: Title, Metrics, Text & CTA (3/5) */}
           <div className="lg:col-span-3 space-y-8">
             <div>
@@ -191,25 +191,25 @@ const CaseStudySection: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.8 }}
-                className="flex items-center gap-6 mb-6"
+                className="flex items-center justify-center md:justify-start gap-6 mb-6"
               >
                 <span className="font-tech text-[10px] font-medium tracking-[0.4em] uppercase text-pixar-cyan/60 whitespace-nowrap">
                   lo abbiamo già fatto
                 </span>
                 <div
-                  className="flex-1 h-px"
+                  className="flex-1 h-px hidden md:block"
                   style={{ background: 'linear-gradient(90deg, rgba(0,255,255,0.2), transparent)' }}
                 />
               </motion.div>
 
-              <div className="max-w-[800px]">
+              <div className="max-w-[800px] text-center md:text-left mx-auto md:mx-0">
                 <motion.h2
                   initial={{ opacity: 0, x: -30 }}
                   animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
                   transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                   className="font-display text-[clamp(32px,6vw,64px)] font-bold uppercase tracking-tight leading-[0.95] text-white mb-4"
                 >
-                  RD SALON
+                  {isMobile ? "PROGETTO RD SALON" : "RD SALON"}
                 </motion.h2>
                 <motion.p
                   initial={{ opacity: 0, x: -30 }}
@@ -244,10 +244,10 @@ const CaseStudySection: React.FC = () => {
                       transition: { duration: 0.4, ease: "easeOut" }
                     }
                   }}
-                  className="relative p-4 rounded-xl bg-white/[0.03] border border-white/5 overflow-hidden group backdrop-blur-sm cursor-default"
+                  className="relative p-4 rounded-xl bg-white/[0.03] border border-white/5 overflow-hidden group backdrop-blur-sm cursor-default text-center md:text-left"
                 >
                   {/* Left Cyan Glow Border - Background Track */}
-                  <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/5" />
+                  <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/5 md:block hidden" />
                   
                   {/* Draining LED Bar */}
                   <motion.div 
@@ -257,7 +257,7 @@ const CaseStudySection: React.FC = () => {
                     }}
                     transition={{ duration: 1.5, ease: "easeInOut" }}
                     style={{ originY: 1 }}
-                    className="absolute left-0 top-0 bottom-0 w-[2px] bg-pixar-cyan shadow-[2px_0_15px_rgba(0,255,255,0.6)]" 
+                    className="absolute left-0 top-0 bottom-0 w-[2px] bg-pixar-cyan shadow-[2px_0_15px_rgba(0,255,255,0.6)] md:block hidden" 
                   />
 
                   {/* Water Stain / Leak Animation */}
@@ -275,7 +275,7 @@ const CaseStudySection: React.FC = () => {
                     className="absolute bottom-0 left-0 w-16 h-16 bg-pixar-cyan/30 blur-2xl rounded-full pointer-events-none"
                   />
                   
-                  <div className="relative z-10">
+                  <div className="relative z-10 flex flex-col items-center md:items-start">
                     <div className="font-display text-[clamp(24px,4vw,42px)] font-bold text-white mb-1 tracking-tight">
                       {metric.value}
                     </div>
@@ -286,32 +286,10 @@ const CaseStudySection: React.FC = () => {
                 </motion.div>
               ))}
             </div>
-
-            <div className="space-y-8">
-              {/* Subtle CTA */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 1, delay: 0.8 }}
-                className="pt-4"
-              >
-                <p className="font-tech text-[10px] tracking-widest text-white/30 uppercase mb-4">
-                  Vuoi risultati simili?
-                </p>
-                <FlipButton 
-                  text="Richiedi un'analisi gratuita" 
-                  primary
-                  onClick={() => {
-                    const el = document.getElementById('contatti');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                />
-              </motion.div>
-            </div>
           </div>
 
           {/* Right Column: Floating Images (2/5) */}
-          <div className="lg:col-span-2 relative min-h-[600px] md:min-h-[900px] flex flex-col pt-4">
+          <div className="lg:col-span-2 relative min-h-[300px] md:min-h-[900px] flex flex-col pt-4">
             {/* Hero Salone */}
             <motion.div
               style={{ x: img1X, opacity: img1Opacity }}
@@ -349,7 +327,7 @@ const CaseStudySection: React.FC = () => {
             {/* Hero Hair Spa */}
             <motion.div
               style={{ x: img3X, opacity: img3Opacity }}
-              className="relative w-[90%] md:w-[85%] z-20 mt-12 md:mt-20 ml-[-5%] mr-auto"
+              className="relative w-[90%] md:w-[85%] z-20 mt-6 md:mt-20 ml-[-5%] mr-auto"
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
@@ -382,6 +360,30 @@ const CaseStudySection: React.FC = () => {
             
             {/* Main Background Glow for the whole stack */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[100%] bg-pixar-cyan/5 blur-[150px] rounded-full -z-10 pointer-events-none" />
+          </div>
+
+          {/* CTA Section - Appears after images on mobile, under metrics on desktop */}
+          <div className="lg:col-span-3">
+            <div className="space-y-8">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 1, delay: 0.8 }}
+                className="pt-0 md:pt-4 flex flex-col items-center md:items-start text-center md:text-left"
+              >
+                <p className="font-tech text-[10px] tracking-widest text-white/30 uppercase mb-4">
+                  Vuoi risultati simili?
+                </p>
+                <FlipButton 
+                  text="Richiedi un'analisi gratuita" 
+                  primary
+                  onClick={() => {
+                    const el = document.getElementById('contatti');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                />
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>
