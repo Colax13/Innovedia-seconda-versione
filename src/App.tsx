@@ -6,6 +6,7 @@ import BrandImpactSection from './components/BrandImpactSection';
 import ChiSono from './components/ChiSono';
 import ServicesSection from './components/ServicesSection';
 import ParallaxSection from './components/ParallaxSection';
+import CaseStudySection from './components/CaseStudySection';
 import ProjectSection from './components/ProjectSection';
 import UnifiedBackground from './components/UnifiedBackground';
 import { ProjectPage } from './components/project/ProjectPage';
@@ -48,6 +49,7 @@ function HomePage() {
       <ChiSono />
       <ServicesSection />
       <ParallaxSection />
+      <CaseStudySection />
       <ProjectSection />
       <ProcessSection />
       <FinalCTA />

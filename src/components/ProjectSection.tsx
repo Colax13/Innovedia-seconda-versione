@@ -483,7 +483,7 @@ export default function ProjectSection() {
       exit={{ opacity: 0 }}
       viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 0.8 }}
-      className="relative w-full min-h-[125vh] md:min-h-[115vh] overflow-hidden bg-[#050508] flex flex-col items-center py-16 md:py-24 px-4 select-none"
+      className="relative w-full min-h-[125vh] md:min-h-[115vh] overflow-hidden bg-[#050508] flex flex-col items-center pt-24 pb-16 md:pb-24 px-4 select-none"
     >
       {/* Cinematic Background Lighting - Site Style */}
       <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none" />

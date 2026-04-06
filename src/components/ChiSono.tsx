@@ -1,261 +1,295 @@
-import React, { useEffect, useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 
-const ChiSono: React.FC = () => {
-  const driverRef = useRef<HTMLDivElement>(null);
-  const pbarRef = useRef<HTMLDivElement>(null);
-  const blobARef = useRef<HTMLDivElement>(null);
-  const blobBRef = useRef<HTMLDivElement>(null);
+// ============================================================
+// V-STEP COMPONENT
+// ============================================================
+interface VStepProps {
+  num: string;
+  title: string;
+  description: string;
+  isFirst?: boolean;
+  progress: any; // scrollYProgress from parent
+  index: number; // to stagger
+  isMobile: boolean;
+}
+
+function VStep({ num, title, description, isFirst, progress, index, isMobile }: VStepProps) {
+  // Stagger offsets
+  const baseDelay = isMobile ? 0.05 : 0.22; // Much earlier on mobile
+  const startOffset = baseDelay + (index * (isMobile ? 0.04 : 0.07));
+  const endOffset = index * 0.03;
+
+  // Entrance: delayed start
+  // Exit: 0.75 to 1.0 (staggered)
+  const x = useTransform(
+    progress, 
+    [0 + startOffset, 0.28 + startOffset, 0.8 - endOffset, 1 - endOffset], 
+    [-400, 0, 0, -400]
+  );
   
-  const ph1Ref = useRef<HTMLDivElement>(null);
-  const imgContainerRef = useRef<HTMLDivElement>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const opacity = useTransform(
+    progress, 
+    [0 + startOffset, 0.22 + startOffset, 0.85 - endOffset, 1 - endOffset], 
+    [0, 1, 1, 0]
+  );
 
-  useEffect(() => {
-    const driver = driverRef.current;
-    const pbar = pbarRef.current;
-    const blobA = blobARef.current;
-    const blobB = blobBRef.current;
-    const panel = ph1Ref.current;
-    const img = imgRef.current;
-    const imgContainer = imgContainerRef.current;
-
-    if (!driver || !pbar || !blobA || !blobB || !panel || !img || !imgContainer) return;
-
-    const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), hi);
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    const ease = (t: number) => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
-
-    const onScroll = () => {
-      const rect = driver.getBoundingClientRect();
-      const winH = window.innerHeight;
-      const isMobile = window.innerWidth <= 768;
-      
-      // Calculate progress based on section visibility in viewport
-      const start = winH;
-      const end = -rect.height;
-      const prog = clamp((start - rect.top) / (start - end), 0, 1);
-
-      pbar.style.width = (prog * 100) + '%';
-
-      blobA.style.transform = `translateY(${prog * -120}px) translateX(${prog * 60}px)`;
-      blobB.style.transform = `translateY(${prog * 100}px) translateX(${prog * -40}px)`;
-
-      // Entrance and Exit for the image
-      let imgX = 0;
-      let imgOp = 1;
-
-      if (isMobile) {
-        // On mobile, trigger animation based on image container visibility
-        const imgRect = imgContainer.getBoundingClientRect();
-        const imgStart = winH;
-        const imgEnd = -imgRect.height;
-        const imgProg = clamp((imgStart - imgRect.top) / (imgStart - imgEnd), 0, 1);
-
-        if (imgProg < 0.5) {
-          const t = clamp(imgProg / 0.5, 0, 1);
-          imgX = lerp(100, 0, ease(t));
-          imgOp = ease(t);
-        } else if (imgProg > 0.8) {
-          const t = clamp((imgProg - 0.8) / 0.2, 0, 1);
-          imgX = lerp(0, 150, ease(t));
-          imgOp = 1 - ease(t);
-        }
-      } else {
-        // Desktop logic remains the same
-        if (prog < 0.4) {
-          const t = clamp(prog / 0.4, 0, 1);
-          imgX = lerp(150, 0, ease(t));
-          imgOp = ease(t);
-        } else if (prog > 0.6) {
-          const t = clamp((prog - 0.6) / 0.4, 0, 1);
-          imgX = lerp(0, 300, ease(t));
-          imgOp = 1 - ease(t);
-        }
-      }
-
-      img.style.transform = `translateX(${imgX}px)`;
-      img.style.opacity = imgOp.toString();
-      
-      // Text fade in
-      const textOp = clamp(prog / 0.3, 0, 1);
-      panel.style.opacity = textOp.toString();
-      panel.style.transform = `translateY(${lerp(30, 0, ease(textOp))}px)`;
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
+  const dividerScale = useTransform(
+    progress, 
+    [0 + startOffset, 0.28 + startOffset, 0.8 - endOffset, 1 - endOffset], 
+    [0, 1, 1, 0]
+  );
 
   return (
-    <>
-      <style>{`
-        :root {
-          --teal:  #00c8c8;
-          --tdim:  rgba(0,200,200,0.12);
-          --white: #e8f0f0;
-          --muted: rgba(232,240,240,0.4);
-          --line:  rgba(0,200,200,0.14);
-        }
+    <motion.div
+      style={{ x, opacity }}
+      className={`relative py-6 ${isFirst ? 'pt-0' : ''}`}
+    >
+      {/* Divider */}
+      {!isFirst && (
+        <motion.div
+          className="absolute top-0 left-0 right-0 h-px origin-left"
+          style={{
+            background: 'linear-gradient(90deg, rgba(0,255,255,0.15), transparent 80%)',
+            scaleX: dividerScale
+          }}
+        />
+      )}
 
-        .about-driver {
-          min-height: 100vh;
-          position: relative;
-          background: transparent;
-          z-index: 10;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          padding: 100px 0;
-        }
+      <div className="flex items-baseline gap-5">
+        {/* Number */}
+        <span className="font-tech text-[10px] text-pixar-cyan/40 tracking-wider pt-[0.2em] shrink-0">
+          {num}
+        </span>
 
-        .blob {
-          position: absolute;
-          border-radius: 50%;
-          pointer-events: none;
-          will-change: transform;
-          filter: blur(80px);
-        }
-        .blob-a {
-          width: 700px; height: 700px;
-          top: -200px; left: -150px;
-          background: radial-gradient(circle, rgba(0,160,140,0.22), transparent 70%);
-        }
-        .blob-b {
-          width: 500px; height: 500px;
-          bottom: -150px; right: -100px;
-          background: radial-gradient(circle, rgba(0,60,160,0.2), transparent 70%);
-        }
+        {/* V letter */}
+        <span
+          className="font-display text-[clamp(32px,4vw,48px)] font-extrabold leading-none text-pixar-cyan shrink-0"
+          style={{ textShadow: '0 0 20px rgba(0,255,255,0.3)' }}
+        >
+          V
+        </span>
 
-        .progress-bar {
-          position: absolute;
-          left: 0; top: 0;
-          height: 2px;
-          background: var(--teal);
-          width: 0%;
-          transition: width 0.05s linear;
-          z-index: 10;
-        }
+        {/* Title inline with V */}
+        <span className="font-display text-[clamp(20px,2.5vw,28px)] font-bold uppercase tracking-wider text-white leading-none">
+          {title}
+        </span>
+      </div>
 
-        .panel {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0 8vw;
-          will-change: opacity, transform;
-          position: relative;
-          z-index: 5;
-        }
+      {/* Description */}
+      <p className="font-sans text-[clamp(13px,1.4vw,15px)] font-light leading-relaxed text-white/40 max-w-[420px] mt-3 pl-0 sm:pl-[calc(10px+1.25rem+clamp(32px,4vw,48px)+1.25rem)]">
+        {description}
+      </p>
+    </motion.div>
+  );
+}
 
-        .bio-wrap { 
-          max-width: 650px; 
-          z-index: 10;
-        }
-        
-        .bio-label {
-          font-size: 11px;
-          letter-spacing: 0.25em;
-          text-transform: uppercase;
-          color: var(--teal);
-          margin-bottom: 28px;
-        }
-        .bio-text {
-          font-size: clamp(18px, 2.2vw, 26px);
-          line-height: 1.6;
-          font-weight: 300;
-          color: rgba(232,240,240,0.7);
-        }
-        .bio-text strong {
-          color: var(--white);
-          font-weight: 600;
-        }
+// ============================================================
+// MAIN CHI SONO SECTION
+// ============================================================
+export default function ChiSono() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-        .image-container {
-          position: absolute;
-          bottom: 0;
-          right: 0;
-          width: 50%;
-          height: 100%;
-          display: flex;
-          align-items: flex-end;
-          justify-content: flex-end;
-          pointer-events: none;
-          z-index: 1;
-        }
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
 
-        /* Background glow for the image to blend better */
-        .image-glow {
-          position: absolute;
-          bottom: -10%;
-          right: -10%;
-          width: 80%;
-          height: 80%;
-          background: radial-gradient(circle at center, rgba(0,200,200,0.15), transparent 70%);
-          filter: blur(60px);
-          z-index: -1;
-        }
+  // Photo Animation: Entrance from Right, Exit to Right
+  // Synchronized with the first VStep (starts at 0.22 on desktop, later on mobile)
+  const photoStart = isMobile ? 0.45 : 0.22;
+  const photoX = useTransform(
+    scrollYProgress, 
+    isMobile ? [photoStart, photoStart + 0.23, 1, 2] : [photoStart, photoStart + 0.23, 0.75, 1], 
+    isMobile ? [400, 0, 0, 0] : [400, 0, 0, 400]
+  );
+  const photoOpacity = useTransform(
+    scrollYProgress, 
+    isMobile ? [photoStart, photoStart + 0.18, 1, 2] : [photoStart, photoStart + 0.18, 0.8, 1], 
+    [0, 1, 1, 0]
+  );
+  const photoScale = useTransform(
+    scrollYProgress, 
+    isMobile ? [photoStart, photoStart + 0.23, 1, 2] : [photoStart, photoStart + 0.23, 0.75, 1], 
+    isMobile ? [0.9, 1, 1, 1] : [0.9, 1, 1, 0.9]
+  );
+  
+  // Title Animation for Mobile (to avoid visible animation on scroll up)
+  const titleY = useTransform(scrollYProgress, [0, 0.15], [20, 0]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+  const title2Opacity = useTransform(scrollYProgress, [0, 0.12], [0, 1]);
 
-        .profile-image {
-          height: 95%;
-          width: auto;
-          max-width: 100%;
-          object-fit: contain;
-          object-position: bottom right;
-          /* Refined blending mask */
-          mask-image: linear-gradient(to left, black 30%, transparent 95%), 
-                      linear-gradient(to top, black 70%, transparent 100%);
-          -webkit-mask-image: linear-gradient(to left, black 30%, transparent 95%), 
-                              linear-gradient(to top, black 70%, transparent 100%);
-          mask-composite: intersect;
-          -webkit-mask-composite: source-in;
-          will-change: transform, opacity;
-          opacity: 0;
-        }
+  // Parallax effect on the image itself
+  const photoY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
-        @media (max-width: 768px) {
-          .about-driver { padding: 60px 0 0; align-items: flex-start; min-height: auto; display: block; }
-          .panel { flex-direction: column; padding: 0 6vw; text-align: left; display: block; }
-          .bio-wrap { max-width: 100%; margin-bottom: 20px; }
-          .bio-text { font-size: 18px; }
-          .image-container { position: relative; width: 100%; height: 50vh; margin-top: 0; display: flex; align-items: flex-end; justify-content: center; }
-          .profile-image { height: 100%; object-position: bottom center; mask-image: linear-gradient(to top, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to top, black 70%, transparent 100%); }
-          .image-glow { right: 0; bottom: 0; width: 100%; height: 100%; }
-        }
-      `}</style>
+  return (
+    <section 
+      ref={sectionRef} 
+      id="chi-sono" 
+      className="relative py-24 md:py-40 px-8 md:px-[clamp(2rem,8vw,10rem)] overflow-hidden bg-[#050505] z-10"
+    >
+      <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start max-w-7xl mx-auto">
 
-      <div className="about-driver" ref={driverRef} id="chi-sono">
-        <div className="progress-bar" ref={pbarRef}></div>
-        <div className="blob blob-a" ref={blobARef}></div>
-        <div className="blob blob-b" ref={blobBRef}></div>
+        {/* ===== LEFT CONTENT ===== */}
+        <div className="flex-1 max-w-[600px] z-20">
 
-        <div className="panel p1" ref={ph1Ref}>
-          <div className="bio-wrap">
-            <div className="bio-label">Chi sono</div>
-            <p className="bio-text">
-              Ciao mi chiamo Ludovico e ho studiato digital marketing e comunicazione d'impresa, e mi occupo di <strong>web design e comunicazione digitale</strong> per le PMI.<br/><br/>
-              Per riassumere ciò che faccio possiamo dire che mi occupo di capire <strong>il tuo busisness</strong> e fare in modo che lo conoscano anche gli altri.<br/><br/>
-              Il mio approccio si basa su un principio fondamentale: <strong>fare tante domande</strong> finché non ho chiaro <strong>chi sei, a chi parli e cosa ti distingue.</strong><br/><br/>
-              Solo allora costruisco <strong>il sistema visivo</strong> con cui la tua azienda comunica ogni giorno: <strong>identità, sito, contenuti.</strong>
-            </p>
+          {/* Label */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.8 }}
+            className="flex items-center gap-6 mb-10"
+          >
+            <span className="font-tech text-[10px] font-medium tracking-[0.4em] uppercase text-pixar-cyan/60 whitespace-nowrap">
+              Il metodo
+            </span>
+            <div
+              className="flex-1 h-px"
+              style={{ background: 'linear-gradient(90deg, rgba(0,255,255,0.2), transparent)' }}
+            />
+          </motion.div>
+
+          {/* Title */}
+          <div className="mb-12">
+            <motion.p
+              style={isMobile ? { y: titleY, opacity: titleOpacity } : {}}
+              initial={!isMobile ? { opacity: 0, y: 20 } : undefined}
+              whileInView={!isMobile ? { opacity: 0.25, y: 0 } : undefined}
+              viewport={!isMobile ? { once: false, amount: 0.5 } : undefined}
+              transition={!isMobile ? { duration: 0.8, delay: 0.1 } : undefined}
+              className={`font-display text-[clamp(24px,4.5vw,48px)] font-bold uppercase tracking-wide leading-[1.05] mb-[0.15em] text-white ${isMobile ? '' : 'opacity-25'}`}
+            >
+              Non ti serve un sito.
+            </motion.p>
+            <motion.p
+              style={{ 
+                textShadow: '0 0 30px rgba(0,255,255,0.25)',
+                ...(isMobile ? { y: titleY, opacity: title2Opacity } : {}) 
+              }}
+              initial={!isMobile ? { opacity: 0, y: 20 } : undefined}
+              whileInView={!isMobile ? { opacity: 1, y: 0 } : undefined}
+              viewport={!isMobile ? { once: false, amount: 0.5 } : undefined}
+              transition={!isMobile ? { duration: 0.8, delay: 0.2 } : undefined}
+              className="font-display text-[clamp(24px,4.5vw,48px)] font-bold uppercase tracking-wide leading-[1.05] text-pixar-cyan"
+            >
+              Ti serve un sistema.
+            </motion.p>
+          </div>
+
+          {/* Intro */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="font-sans text-[clamp(14px,1.5vw,17px)] font-light leading-relaxed text-white/50 max-w-[480px] mb-10"
+          >
+            Ogni progetto segue lo stesso percorso.
+            Tre fasi, un unico obiettivo:{' '}
+            <strong className="font-medium text-white/80">farti vendere online.</strong>
+          </motion.p>
+
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="inline-flex items-center gap-3 py-2 px-5 rounded-full mb-12 bg-pixar-cyan/5 border border-pixar-cyan/10"
+          >
+            <div className="w-1.5 h-1.5 rounded-full bg-pixar-cyan shadow-[0_0_10px_#00FFFF]" />
+            <span className="font-tech text-[9px] tracking-[0.3em] uppercase text-pixar-cyan/80">
+              Il sistema 3V
+            </span>
+          </motion.div>
+
+          {/* Steps */}
+          <div className="space-y-2">
+            <VStep
+              num="01"
+              title="isione"
+              description="Studio il tuo business, il tuo mercato, i tuoi clienti. Finché non ho chiaro chi sei, a chi parli e cosa ti distingue, non tocco nulla."
+              progress={scrollYProgress}
+              index={0}
+              isFirst
+              isMobile={isMobile}
+            />
+            <VStep
+              num="02"
+              title="alore"
+              description="Costruisco il sistema con cui il tuo valore si vede online. Identità, sito, contenuti. Ogni pezzo è coerente e comunica che sei credibile."
+              progress={scrollYProgress}
+              index={1}
+              isMobile={isMobile}
+            />
+            <VStep
+              num="03"
+              title="endita"
+              description="Il brand va online con una strategia precisa. Social, automazioni, contenuti. Un sistema che lavora ogni giorno per portarti clienti."
+              progress={scrollYProgress}
+              index={2}
+              isMobile={isMobile}
+            />
           </div>
         </div>
 
-        <div className="image-container" ref={imgContainerRef}>
-          <div className="image-glow"></div>
-          <img 
-            ref={imgRef}
-            src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774028261/Senza_titolo-1_yamovm.png" 
-            alt="Ludovico Colasanti" 
-            className="profile-image"
-          />
-        </div>
-      </div>
-    </>
-  );
-};
+        {/* ===== RIGHT — PHOTO ===== */}
+        <div className="relative shrink-0 w-full lg:w-[45%] lg:sticky lg:top-32 z-30">
+          <motion.div
+            style={{ 
+              opacity: photoOpacity,
+              scale: photoScale,
+              x: photoX,
+            }}
+            className="relative"
+          >
+            {/* Photo Container */}
+            <div className="relative overflow-hidden rounded-xl bg-pixar-card border border-white/5">
+              <motion.img
+                src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774028261/Senza_titolo-1_yamovm.png"
+                alt="Ludovico — Innovedia"
+                className="w-full h-auto block object-cover"
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                style={{ y: photoY }}
+              />
 
-export default ChiSono;
+              {/* Gradient overlays */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to top, #050505 0%, transparent 30%, transparent 70%, rgba(5,5,5,0.3) 100%), linear-gradient(to right, rgba(0,255,255,0.05) 0%, transparent 50%)',
+                }}
+              />
+            </div>
+
+            {/* Corner accents */}
+            <div className="absolute -top-3 -right-3 w-10 h-10 border-t border-r border-pixar-cyan/20 rounded-tr-lg" />
+            <div className="absolute -bottom-3 -left-3 w-10 h-10 border-b border-l border-pixar-cyan/20 rounded-bl-lg" />
+
+            {/* Label */}
+            <div className="absolute bottom-10 left-8 z-10">
+              <p className="font-tech text-[10px] tracking-[0.4em] uppercase text-white/30 mb-1">
+                Founder
+              </p>
+              <p className="font-display text-[clamp(20px,2.5vw,28px)] font-bold text-white/90 tracking-wider">
+                Ludovico
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+

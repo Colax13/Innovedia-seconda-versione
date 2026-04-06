@@ -539,9 +539,9 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
               animate={phase === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
               style={{ opacity: scrollOpacity }}
               transition={{ delay: 0.6, duration: 1 }}
-              className="text-[10px] md:text-[clamp(8px,1.2vw,14px)] font-tech font-medium tracking-[0.2em] md:tracking-[0.4em] uppercase text-cyan-400/60 mt-6 text-center leading-relaxed md:leading-normal whitespace-normal px-6 md:px-4 max-w-[300px] md:max-w-none"
+              className="text-[10px] md:text-[clamp(8px,1.2vw,14px)] font-tech font-medium tracking-[0.2em] md:tracking-[0.4em] uppercase text-white/60 mt-6 text-center leading-relaxed md:leading-normal whitespace-normal px-6 md:px-4 max-w-[300px] md:max-w-none"
             >
-              Trasformo PMI con potenziale in brand digitali,<br />credibili e funzionali alla vendita.
+              Trasformo aziende in brand che vendono
             </motion.p>
 
             <motion.div

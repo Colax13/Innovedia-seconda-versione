@@ -103,12 +103,12 @@ function Scanline() {
 // TEXT SCRAMBLE (scroll-driven)
 // ============================================================
 const PHRASE_A_LINES = [
-  "Trasformo PMI con potenziale",
-  "in brand digitali credibili"
+  "Offline funzioni e i tuoi",
+  "clienti lo sanno..."
 ];
 const PHRASE_B_LINES = [
-  "E la tua impresa oggi",
-  "è credibile online?"
+  "Ma online...",
+  "cosa vedono di te?"
 ];
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&?";
 
@@ -151,19 +151,19 @@ function TextScramble() {
         return;
       }
 
-      // ── PHASE 2: PHRASE A RISING & START MORPH ──
+      // ── PHASE 2: PHRASE A RISING (STAYS VISIBLE) ──
       if (scrollY >= riseStart && scrollY < riseEnd) {
         const p = (scrollY - riseStart) / riseRange;
         const eased = 1 - Math.pow(1 - p, 3);
         const topPercent = 110 - (eased * 60); // 110% → 50%
         const opacity = Math.min(1, p * 2.5);
         setPosStyle({ opacity, top: `${topPercent}%` });
-        // Phase 1: Scramble out Phrase A faster (reaches 0.5 by the time it hits center)
-        setMorphProgress(p * 0.5);
+        // Phrase A stays fully visible (no scramble) while rising
+        setMorphProgress(0);
         return;
       }
 
-      // ── PHASE 3: SCRAMBLE A → B ──
+      // ── PHASE 3: SCRAMBLE A → B (AT CENTER) ──
       // Morph duration (20% of the zone for a slower Phrase B reveal)
       const morphDuration = transH * 0.2;
       const unlockThreshold = vh * 0.1; // Distance from "Il problema" line to start unlocking
@@ -171,8 +171,8 @@ function TextScramble() {
 
       if (scrollY >= riseEnd && scrollY < unlockPoint) {
         const prog = (scrollY - riseEnd) / morphDuration;
-        // Phase 2: Reveal Phrase B slower (starts from 0.5)
-        const mp = Math.max(0, Math.min(1, 0.5 + prog * 0.5));
+        // Morph starts from 0 at the center
+        const mp = Math.max(0, Math.min(1, prog));
         setPosStyle({ opacity: 1, top: '50%' });
         setMorphProgress(mp);
         return;
@@ -220,7 +220,7 @@ function TextScramble() {
       <div style={{ ...baseStyle, position: 'relative', opacity: alphaA, display: alphaA > 0 ? 'block' : 'none' }}>
         {linesA.map((words, i) => (
           <div key={i}>
-            <ScrambleWords words={words} scrambleAmount={scrambleA} direction="out" />
+            <ScrambleWords words={words} scrambleAmount={scrambleA} direction="out" highlightWords={['offline']} />
           </div>
         ))}
       </div>
@@ -236,7 +236,7 @@ function TextScramble() {
       }}>
         {linesB.map((words, i) => (
           <div key={i}>
-            <ScrambleWords words={words} scrambleAmount={scrambleB} direction="in" highlightWord="credibile" />
+            <ScrambleWords words={words} scrambleAmount={scrambleB} direction="in" highlightWords={['online']} />
           </div>
         ))}
       </div>
@@ -248,18 +248,18 @@ interface ScrambleWordsProps {
   words: string[];
   scrambleAmount: number;
   direction: 'in' | 'out';
-  highlightWord?: string;
+  highlightWords?: string[];
 }
 
 // ============================================================
 // SCRAMBLE WORDS RENDERER
 // ============================================================
-function ScrambleWords({ words, scrambleAmount, direction, highlightWord }: ScrambleWordsProps) {
+function ScrambleWords({ words, scrambleAmount, direction, highlightWords }: ScrambleWordsProps) {
   return (
     <>
       {words.map((word, wi) => {
         const cleanWord = word.replace(/[^a-zA-ZàèéìòùÀÈÉÌÒÙ]/g, '');
-        const isHL = highlightWord && cleanWord.toLowerCase() === highlightWord.toLowerCase();
+        const isHL = highlightWords && highlightWords.some(hw => cleanWord.toLowerCase() === hw.toLowerCase());
         const resolved = direction === 'in' ? 1 - scrambleAmount : scrambleAmount;
 
         return (
@@ -351,22 +351,59 @@ function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
   const isInView = useInView(ref, { once: false, amount: 0.15 });
   const [entered, setEntered] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('down');
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current) {
+        setScrollDirection('down');
+      } else if (currentScrollY < lastScrollY.current) {
+        setScrollDirection('up');
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (isInView) {
-      if (!entered) {
-        const timer = setTimeout(() => {
-          setEntered(true);
-          setShowFlash(true);
-          setTimeout(() => setShowFlash(false), 80);
-        }, delay);
-        return () => clearTimeout(timer);
+      if (scrollDirection === 'down') {
+        if (!entered) {
+          const timer = setTimeout(() => {
+            setEntered(true);
+            setShowFlash(true);
+            setTimeout(() => setShowFlash(false), 80);
+          }, delay);
+          return () => clearTimeout(timer);
+        }
       }
     } else {
       setEntered(false);
       setShowFlash(false);
     }
-  }, [isInView, entered, delay]);
+  }, [isInView, entered, delay, scrollDirection]);
+
+  // Animation variants based on scroll direction
+  const variants = {
+    initial: { opacity: 0, x: -200, rotate: -5, scale: 1.1, filter: 'blur(8px)' },
+    animateDown: {
+      opacity: 1,
+      x: [null, 25, -15, 8, -3, 0],
+      rotate: [null, 2.5, -1.2, 0.5, -0.15, 0],
+      scale: [null, 1.04, 0.98, 1.01, 1, 1],
+      filter: ['blur(8px)', 'blur(1px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(0px)'],
+    },
+    animateUp: {
+      opacity: isInView ? 1 : 0,
+      x: 0,
+      rotate: 0,
+      scale: 1,
+      filter: 'blur(0px)',
+    }
+  };
 
   return (
     <>
@@ -383,33 +420,31 @@ function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
 
       <motion.div
         ref={ref}
-        initial={{ opacity: 0, x: -200, rotate: -5, scale: 1.1, filter: 'blur(8px)' }}
-        animate={entered ? {
-          opacity: 1,
-          x: [null, 25, -15, 8, -3, 0],
-          rotate: [null, 2.5, -1.2, 0.5, -0.15, 0],
-          scale: [null, 1.04, 0.98, 1.01, 1, 1],
-          filter: ['blur(8px)', 'blur(1px)', 'blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(0px)'],
-        } : {}}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        initial="initial"
+        animate={scrollDirection === 'down' ? (entered ? "animateDown" : "initial") : "animateUp"}
+        variants={variants}
+        transition={scrollDirection === 'down' 
+          ? { duration: 1, ease: [0.16, 1, 0.3, 1] } 
+          : { opacity: { duration: 1.5, ease: 'linear' }, default: { duration: 0.5 } }
+        }
         className="relative my-4"
       >
         <motion.div
-          animate={entered ? { x: [0, -4, 3, -2, 1, 0], skewX: [0, -3, 2, -1, 0.5, 0] } : {}}
+          animate={entered && scrollDirection === 'down' ? { x: [0, -4, 3, -2, 1, 0], skewX: [0, -3, 2, -1, 0.5, 0] } : { x: 0, skewX: 0 }}
           transition={{ duration: 0.36, ease: 'linear', delay: 0.05 }}
           className="relative flex items-center gap-4 md:gap-10 py-4 md:py-6 px-4 md:px-8 rounded-[10px] overflow-hidden border border-pixar-cyan/[0.07] group hover:border-pixar-cyan/[0.18] hover:shadow-[0_0_30px_rgba(0,255,255,0.04),inset_0_0_30px_rgba(0,255,255,0.02)] transition-all duration-400"
           style={{ background: 'linear-gradient(135deg, rgba(0,255,255,0.04), transparent 60%)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
         >
           <motion.div
             initial={{ opacity: 0, scaleY: 0 }}
-            animate={entered ? { opacity: 1, scaleY: 1 } : {}}
+            animate={entered && scrollDirection === 'down' ? { opacity: 1, scaleY: 1 } : { opacity: isInView ? 1 : 0, scaleY: isInView ? 1 : 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
             className="absolute top-0 left-0 w-[3px] h-full origin-top"
             style={{ background: '#00FFFF', boxShadow: '0 0 15px #00FFFF, 0 0 40px rgba(0,255,255,0.25)' }}
           />
           <motion.div
             initial={{ x: '-100%', opacity: 0 }}
-            animate={entered ? { x: '200%', opacity: [0, 0.8, 0] } : {}}
+            animate={entered && scrollDirection === 'down' ? { x: '200%', opacity: [0, 0.8, 0] } : { opacity: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
             className="absolute inset-0 pointer-events-none"
             style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,255,0.1), transparent)' }}
@@ -424,20 +459,98 @@ function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
 }
 
 // ============================================================
+// FLIP BUTTON (Hero Style)
+// ============================================================
+function FlipButton({ text, onClick, primary = false, noBorder = false }: { text: string, onClick?: () => void, primary?: boolean, noBorder?: boolean }) {
+  return (
+    <motion.button 
+      initial="initial"
+      whileHover="hover"
+      whileTap={{ scale: 0.98 }}
+      variants={{
+        initial: { backgroundColor: "rgba(255, 255, 255, 0.05)", borderColor: noBorder ? "transparent" : (primary ? "#06b6d4" : "rgba(255, 255, 255, 0.2)") },
+        hover: { backgroundColor: "#ffffff", borderColor: "#ffffff" }
+      }}
+      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+      onClick={onClick}
+      className={`group relative h-10 px-7 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer ${noBorder ? '' : 'border'} shadow-[0_0_20px_rgba(6,182,212,0.1)] w-full sm:w-auto`}
+    >
+      <div className="relative z-10 flex h-full items-center justify-center">
+        {text.split("").map((char, i) => (
+          <span key={i} className="relative inline-block overflow-hidden">
+            <motion.span
+              variants={{
+                initial: { y: 0, rotateX: 0, color: "#ffffff" },
+                hover: { y: "-100%", rotateX: 90, color: "#000000" }
+              }}
+              transition={{ 
+                delay: i * 0.015, 
+                duration: 0.5, 
+                ease: [0.23, 1, 0.32, 1] 
+              }}
+              className="inline-block"
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+            <motion.span
+              variants={{
+                initial: { y: "100%", rotateX: -90, color: "#000000" },
+                hover: { y: 0, rotateX: 0, color: "#000000" }
+              }}
+              transition={{ 
+                delay: i * 0.015, 
+                duration: 0.5, 
+                ease: [0.23, 1, 0.32, 1] 
+              }}
+              className="absolute inset-0 inline-block"
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+          </span>
+        ))}
+      </div>
+    </motion.button>
+  );
+}
+
+// ============================================================
 // SOLUTION BADGE
 // ============================================================
 function SolutionBadge({ visible }: { visible: boolean }) {
+  const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('down');
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current) {
+        setScrollDirection('down');
+      } else if (currentScrollY < lastScrollY.current) {
+        setScrollDirection('up');
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const isUp = scrollDirection === 'up';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40, scale: 0.94 }}
-      animate={visible ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 1.2, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+      animate={visible ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.94 }}
+      transition={{ 
+        duration: isUp ? 0.3 : 1.2, 
+        delay: isUp ? 0 : 0.2, 
+        ease: [0.25, 0.46, 0.45, 0.94] 
+      }}
       className="mt-10 relative"
     >
       <motion.p
         initial={{ opacity: 0 }}
-        animate={visible ? { opacity: 1 } : {}}
-        transition={{ duration: 1, delay: 0.1 }}
+        animate={visible ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: isUp ? 0.2 : 1, delay: isUp ? 0 : 0.1 }}
         className="mb-6 font-tech text-[9px] tracking-[0.3em] uppercase text-white/20"
       >
         ma non ti preoccupare
@@ -448,8 +561,11 @@ function SolutionBadge({ visible }: { visible: boolean }) {
       >
         <motion.div
           initial={{ opacity: 0 }}
-          animate={visible ? { opacity: 1, rotate: 360 } : {}}
-          transition={{ opacity: { duration: 1, delay: 1.2 }, rotate: { duration: 5, repeat: Infinity, ease: 'linear' } }}
+          animate={visible ? { opacity: 1, rotate: 360 } : { opacity: 0, rotate: 0 }}
+          transition={{ 
+            opacity: { duration: isUp ? 0.2 : 1, delay: isUp ? 0 : 1.2 }, 
+            rotate: { duration: 5, repeat: Infinity, ease: 'linear' } 
+          }}
           className="absolute -inset-[2px] rounded-full -z-10"
           style={{ background: 'conic-gradient(from 0deg, transparent 0%, rgba(0,255,255,0.2) 25%, transparent 50%, rgba(157,0,255,0.15) 75%, transparent 100%)' }}
         />
@@ -462,14 +578,28 @@ function SolutionBadge({ visible }: { visible: boolean }) {
           La soluzione <span className="text-pixar-cyan" style={{ textShadow: '0 0 25px rgba(0,255,255,0.35)' }}>esiste</span>
         </span>
       </div>
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={visible ? { opacity: 1 } : {}}
-        transition={{ duration: 1, delay: 1.5 }}
-        className="mt-6 font-tech text-[9px] tracking-[0.3em] uppercase text-white/20"
+      {/* CTA Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: isUp ? 0.3 : 1, delay: isUp ? 0 : 1.5 }}
+        className="mt-6 md:mt-12 flex flex-col items-center gap-8"
       >
-        scopri il metodo →
-      </motion.p>
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+          <FlipButton 
+            text="Richiedi un'analisi gratuita" 
+            primary
+            onClick={() => {
+              const el = document.getElementById('contatti');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+          />
+        </div>
+
+        <p className="font-tech text-[8px] tracking-[0.3em] uppercase text-white/15 animate-pulse">
+          oppure scopri il nostro metodo ↓
+        </p>
+      </motion.div>
     </motion.div>
   );
 }
@@ -490,7 +620,7 @@ export default function BrandImpactSection() {
       <TextScramble />
 
       {/* Scroll space for text scramble A → B */}
-      <section id="scramble-zone" className="relative" style={{ height: '160vh' }}>
+      <section id="scramble-zone" className="relative h-[120vh] md:h-[160vh]">
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.03]">
           <div className="absolute left-0 right-0 h-px bg-pixar-cyan" style={{ top: '25%' }} />
           <div className="absolute left-0 right-0 h-px bg-pixar-cyan" style={{ top: '50%' }} />
@@ -505,8 +635,8 @@ export default function BrandImpactSection() {
       <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,255,0.06), transparent)' }} />
 
       {/* Problems */}
-      <section id="problems-section" className="relative min-h-screen flex flex-col justify-center px-8 md:px-[clamp(2rem,8vw,10rem)] py-12 overflow-hidden">
-        <div className="flex items-center gap-8 mb-16">
+      <section id="problems-section" className="relative min-h-[80vh] md:min-h-screen flex flex-col justify-center px-8 md:px-[clamp(2rem,8vw,10rem)] py-8 md:py-12 overflow-hidden">
+        <div className="flex items-center gap-8 mb-8 md:mb-16">
           <span className="font-tech text-[10px] tracking-[0.4em] uppercase text-pixar-cyan/50 whitespace-nowrap">Il problema</span>
           <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(0,255,255,0.15), transparent)' }} />
         </div>
@@ -520,7 +650,7 @@ export default function BrandImpactSection() {
       <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,255,0.06), transparent)' }} />
 
       {/* Final */}
-      <section className="relative min-h-screen flex flex-col justify-center items-center px-8 py-16 text-center overflow-hidden">
+      <section className="relative min-h-[80vh] md:min-h-screen flex flex-col justify-center items-center px-8 py-10 md:py-16 text-center overflow-hidden">
         {/* Corner brackets */}
         <motion.div
           ref={bracketsRef}
