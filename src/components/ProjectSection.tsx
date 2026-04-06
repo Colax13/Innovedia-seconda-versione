@@ -469,9 +469,11 @@ export default function ProjectSection() {
       }
     };
 
-    window.addEventListener('wheel', handleWheel, { passive: false });
+    if (!isMobile) {
+      window.addEventListener('wheel', handleWheel, { passive: false });
+    }
     return () => window.removeEventListener('wheel', handleWheel);
-  }, [offset]);
+  }, [offset, isMobile]);
 
   const currentIndex = ((Math.round(offset) % N) + N) % N;
 

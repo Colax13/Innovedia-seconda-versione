@@ -85,24 +85,64 @@ function FlipButton({ text, onClick, primary = false, noBorder = false }: { text
 const CaseStudySection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
   });
 
-  // Image Scroll Animations
-  const img1X = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [200, 0, 0, 200]);
-  const img1Opacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  // Image Scroll Animations - Delayed on Mobile
+  const img1X = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.15, 0.45, 0.85, 1] : [0, 0.3, 0.7, 1], 
+    [200, 0, 0, 200]
+  );
+  const img1Opacity = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.15, 0.4, 0.9, 1] : [0, 0.25, 0.75, 1], 
+    [0, 1, 1, 0]
+  );
   
-  const img2X = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [150, 0, 0, 150]);
-  const img2Opacity = useTransform(scrollYProgress, [0.1, 0.35, 0.65, 0.9], [0, 1, 1, 0]);
+  const img2X = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.25, 0.55, 0.75, 0.95] : [0.1, 0.4, 0.6, 0.9], 
+    [150, 0, 0, 150]
+  );
+  const img2Opacity = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.25, 0.5, 0.8, 0.95] : [0.1, 0.35, 0.65, 0.9], 
+    [0, 1, 1, 0]
+  );
 
-  const img3X = useTransform(scrollYProgress, [0.05, 0.35, 0.65, 0.95], [-150, 0, 0, -150]);
-  const img3Opacity = useTransform(scrollYProgress, [0.05, 0.3, 0.7, 0.95], [0, 1, 1, 0]);
+  const img3X = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.2, 0.5, 0.8, 1] : [0.05, 0.35, 0.65, 0.95], 
+    [-150, 0, 0, -150]
+  );
+  const img3Opacity = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.2, 0.45, 0.85, 1] : [0.05, 0.3, 0.7, 0.95], 
+    [0, 1, 1, 0]
+  );
 
-  const img4X = useTransform(scrollYProgress, [0.15, 0.45, 0.55, 0.85], [150, 0, 0, 150]);
-  const img4Opacity = useTransform(scrollYProgress, [0.15, 0.4, 0.6, 0.85], [0, 1, 1, 0]);
+  const img4X = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.3, 0.6, 0.7, 0.9] : [0.15, 0.45, 0.55, 0.85], 
+    [150, 0, 0, 150]
+  );
+  const img4Opacity = useTransform(
+    scrollYProgress, 
+    isMobile ? [0.3, 0.55, 0.75, 0.9] : [0.15, 0.4, 0.6, 0.85], 
+    [0, 1, 1, 0]
+  );
 
   const metrics = [
     {

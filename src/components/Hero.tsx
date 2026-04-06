@@ -538,7 +538,13 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
               initial={{ opacity: 0, y: 16 }}
               animate={phase === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
               style={{ opacity: scrollOpacity }}
-              transition={{ delay: 0.6, duration: 1 }}
+              transition={{ 
+                delay: 0.6, 
+                duration: 1,
+                type: "spring",
+                stiffness: 50,
+                damping: 20
+              }}
               className="text-[10px] md:text-[clamp(8px,1.2vw,14px)] font-tech font-medium tracking-[0.2em] md:tracking-[0.4em] uppercase text-white/60 mt-6 text-center leading-relaxed md:leading-normal whitespace-normal px-6 md:px-4 max-w-[300px] md:max-w-none"
             >
               Trasformo aziende in brand che vendono
@@ -548,7 +554,13 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={phase === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               style={{ opacity: scrollOpacity }}
-              transition={{ delay: 0.8, duration: 1 }}
+              transition={{ 
+                delay: 0.6, // Synchronized with "Trasformo aziende..."
+                duration: 1,
+                type: "spring",
+                stiffness: 50,
+                damping: 20
+              }}
               className="flex flex-col sm:flex-row gap-3 md:gap-4 mt-10 md:mt-12 pointer-events-auto w-full sm:w-auto px-16 sm:px-0"
             >
               <motion.button 

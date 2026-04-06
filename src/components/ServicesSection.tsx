@@ -366,7 +366,7 @@ const ServicesSection: React.FC = () => {
                             ))}
                             
                             {/* Progress Dots */}
-                            <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex gap-3 z-50">
+                            <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 flex gap-3 z-50">
                                 {services.map((_, i) => (
                                     <ProgressDot 
                                         key={i} 

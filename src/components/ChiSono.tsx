@@ -21,22 +21,23 @@ function VStep({ num, title, description, isFirst, progress, index, isMobile }: 
   const endOffset = index * 0.03;
 
   // Entrance: delayed start
-  // Exit: 0.75 to 1.0 (staggered)
+  // Exit: 0.9 to 1.0 (staggered) - Delayed on desktop
+  const exitStart = isMobile ? 0.8 : 0.92;
   const x = useTransform(
     progress, 
-    [0 + startOffset, 0.28 + startOffset, 0.8 - endOffset, 1 - endOffset], 
+    [0 + startOffset, 0.28 + startOffset, exitStart - endOffset, 1 - endOffset], 
     [-400, 0, 0, -400]
   );
   
   const opacity = useTransform(
     progress, 
-    [0 + startOffset, 0.22 + startOffset, 0.85 - endOffset, 1 - endOffset], 
+    [0 + startOffset, 0.22 + startOffset, exitStart + 0.05 - endOffset, 1 - endOffset], 
     [0, 1, 1, 0]
   );
 
   const dividerScale = useTransform(
     progress, 
-    [0 + startOffset, 0.28 + startOffset, 0.8 - endOffset, 1 - endOffset], 
+    [0 + startOffset, 0.28 + startOffset, exitStart - endOffset, 1 - endOffset], 
     [0, 1, 1, 0]
   );
 
@@ -106,19 +107,20 @@ export default function ChiSono() {
   // Photo Animation: Entrance from Right, Exit to Right
   // Synchronized with the first VStep (starts at 0.22 on desktop, later on mobile)
   const photoStart = isMobile ? 0.45 : 0.22;
+  const photoExitStart = isMobile ? 1 : 0.9; // Delayed exit on desktop
   const photoX = useTransform(
     scrollYProgress, 
-    isMobile ? [photoStart, photoStart + 0.23, 1, 2] : [photoStart, photoStart + 0.23, 0.75, 1], 
+    isMobile ? [photoStart, photoStart + 0.23, 1, 2] : [photoStart, photoStart + 0.23, photoExitStart, 1], 
     isMobile ? [400, 0, 0, 0] : [400, 0, 0, 400]
   );
   const photoOpacity = useTransform(
     scrollYProgress, 
-    isMobile ? [photoStart, photoStart + 0.18, 1, 2] : [photoStart, photoStart + 0.18, 0.8, 1], 
+    isMobile ? [photoStart, photoStart + 0.18, 1, 2] : [photoStart, photoStart + 0.18, photoExitStart + 0.05, 1], 
     [0, 1, 1, 0]
   );
   const photoScale = useTransform(
     scrollYProgress, 
-    isMobile ? [photoStart, photoStart + 0.23, 1, 2] : [photoStart, photoStart + 0.23, 0.75, 1], 
+    isMobile ? [photoStart, photoStart + 0.23, 1, 2] : [photoStart, photoStart + 0.23, photoExitStart, 1], 
     isMobile ? [0.9, 1, 1, 1] : [0.9, 1, 1, 0.9]
   );
   
@@ -163,7 +165,7 @@ export default function ChiSono() {
             <motion.p
               style={isMobile ? { y: titleY, opacity: titleOpacity } : {}}
               initial={!isMobile ? { opacity: 0, y: 20 } : undefined}
-              whileInView={!isMobile ? { opacity: 0.25, y: 0 } : undefined}
+              whileInView={!isMobile ? { opacity: 1, y: 0 } : undefined}
               viewport={!isMobile ? { once: false, amount: 0.5 } : undefined}
               transition={!isMobile ? { duration: 0.8, delay: 0.1 } : undefined}
               className={`font-display text-[clamp(24px,4.5vw,48px)] font-bold uppercase tracking-wide leading-[1.05] mb-[0.15em] text-white ${isMobile ? '' : 'opacity-25'}`}
@@ -173,12 +175,12 @@ export default function ChiSono() {
             <motion.p
               style={{ 
                 textShadow: '0 0 30px rgba(0,255,255,0.25)',
-                ...(isMobile ? { y: titleY, opacity: title2Opacity } : {}) 
+                ...(isMobile ? { y: titleY, opacity: titleOpacity } : {}) 
               }}
               initial={!isMobile ? { opacity: 0, y: 20 } : undefined}
               whileInView={!isMobile ? { opacity: 1, y: 0 } : undefined}
               viewport={!isMobile ? { once: false, amount: 0.5 } : undefined}
-              transition={!isMobile ? { duration: 0.8, delay: 0.2 } : undefined}
+              transition={!isMobile ? { duration: 0.8, delay: 0.1 } : undefined}
               className="font-display text-[clamp(24px,4.5vw,48px)] font-bold uppercase tracking-wide leading-[1.05] text-pixar-cyan"
             >
               Ti serve un sistema.
