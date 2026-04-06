@@ -178,14 +178,14 @@ const CaseStudySection: React.FC = () => {
     <section 
       ref={sectionRef}
       id="caso-studio"
-      className="relative pt-20 md:pt-32 pb-24 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent border-t border-white/5 overflow-hidden z-30"
+      className="relative pt-20 md:pt-32 pb-24 md:pb-12 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent border-t border-white/5 overflow-hidden z-30"
       style={{ perspective: '2000px' }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Title Section */}
-        <div className="grid lg:grid-cols-5 gap-2 md:gap-20 items-start">
+        <div className="grid lg:grid-cols-5 gap-12 md:gap-20 items-start">
           {/* Left Column: Title, Metrics, Text & CTA (3/5) */}
-          <div className="lg:col-span-3 space-y-8">
+          <div className="lg:col-span-3 space-y-8 md:space-y-10">
             <div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -215,7 +215,7 @@ const CaseStudySection: React.FC = () => {
                   initial={{ opacity: 0, x: -30 }}
                   animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
                   transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-sans text-[clamp(16px,2vw,18px)] font-light leading-relaxed text-white/60 mb-8"
+                  className="font-sans text-[clamp(16px,2vw,18px)] font-light leading-relaxed text-white/60 mb-12 md:mb-0"
                 >
                   Da salone locale a brand digitale. Partiti da zero, abbiamo costruito Sito, e-commerce spa, strategia social integrata.
                 </motion.p>
@@ -247,7 +247,7 @@ const CaseStudySection: React.FC = () => {
                   className="relative p-4 rounded-xl bg-white/[0.03] border border-white/5 overflow-hidden group backdrop-blur-sm cursor-default text-center md:text-left"
                 >
                   {/* Left Cyan Glow Border - Background Track */}
-                  <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/5 md:block hidden" />
+                  <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/5 block" />
                   
                   {/* Draining LED Bar */}
                   <motion.div 
@@ -257,7 +257,7 @@ const CaseStudySection: React.FC = () => {
                     }}
                     transition={{ duration: 1.5, ease: "easeInOut" }}
                     style={{ originY: 1 }}
-                    className="absolute left-0 top-0 bottom-0 w-[2px] bg-pixar-cyan shadow-[2px_0_15px_rgba(0,255,255,0.6)] md:block hidden" 
+                    className="absolute left-0 top-0 bottom-0 w-[2px] bg-pixar-cyan shadow-[2px_0_15px_rgba(0,255,255,0.6)] block" 
                   />
 
                   {/* Water Stain / Leak Animation */}
@@ -286,10 +286,30 @@ const CaseStudySection: React.FC = () => {
                 </motion.div>
               ))}
             </div>
+
+            {/* Desktop CTA - Directly under metrics */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: 1, delay: 0.8 }}
+              className="hidden md:flex flex-col items-start text-left pt-2"
+            >
+              <p className="font-tech text-[10px] tracking-widest text-white/30 uppercase mb-4">
+                Vuoi risultati simili?
+              </p>
+              <FlipButton 
+                text="Richiedi un'analisi gratuita" 
+                primary
+                onClick={() => {
+                  const el = document.getElementById('contatti');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+              />
+            </motion.div>
           </div>
 
           {/* Right Column: Floating Images (2/5) */}
-          <div className="lg:col-span-2 relative min-h-[300px] md:min-h-[900px] flex flex-col pt-4">
+          <div className="lg:col-span-2 relative min-h-[350px] md:min-h-[750px] flex flex-col pt-4">
             {/* Hero Salone */}
             <motion.div
               style={{ x: img1X, opacity: img1Opacity }}
@@ -310,7 +330,7 @@ const CaseStudySection: React.FC = () => {
             {/* Reel Cambio Look */}
             <motion.div
               style={{ x: img2X, opacity: img2Opacity }}
-              className="relative w-[35%] md:w-[30%] z-40 -mt-44 md:-mt-60 ml-auto mr-[-10%]"
+              className="relative w-[35%] md:w-[30%] z-40 -mt-40 md:-mt-60 ml-auto mr-[-10%]"
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
@@ -327,7 +347,7 @@ const CaseStudySection: React.FC = () => {
             {/* Hero Hair Spa */}
             <motion.div
               style={{ x: img3X, opacity: img3Opacity }}
-              className="relative w-[90%] md:w-[85%] z-20 mt-6 md:mt-20 ml-[-5%] mr-auto"
+              className="relative w-[90%] md:w-[85%] z-20 mt-10 md:mt-20 ml-[-5%] mr-auto"
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
@@ -344,7 +364,7 @@ const CaseStudySection: React.FC = () => {
             {/* Reel Tonalizzante */}
             <motion.div
               style={{ x: img4X, opacity: img4Opacity }}
-              className="relative w-[35%] md:w-[30%] z-30 -mt-56 md:-mt-72 ml-auto mr-[5%]"
+              className="relative w-[35%] md:w-[30%] z-30 -mt-52 md:-mt-72 ml-auto mr-[5%]"
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
@@ -362,14 +382,14 @@ const CaseStudySection: React.FC = () => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[100%] bg-pixar-cyan/5 blur-[150px] rounded-full -z-10 pointer-events-none" />
           </div>
 
-          {/* CTA Section - Appears after images on mobile, under metrics on desktop */}
-          <div className="lg:col-span-3">
+          {/* Mobile CTA Section - Appears after images on mobile, hidden on desktop */}
+          <div className="lg:col-span-3 md:hidden">
             <div className="space-y-8">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                 transition={{ duration: 1, delay: 0.8 }}
-                className="pt-0 md:pt-4 flex flex-col items-center md:items-start text-center md:text-left"
+                className="pt-4 flex flex-col items-center text-center"
               >
                 <p className="font-tech text-[10px] tracking-widest text-white/30 uppercase mb-4">
                   Vuoi risultati simili?
