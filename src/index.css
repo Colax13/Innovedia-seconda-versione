@@ -4,7 +4,7 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Barlow Condensed", ui-sans-serif, system-ui, sans-serif;
   --font-tech: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --color-pixar-cyan: #00FFFF;
+  --color-pixar-cyan: #06b6d4;
 }
 
 @layer base {

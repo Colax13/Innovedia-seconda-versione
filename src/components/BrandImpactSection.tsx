@@ -42,7 +42,7 @@ function ParticleField() {
       draw() {
         if (!ctx) return;
         const a = this.alpha * (.5 + Math.sin(this.phase) * .5);
-        ctx.fillStyle = `rgba(0,255,255,${a})`;
+        ctx.fillStyle = `rgba(6,182,212,${a})`;
         ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
       }
     }
@@ -58,7 +58,7 @@ function ParticleField() {
           const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
           const d = Math.sqrt(dx * dx + dy * dy);
           if (d < 110) {
-            ctx.strokeStyle = `rgba(0,255,255,${(1 - d / 110) * .05})`;
+            ctx.strokeStyle = `rgba(6,182,212,${(1 - d / 110) * .05})`;
             ctx.lineWidth = .5;
             ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
@@ -95,7 +95,7 @@ function Scanline() {
 
   return (
     <div ref={ref} className="fixed top-0 left-0 right-0 h-px z-[9996] pointer-events-none"
-      style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,255,0.05), transparent)' }} />
+      style={{ background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.05), transparent)' }} />
   );
 }
 
@@ -274,9 +274,9 @@ function ScrambleWords({ words, scrambleAmount, direction, highlightWords }: Scr
                 const rawLocal = Math.max(0, Math.min(1, (scrambleAmount - stagger) / (1 - stagger + 0.001)));
                 const local = isNaN(rawLocal) ? 0 : rawLocal;
 
-                let display = char, color = isHL && local <= 0.05 ? '#00FFFF' : '#fff';
+                let display = char, color = isHL && local <= 0.05 ? '#06b6d4' : '#fff';
                 let ty = 0, blur = 0, scaleY = 1, op = 1;
-                let shadow = isHL && local <= 0.05 ? '0 0 20px rgba(0,255,255,0.4)' : 'none';
+                let shadow = isHL && local <= 0.05 ? '0 0 20px rgba(6,182,212,0.4)' : 'none';
 
                 if (local > 0.05) {
                   shadow = 'none';
@@ -284,30 +284,30 @@ function ScrambleWords({ words, scrambleAmount, direction, highlightWords }: Scr
                     if (local < 0.4) {
                       const d = local / 0.4;
                       display = d > 0.15 ? GLYPHS[~~(Math.random() * GLYPHS.length)] : char;
-                      color = `rgba(0,255,255,${0.3 + d * 0.7})`;
+                      color = `rgba(6,182,212,${0.3 + d * 0.7})`;
                       ty = d * 8; blur = d * 2; scaleY = 1 + d * 0.15;
                     } else {
                       const d = (local - 0.4) / 0.6;
                       display = GLYPHS[~~(Math.random() * GLYPHS.length)];
-                      color = `rgba(0,255,255,${0.6 - d * 0.3})`;
+                      color = `rgba(6,182,212,${0.6 - d * 0.3})`;
                       ty = 8 + d * 4; blur = 2 + d * 3; op = 1 - d * 0.5; scaleY = 1.15 - d * 0.15;
                     }
                   } else {
                     if (local > 0.6) {
                       const d = (local - 0.6) / 0.4;
                       display = GLYPHS[~~(Math.random() * GLYPHS.length)];
-                      color = `rgba(0,255,255,${0.3 + d * 0.4})`;
+                      color = `rgba(6,182,212,${0.3 + d * 0.4})`;
                       ty = -(d * 8); blur = d * 3; op = 0.5 + (1 - d) * 0.3; scaleY = 1 + d * 0.15;
                     } else if (local > 0.15) {
                       const d = (local - 0.15) / 0.45;
                       display = d < 0.7 ? GLYPHS[~~(Math.random() * GLYPHS.length)] : char;
-                      color = isHL && d >= 0.7 ? '#00FFFF' : `rgba(0,255,255,${0.7 - d * 0.5})`;
+                      color = isHL && d >= 0.7 ? '#06b6d4' : `rgba(6,182,212,${0.7 - d * 0.5})`;
                       ty = -(1 - d) * 5; blur = (1 - d) * 2;
-                      shadow = isHL && d >= 0.7 ? '0 0 15px rgba(0,255,255,0.3)' : 'none';
+                      shadow = isHL && d >= 0.7 ? '0 0 15px rgba(6,182,212,0.3)' : 'none';
                     } else {
                       display = char;
-                      color = isHL ? '#00FFFF' : '#fff';
-                      shadow = isHL ? '0 0 20px rgba(0,255,255,0.4)' : 'none';
+                      color = isHL ? '#06b6d4' : '#fff';
+                      shadow = isHL ? '0 0 20px rgba(6,182,212,0.4)' : 'none';
                     }
                   }
                 }
@@ -327,8 +327,8 @@ function ScrambleWords({ words, scrambleAmount, direction, highlightWords }: Scr
                 <span style={{
                   position: 'absolute', bottom: '-4px', left: 0, height: '2px',
                   width: `${Math.max(0, resolved * 100)}%`,
-                  background: 'linear-gradient(90deg, #00FFFF, rgba(0,255,255,0.3))',
-                  boxShadow: '0 0 8px rgba(0,255,255,0.4)', borderRadius: '1px',
+                  background: 'linear-gradient(90deg, #06b6d4, rgba(6,182,212,0.3))',
+                  boxShadow: '0 0 8px rgba(6,182,212,0.4)', borderRadius: '1px',
                 }} />
               )}
             </span>
@@ -417,7 +417,7 @@ function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.08 }}
             className="fixed inset-0 z-[9997] pointer-events-none"
-            style={{ background: 'rgba(0,255,255,0.04)' }}
+            style={{ background: 'rgba(6,182,212,0.04)' }}
           />
         )}
       </AnimatePresence>
@@ -436,22 +436,22 @@ function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
         <motion.div
           animate={entered && scrollDirection === 'down' ? { x: [0, -4, 3, -2, 1, 0], skewX: [0, -3, 2, -1, 0.5, 0] } : { x: 0, skewX: 0 }}
           transition={{ duration: 0.36, ease: 'linear', delay: 0.05 }}
-          className="relative flex items-center gap-4 md:gap-10 py-4 md:py-6 px-4 md:px-8 rounded-[10px] overflow-hidden border border-pixar-cyan/[0.07] group hover:border-pixar-cyan/[0.18] hover:shadow-[0_0_30px_rgba(0,255,255,0.04),inset_0_0_30px_rgba(0,255,255,0.02)] transition-all duration-400"
-          style={{ background: 'linear-gradient(135deg, rgba(0,255,255,0.04), transparent 60%)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
+          className="relative flex items-center gap-4 md:gap-10 py-4 md:py-6 px-4 md:px-8 rounded-[10px] overflow-hidden border border-pixar-cyan/[0.07] group hover:border-pixar-cyan/[0.18] hover:shadow-[0_0_30px_rgba(6,182,212,0.04),inset_0_0_30px_rgba(6,182,212,0.02)] transition-all duration-400"
+          style={{ background: 'linear-gradient(135deg, rgba(6,182,212,0.04), transparent 60%)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
         >
           <motion.div
             initial={{ opacity: 0, scaleY: 0 }}
             animate={entered && scrollDirection === 'down' ? { opacity: 1, scaleY: 1 } : { opacity: isInView ? 1 : 0, scaleY: isInView ? 1 : 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
             className="absolute top-0 left-0 w-[3px] h-full origin-top"
-            style={{ background: '#00FFFF', boxShadow: '0 0 15px #00FFFF, 0 0 40px rgba(0,255,255,0.25)' }}
+            style={{ background: '#06b6d4', boxShadow: '0 0 15px #06b6d4, 0 0 40px rgba(6,182,212,0.25)' }}
           />
           <motion.div
             initial={{ x: '-100%', opacity: 0 }}
             animate={entered && scrollDirection === 'down' ? { x: '200%', opacity: [0, 0.8, 0] } : { opacity: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
             className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,255,0.1), transparent)' }}
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.1), transparent)' }}
           />
           <span className="font-tech text-[10px] md:text-[13px] text-pixar-cyan tracking-wider opacity-60 min-w-[2rem]">{num}</span>
           <span className="font-display text-[32px] md:text-[clamp(32px,6vw,72px)] font-extrabold tracking-wider uppercase text-white leading-none">{text}</span>
@@ -561,7 +561,7 @@ function SolutionBadge({ visible }: { visible: boolean }) {
       </motion.p>
       <div
         className="inline-flex items-center gap-4 py-5 px-12 rounded-full border border-pixar-cyan/[0.18] relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, rgba(0,255,255,0.05), rgba(157,0,255,0.03))', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
+        style={{ background: 'linear-gradient(135deg, rgba(6,182,212,0.05), rgba(157,0,255,0.03))', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
       >
         <motion.div
           initial={{ opacity: 0 }}
@@ -571,15 +571,15 @@ function SolutionBadge({ visible }: { visible: boolean }) {
             rotate: { duration: 5, repeat: Infinity, ease: 'linear' } 
           }}
           className="absolute -inset-[2px] rounded-full -z-10"
-          style={{ background: 'conic-gradient(from 0deg, transparent 0%, rgba(0,255,255,0.2) 25%, transparent 50%, rgba(157,0,255,0.15) 75%, transparent 100%)' }}
+          style={{ background: 'conic-gradient(from 0deg, transparent 0%, rgba(6,182,212,0.2) 25%, transparent 50%, rgba(157,0,255,0.15) 75%, transparent 100%)' }}
         />
         <motion.div
-          animate={{ boxShadow: ['0 0 12px #00FFFF, 0 0 30px rgba(0,255,255,0.3)', '0 0 20px #00FFFF, 0 0 50px rgba(0,255,255,0.5)', '0 0 12px #00FFFF, 0 0 30px rgba(0,255,255,0.3)'] }}
+          animate={{ boxShadow: ['0 0 12px #06b6d4, 0 0 30px rgba(6,182,212,0.3)', '0 0 20px #06b6d4, 0 0 50px rgba(6,182,212,0.5)', '0 0 12px #06b6d4, 0 0 30px rgba(6,182,212,0.3)'] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           className="w-2 h-2 rounded-full bg-pixar-cyan"
         />
         <span className="font-display text-[clamp(16px,2.5vw,28px)] font-bold tracking-widest uppercase text-white">
-          La soluzione <span className="text-pixar-cyan" style={{ textShadow: '0 0 25px rgba(0,255,255,0.35)' }}>esiste</span>
+          La soluzione <span className="text-pixar-cyan" style={{ textShadow: '0 0 25px rgba(6,182,212,0.35)' }}>esiste</span>
         </span>
       </div>
       {/* CTA Section */}
@@ -636,13 +636,13 @@ export default function BrandImpactSection() {
       </section>
 
       {/* Divider */}
-      <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,255,0.06), transparent)' }} />
+      <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.06), transparent)' }} />
 
       {/* Problems */}
       <section id="problems-section" className="relative min-h-[60vh] md:min-h-screen flex flex-col justify-center px-8 md:px-[clamp(2rem,8vw,10rem)] py-4 md:py-12 overflow-hidden">
         <div className="flex items-center gap-8 mb-4 md:mb-16">
           <span className="font-tech text-[10px] tracking-[0.4em] uppercase text-pixar-cyan/50 whitespace-nowrap">Il problema</span>
-          <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(0,255,255,0.15), transparent)' }} />
+          <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(6,182,212,0.15), transparent)' }} />
         </div>
 
         <ProblemCard num="01" text="Sito confuso" tag="— nessuna direzione" delay={0} />
@@ -651,7 +651,7 @@ export default function BrandImpactSection() {
       </section>
 
       {/* Divider */}
-      <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,255,0.06), transparent)' }} />
+      <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.06), transparent)' }} />
 
       {/* Final */}
       <section className="relative min-h-[80vh] md:min-h-screen flex flex-col justify-center items-center px-8 py-5 md:py-16 text-center overflow-hidden">
@@ -676,7 +676,7 @@ export default function BrandImpactSection() {
           transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="font-sans text-[clamp(18px,3vw,36px)] font-light leading-relaxed text-white/60 max-w-[750px] mt-6 md:mt-12"
         >
-          Se non sei <span className="text-pixar-cyan" style={{ textShadow: '0 0 20px rgba(0,255,255,0.3)' }}>credibile</span> online,<br />
+          Se non sei <span className="text-pixar-cyan" style={{ textShadow: '0 0 20px rgba(6,182,212,0.3)' }}>credibile</span> online,<br />
           perdi <strong className="font-semibold text-white">fiducia</strong> prima ancora<br />
           di parlare con il cliente.
         </motion.p>

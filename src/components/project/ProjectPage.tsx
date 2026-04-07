@@ -9,10 +9,12 @@ import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar';
 import UnifiedBackground from '../UnifiedBackground';
+import { useForms } from '../../context/FormContext';
 
 export const ProjectPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { openAnalysisForm, openServiceForm } = useForms();
     const project = projects.find(p => p.id === Number(id));
     
     useEffect(() => {
@@ -213,22 +215,41 @@ export const ProjectPage: React.FC = () => {
             </div>
             
             {/* CTA - Matching the site as requested */}
-            <section className="relative z-10 border-t border-white/10 text-center py-32 px-6 overflow-hidden bg-[#050508]">
+            <section className="relative z-10 border-t border-white/10 text-center py-32 px-6 overflow-hidden bg-[#030303]">
                 <div className="absolute top-0 left-[12%] right-[12%] h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
-                <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-cyan-500 mb-5.5">Progetto simile?</p>
-                <h2 className="font-display font-extrabold text-[clamp(60px,10vw,128px)] leading-[0.86] uppercase tracking-tighter mb-11">PARLIAMOCI.</h2>
-                <p className="font-light text-sm text-white/30 leading-relaxed max-w-[380px] mx-auto mb-12">
-                    Raccontami la tua attività. Capiremo insieme da dove partire.
-                </p>
-                <a 
-                    href="mailto:ludovico@innovedia.it" 
-                    className="inline-flex items-center gap-3 px-11 py-3.5 bg-transparent border-[1.5px] border-white/20 rounded-full font-bold text-[11px] uppercase tracking-widest text-white transition-all duration-300 hover:bg-cyan-500 hover:border-cyan-500 hover:text-[#050508]"
-                >
-                    Scrivimi
-                    <ExternalLink className="w-3.5 h-3.5" />
-                </a>
                 
-                <div className="mt-12 pt-6 border-t border-white/5 flex justify-between items-center max-w-[1080px] mx-auto">
+                <div className="max-w-4xl mx-auto flex flex-col items-center">
+                    <span className="font-sans text-[#06b6d4] text-[10px] font-bold uppercase tracking-[0.4em] block mb-12">
+                        PROSSIMO PASSO
+                    </span>
+                    
+                    <h2 className="font-display text-[clamp(40px,7vw,90px)] font-extrabold uppercase tracking-tighter leading-[0.9] mb-10">
+                        SCOPRI COSA <br />
+                        MANCA AL <span className="text-[#06b6d4]">TUO BRAND</span>
+                    </h2>
+                    
+                    <p className="font-sans text-lg text-white/50 font-light max-w-2xl mx-auto mb-16 leading-relaxed">
+                        Un'analisi gratuita della tua presenza online. Nessun impegno, nessuna vendita forzata — solo un quadro chiaro di dove sei e dove puoi arrivare.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                        <button
+                            onClick={openAnalysisForm}
+                            className="px-10 py-5 bg-[#06b6d4] text-black font-display font-bold text-sm uppercase tracking-widest rounded-full hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-300 text-center"
+                        >
+                            RICHIEDI L'ANALISI GRATUITA
+                        </button>
+                        
+                        <button
+                            onClick={openServiceForm}
+                            className="px-10 py-5 bg-transparent border border-white/10 text-white font-display font-bold text-sm uppercase tracking-widest rounded-full transition-all duration-300 text-center"
+                        >
+                            PARLAMI DEL TUO PROGETTO
+                        </button>
+                    </div>
+                </div>
+                
+                <div className="mt-24 pt-6 border-t border-white/5 flex justify-between items-center max-w-[1080px] mx-auto">
                     <span className="font-display font-extrabold text-[13px] tracking-widest text-white/20 uppercase">Innovedia</span>
                     <span className="text-[10px] text-white/15">© 2025 Ludovico Colasanti</span>
                 </div>

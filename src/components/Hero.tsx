@@ -197,7 +197,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         ctx.fillStyle = grad;
         ctx.fill();
         ctx.shadowBlur = 15;
-        ctx.shadowColor = 'rgba(6, 182, 212, 0.8)';
+        ctx.shadowColor = 'rgba(6,182,212, 0.8)';
         ctx.strokeStyle = 'rgba(255,255,255,0.4)';
         ctx.lineWidth = 1;
         ctx.stroke();

@@ -110,7 +110,7 @@ export const projects = [
             duration: "4 settimane",
             where: "Ceccano (FR)",
             overview: "L'Hair Spa è uno spazio fisico separato dal salone principale, con un suo brand e un'identità precisa: un'esperienza di lusso e relax dedicata alla cura dei capelli. Il sito doveva trasmetterlo prima ancora che il cliente entrasse.",
-            heroImage: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769513413/Hair_Spa_sofu9v.jpg",
+            heroImage: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769195260/SPA_STORY_5_zj2gxz.jpg",
             sections: [
                 { type: 'full', images: [{ url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769513413/Hair_Spa_sofu9v.jpg", caption: "Design Homepage" }] },
                 { 
@@ -175,7 +175,7 @@ export const projects = [
             duration: "4 settimane",
             where: "Frosinone (FR)",
             overview: "GF Service non aveva nessuna presenza digitale. Zero — nessun sito, nessun profilo curato, niente. Eppure organizzavano eventi e catering da anni, solo con il passaparola. La sfida non era solo costruire un sito: era aiutarli a capire cosa comunicare e a chi.",
-            heroImage: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769514522/GfSERVICE_SITE_q76eod.jpg",
+            heroImage: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1766430190/cover_q7wcxz.jpg",
             sections: [
                 { type: 'full', images: [{ url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769514522/GfSERVICE_SITE_q76eod.jpg", caption: "Homepage — above the fold" }] },
                 { 
@@ -246,7 +246,7 @@ export const projects = [
             duration: "1 mese",
             where: "Digital & Print",
             overview: "Le case di riposo comunicano quasi sempre in modo freddo e istituzionale. \"Vita Attiva\" imponeva un tono positivo e vitale — ma doveva restare dignitoso, credibile, vero.",
-            heroImage: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773085193/Screenshot_8_u2ex4b.jpg",
+            heroImage: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774973875/happy_woman_byb5hi.avif",
             sections: [
                 { type: 'full', images: [{ url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773085193/Screenshot_8_u2ex4b.jpg", caption: "Studio del Logo e Colori" }] },
                 { 
@@ -294,11 +294,11 @@ export const projects = [
         soluzione: "Ho sviluppato un'identità editoriale chiara con sfumature oro, navigazione essenziale e una sezione manifesti integrata in homepage per rispondere al bisogno più immediato di chi arriva sul sito. Un esercizio di design empatico.",
         tags: ["WEB DESIGN", "UX/UI", "CONCEPT PROJECT", "EDITORIAL TONE"],
         carouselImages: [
-            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089052/Screenshot_8_exvaml.jpg", caption: "Manifesti e Annunci" },
-            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089047/Screenshot_1_ygkfos.jpg", caption: "Design Homepage" },
-            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089049/Screenshot_2_ai8qiq.jpg", caption: "Presentazione Aziendale" },
-            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089050/Screenshot_3_hbtcy9.jpg", caption: "Dettaglio Informativo" },
-            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089054/Screenshot_4_d6u1nh.jpg", caption: "Sezione Contatti" }
+            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089047/Screenshot_1_ygkfos.jpg", caption: "About Aziendale" },
+            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089052/Screenshot_8_exvaml.jpg", caption: "Hero Page" },
+            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089054/Screenshot_4_d6u1nh.jpg", caption: "Gestionale" },
+            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089049/Screenshot_2_ai8qiq.jpg", caption: "I Nostri Servizi" },
+            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1775572185/Ultimi_manifesti_slugvh.jpg", caption: "Sezione Manifesti" }
         ],
         link: "https://agenziafunebre.colasantiludovico.it/",
         detail: {
@@ -309,21 +309,21 @@ export const projects = [
             duration: "2 settimane",
             where: "Digital",
             overview: "Un concept nato da una domanda: come si progetta un sito per chi vive il momento più difficile della propria vita? Ogni scelta — colore, spazio, parola — doveva bilanciare rispetto ed eleganza senza risultare fredda o distante.",
-            heroImage: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089047/Screenshot_1_ygkfos.jpg",
+            heroImage: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/55/a4/b4/3d/c4/v1_E10/E103JXB9.jpg?w=800&cf_fit=scale-down&q=85&format=auto&s=9a8e391fbf07a17867c93ccba06a7c8d9fa0b275989246623d17c06088544caf",
             sections: [
-                { type: 'full', images: [{ url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089047/Screenshot_1_ygkfos.jpg", caption: "Design Homepage" }] },
+                { type: 'full', images: [{ url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089047/Screenshot_1_ygkfos.jpg", caption: "About Aziendale" }] },
                 { 
                     type: 'split', 
                     subtitle: "La sfida", 
                     title: "Design\nper il\nlutto.", 
                     text: "Il design per le onoranze funebri è spesso datato o eccessivamente freddo. La sfida era creare un'interfaccia che fosse allo stesso tempo professionale, rassicurante e facile da usare in momenti di forte stress emotivo.",
-                    images: [{ url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089049/Screenshot_2_ai8qiq.jpg" }]
+                    images: [{ url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089052/Screenshot_8_exvaml.jpg", caption: "Hero Page" }]
                 },
                 {
                     type: 'two-cols',
                     images: [
-                        { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089050/Screenshot_3_hbtcy9.jpg", caption: "Dettaglio Informativo" },
-                        { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089052/Screenshot_8_exvaml.jpg", caption: "Manifesti e Annunci" }
+                        { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089054/Screenshot_4_d6u1nh.jpg", caption: "Gestionale" },
+                        { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089049/Screenshot_2_ai8qiq.jpg", caption: "I Nostri Servizi" }
                     ]
                 },
                 {
@@ -331,7 +331,7 @@ export const projects = [
                     subtitle: "La soluzione",
                     title: "Eleganza\ne\nChiarezza.",
                     text: "Ho scelto una palette di toni caldi e oro su fondo scuro per trasmettere solennità. La navigazione è ridotta all'essenziale, con un focus immediato sulla ricerca dei manifesti e sui contatti d'emergenza.",
-                    images: [{ url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089054/Screenshot_4_d6u1nh.jpg" }],
+                    images: [{ url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1775572185/Ultimi_manifesti_slugvh.jpg", caption: "Sezione Manifesti" }],
                     reverse: true
                 }
             ],
@@ -351,7 +351,7 @@ export const projects = [
         color: "#1a1a1a",
         img: "https://pbs.twimg.com/profile_images/702966896770097152/Ml6q4ddu_400x400.jpg",
         middleImage: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769516773/GB_instagram_pvf2cv.jpg",
-        sfida: "Con un profilo già rodato il rischio è abbassare la qualità o perdere la voce autentica del locale. Ogni contenuto doveva sembrare fatto da qualcuno che il pub lo conosce davvero — non da un'agenzia esterna.",
+        sfida: "Il profilo era gestito sotto la supervisione della social media manager che ha creato il profilo e che la produzione reels e stories raccontano in maniera simpatica l'anima del locale con un focus sui proprietari e recap delle serate.",
         soluzione: "Feed Instagram e produzione Reels e Stories che raccontano il locale dall'interno: le birre, le serate, i momenti vivi. Niente effetti patinati. Il tono grezzo e caldo del posto è rimasto il protagonista. Esito: Media di 15.000–20.000 visualizzazioni a video su Instagram.",
         tags: ["Social Media", "Instagram", "Reels & Stories", "Content Production", "Local Business"],
         carouselImages: [
@@ -366,8 +366,8 @@ export const projects = [
             role: "Social Media",
             duration: "Ongoing",
             where: "Instagram",
-            overview: "Con un profilo già rodato il rischio è abbassare la qualità o perdere la voce autentica del locale. Ogni contenuto doveva sembrare fatto da qualcuno che il pub lo conosce davvero — non da un'agenzia esterna.",
-            heroImage: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769516773/GB_instagram_pvf2cv.jpg",
+            overview: "Il profilo era gestito sotto la supervisione della social media manager che ha creato il profilo e che la produzione reels e stories raccontano in maniera simpatica l'anima del locale con un focus sui proprietari e recap delle serate.",
+            heroImage: "https://pbs.twimg.com/profile_images/702966896770097152/Ml6q4ddu_400x400.jpg",
             sections: [
                 { type: 'full', images: [{ url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769516773/GB_instagram_pvf2cv.jpg", caption: "Cura del Feed Instagram" }] },
                 { 

@@ -6,7 +6,7 @@
   --font-tech: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
   --color-pixar-dark: #030303;
-  --color-pixar-cyan: #00FFFF;
+  --color-pixar-cyan: #06b6d4;
   --color-pixar-purple: #9D00FF;
   --color-pixar-pink: #FF00FF;
   --color-pixar-card: #0A0A0A;
@@ -53,7 +53,7 @@ html {
 
 /* Custom Selection Color */
 ::selection {
-  background: rgba(0, 255, 255, 0.3);
+  background: rgba(6, 182, 212, 0.3);
   color: white;
 }
 

@@ -28,36 +28,17 @@ const ServiceCardMobile: React.FC<ServiceCardMobileProps> = ({ service, index, s
         isFirst ? ["0%", "0%"] : ["150%", "0%"]
     );
     
-    // 3. Gestione della Velocità (velocityScale)
-    const scrollVelocity = useVelocity(scrollYProgress);
-    const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
-    const velocityScale = useTransform(smoothVelocity, [-0.5, 0, 0.5], [1.05, 1, 1.05]);
-
-    // 5. Feedback Visivo (Haptic Pulse)
-    // No pulse for the first card as it's already in position
-    const snapPulse = useTransform(
-        scrollYProgress,
-        isFirst ? [0, 0.01, 0.02] : [end - 0.05, end, end + 0.05],
-        [1, isFirst ? 1 : 1.02, 1]
-    );
-
     // 6. Animazione di Uscita (Shrink & Fade)
-    const scaleBase = useTransform(
+    const scale = useTransform(
         scrollYProgress,
         isLast ? [start, end] : [start, end, exitStart, exitEnd],
-        isLast ? [0.95, 1] : [0.95, 1, 1, 0.9]
+        isLast ? [1, 1] : [1, 1, 1, 0.95]
     );
 
     const opacity = useTransform(
         scrollYProgress,
         isLast ? [start, end] : [start, end, exitStart, exitEnd],
         isLast ? [1, 1] : [1, 1, 1, 0]
-    );
-
-    // Combined Scale
-    const scale = useTransform(
-        [scaleBase, velocityScale, snapPulse],
-        ([s, v, p]) => (s as number) * (v as number) * (p as number)
     );
 
     return (

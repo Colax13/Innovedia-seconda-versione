@@ -52,7 +52,7 @@ function VStep({ num, title, description, isFirst, progress, index, isMobile }: 
         <motion.div
           className="absolute top-0 left-0 right-0 h-px origin-left"
           style={{
-            background: 'linear-gradient(90deg, rgba(0,255,255,0.15), transparent 80%)',
+            background: 'linear-gradient(90deg, rgba(6,182,212,0.15), transparent 80%)',
             scaleX: dividerScale
           }}
         />
@@ -67,7 +67,7 @@ function VStep({ num, title, description, isFirst, progress, index, isMobile }: 
         {/* V letter */}
         <span
           className="font-display text-[clamp(32px,4vw,48px)] font-extrabold leading-none text-pixar-cyan shrink-0"
-          style={{ textShadow: '0 0 20px rgba(0,255,255,0.3)' }}
+          style={{ textShadow: '0 0 20px rgba(6,182,212,0.3)' }}
         >
           V
         </span>
@@ -157,25 +157,25 @@ export default function ChiSono() {
             </span>
             <div
               className="flex-1 h-px"
-              style={{ background: 'linear-gradient(90deg, rgba(0,255,255,0.2), transparent)' }}
+              style={{ background: 'linear-gradient(90deg, rgba(6,182,212,0.2), transparent)' }}
             />
           </motion.div>
 
           {/* Title */}
-          <div className="mb-12">
+          <div className="mb-6 md:mb-12">
             <motion.p
               style={isMobile ? { y: titleY, opacity: titleOpacity } : {}}
               initial={!isMobile ? { opacity: 0, y: 20 } : undefined}
               whileInView={!isMobile ? { opacity: 1, y: 0 } : undefined}
               viewport={!isMobile ? { once: false, amount: 0.5 } : undefined}
               transition={!isMobile ? { duration: 0.8, delay: 0.1 } : undefined}
-              className={`font-display text-[clamp(24px,4.5vw,48px)] font-bold uppercase tracking-wide leading-[1.05] mb-[0.15em] text-white ${isMobile ? '' : 'opacity-25'}`}
+              className={`font-display text-[clamp(24px,4.5vw,48px)] font-bold uppercase tracking-wide leading-[1.05] mb-0 md:mb-[0.15em] text-white ${isMobile ? '' : 'opacity-25'}`}
             >
               Non ti serve un sito.
             </motion.p>
             <motion.p
               style={{ 
-                textShadow: '0 0 30px rgba(0,255,255,0.25)',
+                textShadow: '0 0 30px rgba(6,182,212,0.25)',
                 ...(isMobile ? { y: titleY, opacity: titleOpacity } : {}) 
               }}
               initial={!isMobile ? { opacity: 0, y: 20 } : undefined}
@@ -194,7 +194,7 @@ export default function ChiSono() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="font-sans text-[clamp(14px,1.5vw,17px)] font-light leading-relaxed text-white/50 max-w-[480px] mb-10"
+            className="font-sans text-[clamp(14px,1.5vw,17px)] font-light leading-relaxed text-white/50 max-w-[480px] mb-6 md:mb-10"
           >
             Ogni progetto segue lo stesso percorso.
             Tre fasi, un unico obiettivo:{' '}
@@ -209,14 +209,14 @@ export default function ChiSono() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="inline-flex items-center gap-3 py-2 px-5 rounded-full mb-12 bg-pixar-cyan/5 border border-pixar-cyan/10"
           >
-            <div className="w-1.5 h-1.5 rounded-full bg-pixar-cyan shadow-[0_0_10px_#00FFFF]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-pixar-cyan shadow-[0_0_10px_#06b6d4]" />
             <span className="font-tech text-[9px] tracking-[0.3em] uppercase text-pixar-cyan/80">
               Il sistema 3V
             </span>
           </motion.div>
 
           {/* Steps */}
-          <div className="space-y-2">
+          <div className="space-y-0 md:space-y-2">
             <VStep
               num="01"
               title="isione"
@@ -270,22 +270,29 @@ export default function ChiSono() {
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(to top, #050505 0%, transparent 30%, transparent 70%, rgba(5,5,5,0.3) 100%), linear-gradient(to right, rgba(0,255,255,0.05) 0%, transparent 50%)',
+                  background: 'linear-gradient(to top, #050505 0%, transparent 30%, transparent 70%, rgba(5,5,5,0.3) 100%), linear-gradient(to right, rgba(6,182,212,0.05) 0%, transparent 50%)',
                 }}
               />
+
+              {/* Label - Moved inside Photo Container to avoid overlap with text below */}
+              <div className="absolute bottom-6 left-6 z-10">
+                <p className="font-tech text-[10px] tracking-[0.4em] uppercase text-white/30 mb-1">
+                  Founder
+                </p>
+                <p className="font-display text-[clamp(20px,2.5vw,28px)] font-bold text-white/90 tracking-wider">
+                  Ludovico
+                </p>
+              </div>
             </div>
 
             {/* Corner accents */}
             <div className="absolute -top-3 -right-3 w-10 h-10 border-t border-r border-pixar-cyan/20 rounded-tr-lg" />
             <div className="absolute -bottom-3 -left-3 w-10 h-10 border-b border-l border-pixar-cyan/20 rounded-bl-lg" />
 
-            {/* Label */}
-            <div className="absolute bottom-10 left-8 z-10">
-              <p className="font-tech text-[10px] tracking-[0.4em] uppercase text-white/30 mb-1">
-                Founder
-              </p>
-              <p className="font-display text-[clamp(20px,2.5vw,28px)] font-bold text-white/90 tracking-wider">
-                Ludovico
+            {/* New Phrase */}
+            <div className="mt-8 pl-4 border-l border-pixar-cyan/30">
+              <p className="font-sans text-[clamp(13px,1.4vw,15px)] font-light leading-relaxed text-white/50 max-w-[400px]">
+                <span className="text-pixar-cyan/80 font-medium">Sviluppatore e stratega digitale.</span> Costruisco con l'AI quello che le agenzie tradizionali impiegano settimane a fare.
               </p>
             </div>
           </motion.div>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import Navbar from '../Navbar';
 import OptimizedImage from '../OptimizedImage';
+import { useForms } from '../../context/FormContext';
 
 const GREEN = "#2d7a4f";
 const GREEN_LIGHT = "#3a9e66";
@@ -171,12 +172,12 @@ function Overview() {
 }
 
 // ── FULL IMG ──────────────────────────────────────────────────────────────────
-function FullImg({ src, caption, aspect="16/9" }: { src: string, caption?: string, aspect?: string }) {
+function FullImg({ src, caption }: { src: string, caption?: string }) {
   const [ref, vis] = useInView(.08);
   return (
     <div ref={ref} style={{ position:"relative", zIndex:1, opacity:vis?1:0, transform:vis?"translateY(0)":"translateY(28px)", transition:"all .9s cubic-bezier(.23,1,.32,1)" }} className="full-img-container">
-      <div style={{ aspectRatio:aspect, overflow:"hidden", border:"1px solid rgba(255,255,255,.05)" }}>
-        <OptimizedImage src={src} alt={caption || "GF Service Project Image"} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+      <div style={{ overflow:"hidden", border:"1px solid rgba(255,255,255,.05)" }} className="img-box">
+        <OptimizedImage src={src} alt={caption || "GF Service Project Image"} style={{ width:"100%", height:"auto", display:"block" }}/>
       </div>
       {caption && <p style={{ fontFamily:"'Barlow',sans-serif", fontSize:9, color:"rgba(255,255,255,.2)", letterSpacing:".16em", textTransform:"uppercase", fontWeight:600, marginTop:12, paddingLeft:4 }}>{caption}</p>}
     </div>
@@ -198,8 +199,8 @@ function Split({ label, title, body, src, reverse=false }: { label: string, titl
   );
   const right = (
     <div style={iS}>
-      <div style={{ borderRadius:10, overflow:"hidden", border:"1px solid rgba(255,255,255,.06)" }}>
-        <OptimizedImage src={src} alt={title} style={{ width:"100%", display:"block", objectFit:"cover", aspectRatio:"4/3" }}/>
+      <div style={{ borderRadius:10, overflow:"hidden", border:"1px solid rgba(255,255,255,.06)" }} className="img-box">
+        <OptimizedImage src={src} alt={title} style={{ width:"100%", height:"auto", display:"block" }}/>
       </div>
     </div>
   );
@@ -219,8 +220,8 @@ function TwoCols({ items }: { items: { src: string, cap?: string }[] }) {
     <div ref={ref} style={{ position:"relative", zIndex:1, maxWidth:1080, margin:"0 auto", padding:"0 52px", display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:12 }} className="two-cols-grid">
       {items.map((item,i)=>(
         <div key={i} style={{ opacity:vis?1:0, transform:vis?"translateY(0)":"translateY(28px)", transition:`all .85s ${i*.1}s cubic-bezier(.23,1,.32,1)` }}>
-          <div style={{ borderRadius:8, overflow:"hidden", border:"1px solid rgba(255,255,255,.05)", aspectRatio:"16/10" }}>
-            <OptimizedImage src={item.src} alt={item.cap || "GF Service Project Image"} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+          <div style={{ borderRadius:8, overflow:"hidden", border:"1px solid rgba(255,255,255,.05)" }} className="img-box">
+            <OptimizedImage src={item.src} alt={item.cap || "GF Service Project Image"} style={{ width:"100%", height:"auto", display:"block" }}/>
           </div>
           {item.cap && <p style={{ fontFamily:"'Barlow',sans-serif", fontSize:9, color:"rgba(255,255,255,.2)", letterSpacing:".14em", textTransform:"uppercase", fontWeight:600, marginTop:10 }}>{item.cap}</p>}
         </div>
@@ -236,8 +237,8 @@ function ThreeCols({ items }: { items: { src: string, cap?: string }[] }) {
     <div ref={ref} style={{ position:"relative", zIndex:1, maxWidth:1080, margin:"0 auto", padding:"0 52px", display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:10, marginBottom:12 }} className="three-cols-grid">
       {items.map((item,i)=>(
         <div key={i} style={{ opacity:vis?1:0, transform:vis?"translateY(0)":"translateY(28px)", transition:`all .85s ${i*.08}s cubic-bezier(.23,1,.32,1)` }}>
-          <div style={{ borderRadius:8, overflow:"hidden", border:"1px solid rgba(255,255,255,.05)", aspectRatio:"4/3" }}>
-            <OptimizedImage src={item.src} alt={item.cap || "GF Service Project Image"} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}/>
+          <div style={{ borderRadius:8, overflow:"hidden", border:"1px solid rgba(255,255,255,.05)" }} className="img-box">
+            <OptimizedImage src={item.src} alt={item.cap || "GF Service Project Image"} style={{ width:"100%", height:"auto", display:"block" }}/>
           </div>
           {item.cap && <p style={{ fontFamily:"'Barlow',sans-serif", fontSize:9, color:"rgba(255,255,255,.2)", letterSpacing:".14em", textTransform:"uppercase", fontWeight:600, marginTop:10 }}>{item.cap}</p>}
         </div>
@@ -267,7 +268,7 @@ function Stats() {
     <div ref={ref} style={{ position:"relative", zIndex:1, maxWidth:1080, margin:"0 auto", padding:"0 52px 112px" }} className="inn-container">
       <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", borderTop:"1px solid rgba(255,255,255,.07)", borderBottom:"1px solid rgba(255,255,255,.07)", padding:"60px 0" }} className="stats-grid">
         {[{v:"B2B",l:"Target sito"},{v:"Da zero",l:"Presenza digitale"},{v:"100%",l:"Foto reali"}].map((s,i)=>(
-          <div key={i} style={{
+          <div key={i} className="stc" style={{
             borderRight:i<2?"1px solid rgba(255,255,255,.07)":"none",
             paddingRight:i<2?44:0, paddingLeft:i>0?44:0,
             opacity:vis?1:0, transform:vis?"translateY(0)":"translateY(18px)",
@@ -305,63 +306,82 @@ function Tags() {
 
 // ── CTA ───────────────────────────────────────────────────────────────────────
 function CTA() {
+  const navigate = useNavigate();
+  const { openAnalysisForm, openServiceForm } = useForms();
   const [ref, vis] = useInView(.15);
-  const [hov, setHov] = useState(false);
   const r = (d=0): React.CSSProperties => ({ opacity:vis?1:0, transform:vis?"translateY(0)":"translateY(22px)", transition:`all .8s ${d}s cubic-bezier(.23,1,.32,1)` });
+  
   return (
-    <section ref={ref} style={{ position:"relative", zIndex:1, borderTop:"1px solid rgba(255,255,255,.06)", textAlign:"center", padding:"120px 52px 72px", overflow:"hidden" }}>
+    <section ref={ref} style={{ position:"relative", zIndex:1, borderTop:"1px solid rgba(255,255,255,.06)", textAlign:"center", padding:"120px 52px 72px", overflow:"hidden", background:"#030303" }}>
       <div style={{ position:"absolute", top:0, left:"12%", right:"12%", height:1, background:`linear-gradient(90deg,transparent,${CYAN}55,transparent)` }}/>
-      <div style={{ ...r(0), fontFamily:"'Barlow',sans-serif", fontSize:9, fontWeight:700, letterSpacing:".3em", textTransform:"uppercase", color:CYAN, marginBottom:22 }}>Progetto simile?</div>
-      <h2 style={{ ...r(.1), fontFamily:"'Barlow Condensed',sans-serif", fontWeight:800, fontSize:"clamp(60px,10vw,128px)", color:"#fff", textTransform:"uppercase", letterSpacing:"-.035em", lineHeight:.86, margin:"0 0 44px" }}>PARLIAMOCI.</h2>
-      <p style={{ ...r(.18), fontFamily:"'Barlow',sans-serif", fontWeight:300, fontSize:15, color:"rgba(255,255,255,.32)", lineHeight:1.75, maxWidth:380, margin:"0 auto 48px" }}>
-        Raccontami la tua attività. Capiremo insieme da dove partire.
-      </p>
-      <div style={{ ...r(.25), display:"flex", justifyContent:"center", gap: 16 }}>
-        <a href="https://gfservice.colasantiludovico.it/"
-          target="_blank"
-          rel="noopener noreferrer"
-          onMouseEnter={(e)=>{
-            const target = e.currentTarget;
-            target.style.background = CYAN;
-            target.style.borderColor = CYAN;
-            target.style.color = BG;
-          }}
-          onMouseLeave={(e)=>{
-            const target = e.currentTarget;
-            target.style.background = "transparent";
-            target.style.borderColor = "rgba(255,255,255,.22)";
-            target.style.color = "#fff";
-          }}
-          style={{
-            display:"inline-flex", alignItems:"center", gap:12,
-            padding:"15px 44px",
-            background:"transparent",
-            border:`1.5px solid rgba(255,255,255,.22)`,
-            borderRadius:999,
-            fontFamily:"'Barlow',sans-serif", fontSize:11, fontWeight:700,
-            letterSpacing:".18em", textTransform:"uppercase",
-            color:"#fff", textDecoration:"none",
-            transition:"all .3s cubic-bezier(.23,1,.32,1)",
-          }}>
-          Visualizza sito
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-        </a>
-        <a href="mailto:ludovico@innovedia.it"
-          onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-          style={{
-            display:"inline-flex", alignItems:"center", gap:12,
-            padding:"15px 44px",
-            background:hov?CYAN:"transparent",
-            border:`1.5px solid ${hov?CYAN:"rgba(255,255,255,.22)"}`,
-            borderRadius:999,
-            fontFamily:"'Barlow',sans-serif", fontSize:11, fontWeight:700,
-            letterSpacing:".18em", textTransform:"uppercase",
-            color:hov?BG:"#fff", textDecoration:"none",
-            transition:"all .3s cubic-bezier(.23,1,.32,1)",
-          }}>
-          Scrivimi
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-        </a>
+      
+      <div style={{ maxWidth:900, margin:"0 auto", display:"flex", flexDirection:"column", alignItems:"center" }}>
+        <span style={{ ...r(0), fontFamily:"'Barlow',sans-serif", fontSize:10, fontWeight:700, letterSpacing:".4em", textTransform:"uppercase", color:CYAN, marginBottom:48 }}>
+          PROSSIMO PASSO
+        </span>
+        
+        <h2 style={{ ...r(.1), fontFamily:"'Barlow Condensed',sans-serif", fontWeight:800, fontSize:"clamp(40px,7vw,90px)", color:"#fff", textTransform:"uppercase", letterSpacing:"-.035em", lineHeight:.9, marginBottom:40 }}>
+          SCOPRI COSA <br />
+          MANCA AL <span style={{ color:CYAN }}>TUO BRAND</span>
+        </h2>
+        
+        <p style={{ ...r(.18), fontFamily:"'Barlow',sans-serif", fontWeight:300, fontSize:18, color:"rgba(255,255,255,.5)", lineHeight:1.6, maxWidth:640, margin:"0 auto 64px" }}>
+          Un'analisi gratuita della tua presenza online. Nessun impegno, nessuna vendita forzata — solo un quadro chiaro di dove sei e dove puoi arrivare.
+        </p>
+
+        <div style={{ ...r(.25), display:"flex", gap:16, width:"100%", justifyContent:"center" }} className="cta-buttons">
+          <button
+            onClick={openAnalysisForm}
+            style={{
+              padding:"20px 40px",
+              background:CYAN,
+              color:"#000",
+              fontFamily:"'Barlow Condensed',sans-serif",
+              fontWeight:700,
+              fontSize:14,
+              textTransform:"uppercase",
+              letterSpacing:".15em",
+              borderRadius:100,
+              textDecoration:"none",
+              transition:"all .3s ease",
+              textAlign:"center",
+              cursor:"pointer",
+              border:"none"
+            }}
+            onMouseEnter={e => e.currentTarget.style.boxShadow = `0 0 30px ${CYAN}66`}
+            onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}
+          >
+            RICHIEDI L'ANALISI GRATUITA
+          </button>
+          
+          <button
+            onClick={openServiceForm}
+            style={{
+              padding:"20px 40px",
+              background:"transparent",
+              border:"1px solid rgba(255,255,255,.1)",
+              color:"#fff",
+              fontFamily:"'Barlow Condensed',sans-serif",
+              fontWeight:700,
+              fontSize:14,
+              textTransform:"uppercase",
+              letterSpacing:".15em",
+              borderRadius:100,
+              cursor:"pointer",
+              transition:"all .3s ease",
+              textAlign:"center"
+            }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(255,255,255,.3)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,.1)"}
+          >
+            PARLAMI DEL TUO PROGETTO
+          </button>
+        </div>
+      </div>
+      
+      <div style={{ marginTop:96, paddingTop:24, borderTop:"1px solid rgba(255,255,255,.05)", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+        <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:800, fontSize:13, letterSpacing:".15em", color:"rgba(255,255,255,.2)", textTransform:"uppercase" }}>Innovedia</span>
+        <span style={{ fontSize:10, color:"rgba(255,255,255,.15)" }}>© 2025 Ludovico Colasanti</span>
       </div>
     </section>
   );
@@ -370,6 +390,7 @@ function CTA() {
 // ── APP ───────────────────────────────────────────────────────────────────────
 const ProjectGFService: React.FC = () => {
   const navigate = useNavigate();
+  const { openAnalysisForm, openServiceForm } = useForms();
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -425,11 +446,12 @@ const ProjectGFService: React.FC = () => {
             .two-cols-grid { grid-template-columns: 1fr !important; padding: 0 24px !important; }
             .three-cols-grid { grid-template-columns: 1fr !important; padding: 0 24px !important; }
             .stats-grid { grid-template-columns: 1fr !important; padding: 40px 0 !important; }
-            .stc { padding: 24px 0 !important; border-left: none !important; border-right: none !important; padding-left: 0 !important; padding-right: 0 !important; }
+            .stc { padding: 24px 0 !important; border-left: none !important; border-right: none !important; padding-left: 0 !important; padding-right: 0 !important; text-align: center !important; }
             .stc:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,.07) !important; }
             .tags-container { padding: 0 24px 64px !important; }
             #cta { padding: 80px 24px 48px !important; }
             .cth { font-size: 48px !important; }
+            .cta-buttons { flex-direction: column !important; }
           }
         `}</style>
 
@@ -441,7 +463,7 @@ const ProjectGFService: React.FC = () => {
 
         {/* 01 — Homepage hero */}
         <div style={{ position:"relative", zIndex:1, padding:"0 52px 12px", maxWidth:1080, margin:"0 auto" }} className="full-img-container">
-          <FullImg src={IMGS.hero} caption="01 — Homepage · Hero section" aspect="16/8"/>
+          <FullImg src={IMGS.hero} caption="01 — Homepage · Hero section"/>
         </div>
         <div style={{ height:80 }}/>
 
@@ -483,7 +505,7 @@ const ProjectGFService: React.FC = () => {
 
         {/* About page */}
         <div style={{ position:"relative", zIndex:1, padding:"0 52px 12px", maxWidth:1080, margin:"0 auto" }} className="full-img-container">
-          <FullImg src={IMGS.chiSiamo1} caption="07 — Pagina chi siamo" aspect="16/8"/>
+          <FullImg src={IMGS.chiSiamo1} caption="07 — Pagina chi siamo"/>
         </div>
         <div style={{ height:12 }}/>
         <TwoCols items={[
@@ -494,7 +516,7 @@ const ProjectGFService: React.FC = () => {
 
         {/* Contatti */}
         <div style={{ position:"relative", zIndex:1, padding:"0 52px 12px", maxWidth:1080, margin:"0 auto" }} className="full-img-container">
-          <FullImg src={IMGS.contatti} caption="10 — Pagina contatti · Form preventivo" aspect="16/8"/>
+          <FullImg src={IMGS.contatti} caption="10 — Pagina contatti · Form preventivo"/>
         </div>
         <div style={{ height:80 }}/>
 

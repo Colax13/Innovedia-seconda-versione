@@ -212,7 +212,7 @@ const CaseStudySection: React.FC = () => {
                 </span>
                 <div
                   className="flex-1 h-px hidden md:block"
-                  style={{ background: 'linear-gradient(90deg, rgba(0,255,255,0.2), transparent)' }}
+                  style={{ background: 'linear-gradient(90deg, rgba(6,182,212,0.2), transparent)' }}
                 />
               </motion.div>
 
@@ -253,7 +253,7 @@ const CaseStudySection: React.FC = () => {
                     },
                     hover: { 
                       y: -10, 
-                      boxShadow: '0 20px 40px rgba(0, 255, 255, 0.12)',
+                      boxShadow: '0 20px 40px rgba(6, 182, 212, 0.12)',
                       borderColor: 'rgba(255,255,255,0.15)',
                       transition: { duration: 0.4, ease: "easeOut" }
                     }
@@ -271,7 +271,7 @@ const CaseStudySection: React.FC = () => {
                     }}
                     transition={{ duration: 1.5, ease: "easeInOut" }}
                     style={{ originY: 1 }}
-                    className="absolute left-0 top-0 bottom-0 w-[2px] bg-pixar-cyan shadow-[2px_0_15px_rgba(0,255,255,0.6)] block" 
+                    className="absolute left-0 top-0 bottom-0 w-[2px] bg-pixar-cyan shadow-[2px_0_15px_rgba(6,182,212,0.6)] block" 
                   />
 
                   {/* Water Stain / Leak Animation */}
