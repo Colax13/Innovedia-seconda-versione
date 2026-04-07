@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useVelocity, useMotionValue } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring, useVelocity } from 'motion/react';
 import OptimizedImage from './OptimizedImage';
 
 interface ServiceCardMobileProps {
@@ -21,11 +21,11 @@ const ServiceCardMobile: React.FC<ServiceCardMobileProps> = ({ service, index, s
     const exitStart = 0.1 + index * step;
     const exitEnd = 0.1 + (index + 1) * step;
     
-    // 1. Direzione dell'Ingresso (y: "100%" -> "0%")
+    // 1. Direzione dell'Ingresso (y: "150%" -> "0%") - Starting further down
     const y = useTransform(
         scrollYProgress, 
         isFirst ? [0, 1] : [start, end], 
-        isFirst ? ["0%", "0%"] : ["100%", "0%"]
+        isFirst ? ["0%", "0%"] : ["150%", "0%"]
     );
     
     // 3. Gestione della Velocità (velocityScale)
@@ -38,7 +38,7 @@ const ServiceCardMobile: React.FC<ServiceCardMobileProps> = ({ service, index, s
     const snapPulse = useTransform(
         scrollYProgress,
         isFirst ? [0, 0.01, 0.02] : [end - 0.05, end, end + 0.05],
-        [1, isFirst ? 1 : 1.03, 1]
+        [1, isFirst ? 1 : 1.02, 1]
     );
 
     // 6. Animazione di Uscita (Shrink & Fade)
@@ -60,41 +60,13 @@ const ServiceCardMobile: React.FC<ServiceCardMobileProps> = ({ service, index, s
         ([s, v, p]) => (s as number) * (v as number) * (p as number)
     );
 
-    // 4. Tilt Giroscopico (Effetto 3D)
-    const rotateX = useMotionValue(0);
-    const rotateY = useMotionValue(0);
-
-    useEffect(() => {
-        const handleOrientation = (e: DeviceOrientationEvent) => {
-            if (e.beta !== null && e.gamma !== null) {
-                // Limit tilt to +/- 10 degrees
-                const x = Math.max(-10, Math.min(10, (e.beta - 45) / 2));
-                const y = Math.max(-10, Math.min(10, e.gamma / 2));
-                rotateX.set(x);
-                rotateY.set(y);
-            }
-        };
-
-        if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientation', handleOrientation);
-        }
-        return () => window.removeEventListener('deviceorientation', handleOrientation);
-    }, [rotateX, rotateY]);
-
-    // Spring-smoothed rotation
-    const smoothRotateX = useSpring(rotateX, { stiffness: 100, damping: 30 });
-    const smoothRotateY = useSpring(rotateY, { stiffness: 100, damping: 30 });
-
     return (
         <motion.div
             style={{ 
                 y,
                 scale, 
                 opacity,
-                rotateX: smoothRotateX,
-                rotateY: smoothRotateY,
                 zIndex: index + 10,
-                transformStyle: "preserve-3d"
             }}
             className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black"
         >

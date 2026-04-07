@@ -549,7 +549,7 @@ function SolutionBadge({ visible }: { visible: boolean }) {
         delay: isUp ? 0 : 0.2, 
         ease: [0.25, 0.46, 0.45, 0.94] 
       }}
-      className="mt-10 relative"
+      className="mt-5 md:mt-10 relative"
     >
       <motion.p
         initial={{ opacity: 0 }}
@@ -674,7 +674,7 @@ export default function BrandImpactSection() {
           initial={{ opacity: 0, y: 50 }}
           animate={finalInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="font-sans text-[clamp(18px,3vw,36px)] font-light leading-relaxed text-white/60 max-w-[750px]"
+          className="font-sans text-[clamp(18px,3vw,36px)] font-light leading-relaxed text-white/60 max-w-[750px] mt-6 md:mt-12"
         >
           Se non sei <span className="text-pixar-cyan" style={{ textShadow: '0 0 20px rgba(0,255,255,0.3)' }}>credibile</span> online,<br />
           perdi <strong className="font-semibold text-white">fiducia</strong> prima ancora<br />
