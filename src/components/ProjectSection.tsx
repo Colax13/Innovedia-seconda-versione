@@ -409,7 +409,7 @@ export default function ProjectSection() {
     velocity.current = (x - lastX.current) / dt;
     
     const dx = x - startX.current;
-    const dragFactor = isMobile ? 160 : 220;
+    const dragFactor = isMobile ? 120 : 220;
     setOffset(startOffset.current - dx / dragFactor);
     
     lastX.current = x;

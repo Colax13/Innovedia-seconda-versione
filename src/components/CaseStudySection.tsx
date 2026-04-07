@@ -178,7 +178,7 @@ const CaseStudySection: React.FC = () => {
     <section 
       ref={sectionRef}
       id="caso-studio"
-      className="relative pt-20 md:pt-32 pb-24 md:pb-12 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent border-t border-white/5 overflow-hidden z-30"
+      className="relative pt-20 md:pt-32 pb-[72px] md:pb-12 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent border-t border-white/5 overflow-hidden z-30"
       style={{ perspective: '2000px' }}
     >
       <div className="max-w-7xl mx-auto">
@@ -204,17 +204,17 @@ const CaseStudySection: React.FC = () => {
 
               <div className="max-w-[800px] text-center md:text-left mx-auto md:mx-0">
                 <motion.h2
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-                  transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: 0.8, delay: isMobile ? 0 : 0.1 }}
                   className="font-display text-[clamp(32px,6vw,64px)] font-bold uppercase tracking-tight leading-[0.95] text-white mb-4"
                 >
                   {isMobile ? "PROGETTO RD SALON" : "RD SALON"}
                 </motion.h2>
                 <motion.p
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-                  transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: 0.8, delay: isMobile ? 0 : 0.2 }}
                   className="font-sans text-[clamp(16px,2vw,18px)] font-light leading-relaxed text-white/60 mb-12 md:mb-0"
                 >
                   Da salone locale a brand digitale. Partiti da zero, abbiamo costruito Sito, e-commerce spa, strategia social integrata.
@@ -309,7 +309,7 @@ const CaseStudySection: React.FC = () => {
           </div>
 
           {/* Right Column: Floating Images (2/5) */}
-          <div className="lg:col-span-2 relative min-h-[350px] md:min-h-[750px] flex flex-col pt-4">
+          <div className="lg:col-span-2 relative min-h-0 md:min-h-[750px] flex flex-col pt-4">
             {/* Hero Salone */}
             <motion.div
               style={{ x: img1X, opacity: img1Opacity }}
@@ -330,7 +330,7 @@ const CaseStudySection: React.FC = () => {
             {/* Reel Cambio Look */}
             <motion.div
               style={{ x: img2X, opacity: img2Opacity }}
-              className="relative w-[35%] md:w-[30%] z-40 -mt-40 md:-mt-60 ml-auto mr-[-10%]"
+              className="relative w-[26%] md:w-[30%] z-40 -mt-40 md:-mt-60 ml-auto mr-[-4%]"
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
@@ -347,7 +347,7 @@ const CaseStudySection: React.FC = () => {
             {/* Hero Hair Spa */}
             <motion.div
               style={{ x: img3X, opacity: img3Opacity }}
-              className="relative w-[90%] md:w-[85%] z-20 mt-10 md:mt-20 ml-[-5%] mr-auto"
+              className="relative w-[90%] md:w-[85%] z-20 mt-24 md:mt-20 ml-[-5%] mr-auto"
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
@@ -364,7 +364,7 @@ const CaseStudySection: React.FC = () => {
             {/* Reel Tonalizzante */}
             <motion.div
               style={{ x: img4X, opacity: img4Opacity }}
-              className="relative w-[35%] md:w-[30%] z-30 -mt-52 md:-mt-72 ml-auto mr-[5%]"
+              className="relative w-[26%] md:w-[30%] z-30 -mt-52 md:-mt-72 ml-auto mr-[5%]"
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
@@ -383,7 +383,7 @@ const CaseStudySection: React.FC = () => {
           </div>
 
           {/* Mobile CTA Section - Appears after images on mobile, hidden on desktop */}
-          <div className="lg:col-span-3 md:hidden">
+          <div className="lg:col-span-3 md:hidden mt-24">
             <div className="space-y-8">
               <motion.div
                 initial={{ opacity: 0 }}

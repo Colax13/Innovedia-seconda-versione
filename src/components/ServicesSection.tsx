@@ -1,47 +1,100 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring, useVelocity, useMotionValue } from 'motion/react';
 import OptimizedImage from './OptimizedImage';
 
 interface ServiceCardMobileProps {
     service: any;
     index: number;
     scrollYProgress: any;
+    isLast: boolean;
 }
 
-const ServiceCardMobile: React.FC<ServiceCardMobileProps> = ({ service, index, scrollYProgress }) => {
+const ServiceCardMobile: React.FC<ServiceCardMobileProps> = ({ service, index, scrollYProgress, isLast }) => {
     const isFirst = index === 0;
     
     // Recalculated ranges for 200vh height
-    // All cards finish their animation at 0.85 (85%) of the scroll progress
     const step = 0.25; 
     const start = isFirst ? 0 : 0.1 + (index - 1) * step;
     const end = isFirst ? 0.01 : 0.1 + index * step;
     
-    // Entrance from right (Card 0 is fixed at 0%)
-    const x = useTransform(
+    // Exit should be perfectly synced with the NEXT card's entrance
+    const exitStart = 0.1 + index * step;
+    const exitEnd = 0.1 + (index + 1) * step;
+    
+    // 1. Direzione dell'Ingresso (y: "100%" -> "0%")
+    const y = useTransform(
         scrollYProgress, 
         isFirst ? [0, 1] : [start, end], 
         isFirst ? ["0%", "0%"] : ["100%", "0%"]
     );
     
-    // Scale: Card 0 fixed at 1. Others scale up during entrance.
-    const scale = useTransform(
-        scrollYProgress, 
-        isFirst ? [0, 1] : [start, end], 
-        isFirst ? [1, 1] : [0.98, 1]
+    // 3. Gestione della Velocità (velocityScale)
+    const scrollVelocity = useVelocity(scrollYProgress);
+    const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
+    const velocityScale = useTransform(smoothVelocity, [-0.5, 0, 0.5], [1.05, 1, 1.05]);
+
+    // 5. Feedback Visivo (Haptic Pulse)
+    // No pulse for the first card as it's already in position
+    const snapPulse = useTransform(
+        scrollYProgress,
+        isFirst ? [0, 0.01, 0.02] : [end - 0.05, end, end + 0.05],
+        [1, isFirst ? 1 : 1.03, 1]
     );
-    
-    // Stacking offset (cards stay on top)
-    const yOffset = index * 12;
+
+    // 6. Animazione di Uscita (Shrink & Fade)
+    const scaleBase = useTransform(
+        scrollYProgress,
+        isLast ? [start, end] : [start, end, exitStart, exitEnd],
+        isLast ? [0.95, 1] : [0.95, 1, 1, 0.9]
+    );
+
+    const opacity = useTransform(
+        scrollYProgress,
+        isLast ? [start, end] : [start, end, exitStart, exitEnd],
+        isLast ? [1, 1] : [1, 1, 1, 0]
+    );
+
+    // Combined Scale
+    const scale = useTransform(
+        [scaleBase, velocityScale, snapPulse],
+        ([s, v, p]) => (s as number) * (v as number) * (p as number)
+    );
+
+    // 4. Tilt Giroscopico (Effetto 3D)
+    const rotateX = useMotionValue(0);
+    const rotateY = useMotionValue(0);
+
+    useEffect(() => {
+        const handleOrientation = (e: DeviceOrientationEvent) => {
+            if (e.beta !== null && e.gamma !== null) {
+                // Limit tilt to +/- 10 degrees
+                const x = Math.max(-10, Math.min(10, (e.beta - 45) / 2));
+                const y = Math.max(-10, Math.min(10, e.gamma / 2));
+                rotateX.set(x);
+                rotateY.set(y);
+            }
+        };
+
+        if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', handleOrientation);
+        }
+        return () => window.removeEventListener('deviceorientation', handleOrientation);
+    }, [rotateX, rotateY]);
+
+    // Spring-smoothed rotation
+    const smoothRotateX = useSpring(rotateX, { stiffness: 100, damping: 30 });
+    const smoothRotateY = useSpring(rotateY, { stiffness: 100, damping: 30 });
 
     return (
         <motion.div
             style={{ 
-                x, 
+                y,
                 scale, 
-                opacity: 1, 
-                y: yOffset,
-                zIndex: index + 10
+                opacity,
+                rotateX: smoothRotateX,
+                rotateY: smoothRotateY,
+                zIndex: index + 10,
+                transformStyle: "preserve-3d"
             }}
             className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black"
         >
@@ -224,9 +277,16 @@ const ServicesSection: React.FC = () => {
         };
     }, [activeIndex, services.length]);
 
-    const { scrollYProgress } = useScroll({
+    const { scrollYProgress: rawScrollYProgress } = useScroll({
         target: sectionRef,
         offset: ["start start", "end end"]
+    });
+
+    // 8. Fluidità Globale (useSpring on scrollYProgress)
+    const scrollYProgress = useSpring(rawScrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
     });
 
     // Soft unlock: The sticky container slides up slightly at the end of the scroll
@@ -355,13 +415,14 @@ const ServicesSection: React.FC = () => {
 
                     {/* Mobile Stacking Cards */}
                     {isMobile && (
-                        <div className="relative h-[50vh] w-full">
+                        <div className="relative h-[50vh] w-full" style={{ perspective: "1200px" }}>
                             {services.map((service, index) => (
                                 <ServiceCardMobile 
                                     key={service.id} 
                                     service={service} 
                                     index={index} 
                                     scrollYProgress={scrollYProgress} 
+                                    isLast={index === services.length - 1}
                                 />
                             ))}
                             

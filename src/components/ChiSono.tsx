@@ -58,7 +58,7 @@ function VStep({ num, title, description, isFirst, progress, index, isMobile }: 
         />
       )}
 
-      <div className="flex items-baseline gap-5">
+      <div className="flex items-baseline gap-2 md:gap-5">
         {/* Number */}
         <span className="font-tech text-[10px] text-pixar-cyan/40 tracking-wider pt-[0.2em] shrink-0">
           {num}

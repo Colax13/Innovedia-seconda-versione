@@ -153,11 +153,11 @@ function TextScramble() {
 
       // ── PHASE 2: PHRASE A RISING (STAYS VISIBLE) ──
       if (scrollY >= riseStart && scrollY < riseEnd) {
-        const p = (scrollY - riseStart) / riseRange;
+        const p = riseRange > 0 ? (scrollY - riseStart) / riseRange : 1;
         const eased = 1 - Math.pow(1 - p, 3);
         const topPercent = 110 - (eased * 60); // 110% → 50%
         const opacity = Math.min(1, p * 2.5);
-        setPosStyle({ opacity, top: `${topPercent}%` });
+        setPosStyle({ opacity: isNaN(opacity) ? 0 : opacity, top: `${topPercent}%` });
         // Phrase A stays fully visible (no scramble) while rising
         setMorphProgress(0);
         return;
@@ -170,11 +170,11 @@ function TextScramble() {
       const unlockPoint = problemsTop - (vh / 2) - unlockThreshold;
 
       if (scrollY >= riseEnd && scrollY < unlockPoint) {
-        const prog = (scrollY - riseEnd) / morphDuration;
+        const prog = morphDuration > 0 ? (scrollY - riseEnd) / morphDuration : 1;
         // Morph starts from 0 at the center
         const mp = Math.max(0, Math.min(1, prog));
         setPosStyle({ opacity: 1, top: '50%' });
-        setMorphProgress(mp);
+        setMorphProgress(isNaN(mp) ? 0 : mp);
         return;
       }
 
@@ -182,8 +182,8 @@ function TextScramble() {
       if (scrollY >= unlockPoint) {
         const scrollDelta = scrollY - unlockPoint;
         const topPx = (vh / 2) - scrollDelta;
-        const opacity = Math.max(0, 1 - (scrollDelta / (vh * 0.4)));
-        setPosStyle({ opacity, top: `${topPx}px` });
+        const opacity = Math.max(0, 1 - (scrollDelta / (vh * 0.4 || 1)));
+        setPosStyle({ opacity: isNaN(opacity) ? 0 : opacity, top: `${topPx}px` });
         setMorphProgress(1);
         return;
       }
@@ -197,8 +197,11 @@ function TextScramble() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const alphaA = morphProgress < 0.6 ? 1 - morphProgress / 0.6 : 0;
-  const alphaB = morphProgress > 0.5 ? Math.min(1, (morphProgress - 0.5) / 0.5) : 0;
+  const rawAlphaA = morphProgress < 0.6 ? 1 - morphProgress / 0.6 : 0;
+  const alphaA = isNaN(rawAlphaA) ? 0 : rawAlphaA;
+  
+  const rawAlphaB = morphProgress > 0.5 ? Math.min(1, (morphProgress - 0.5) / 0.5) : 0;
+  const alphaB = isNaN(rawAlphaB) ? 0 : rawAlphaB;
   const scrambleA = morphProgress;
   const scrambleB = 1 - morphProgress;
 
@@ -268,7 +271,8 @@ function ScrambleWords({ words, scrambleAmount, direction, highlightWords }: Scr
               {word.split('').map((char, ci) => {
                 const idx = ci / Math.max(1, word.length - 1);
                 const stagger = direction === 'out' ? idx * 0.2 : (1 - idx) * 0.2;
-                const local = Math.max(0, Math.min(1, (scrambleAmount - stagger) / (1 - stagger + 0.001)));
+                const rawLocal = Math.max(0, Math.min(1, (scrambleAmount - stagger) / (1 - stagger + 0.001)));
+                const local = isNaN(rawLocal) ? 0 : rawLocal;
 
                 let display = char, color = isHL && local <= 0.05 ? '#00FFFF' : '#fff';
                 let ty = 0, blur = 0, scaleY = 1, op = 1;
@@ -310,9 +314,9 @@ function ScrambleWords({ words, scrambleAmount, direction, highlightWords }: Scr
 
                 return (
                   <span key={ci} style={{
-                    display: 'inline-block', color, opacity: op,
-                    transform: `translateY(${ty}px) scaleY(${scaleY})`,
-                    filter: blur > 0 ? `blur(${blur}px)` : 'none',
+                    display: 'inline-block', color, opacity: isNaN(op) ? 0 : op,
+                    transform: `translateY(${isNaN(ty) ? 0 : ty}px) scaleY(${isNaN(scaleY) ? 1 : scaleY})`,
+                    filter: blur > 0 && !isNaN(blur) ? `blur(${blur}px)` : 'none',
                     willChange: 'transform, opacity', textShadow: shadow,
                   }}>
                     {display}
@@ -620,7 +624,7 @@ export default function BrandImpactSection() {
       <TextScramble />
 
       {/* Scroll space for text scramble A → B */}
-      <section id="scramble-zone" className="relative h-[120vh] md:h-[160vh]">
+      <section id="scramble-zone" className="relative h-[80vh] md:h-[160vh]">
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.03]">
           <div className="absolute left-0 right-0 h-px bg-pixar-cyan" style={{ top: '25%' }} />
           <div className="absolute left-0 right-0 h-px bg-pixar-cyan" style={{ top: '50%' }} />
@@ -635,8 +639,8 @@ export default function BrandImpactSection() {
       <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,255,0.06), transparent)' }} />
 
       {/* Problems */}
-      <section id="problems-section" className="relative min-h-[80vh] md:min-h-screen flex flex-col justify-center px-8 md:px-[clamp(2rem,8vw,10rem)] py-8 md:py-12 overflow-hidden">
-        <div className="flex items-center gap-8 mb-8 md:mb-16">
+      <section id="problems-section" className="relative min-h-[60vh] md:min-h-screen flex flex-col justify-center px-8 md:px-[clamp(2rem,8vw,10rem)] py-4 md:py-12 overflow-hidden">
+        <div className="flex items-center gap-8 mb-4 md:mb-16">
           <span className="font-tech text-[10px] tracking-[0.4em] uppercase text-pixar-cyan/50 whitespace-nowrap">Il problema</span>
           <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(0,255,255,0.15), transparent)' }} />
         </div>
@@ -650,7 +654,7 @@ export default function BrandImpactSection() {
       <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,255,0.06), transparent)' }} />
 
       {/* Final */}
-      <section className="relative min-h-[80vh] md:min-h-screen flex flex-col justify-center items-center px-8 py-10 md:py-16 text-center overflow-hidden">
+      <section className="relative min-h-[80vh] md:min-h-screen flex flex-col justify-center items-center px-8 py-5 md:py-16 text-center overflow-hidden">
         {/* Corner brackets */}
         <motion.div
           ref={bracketsRef}

@@ -67,8 +67,9 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const opacity = Math.max(0, 1 - window.scrollY / (window.innerHeight * 0.5));
-      setScrollOpacity(opacity);
+      const vh = window.innerHeight || 1;
+      const opacity = Math.max(0, 1 - window.scrollY / (vh * 0.5));
+      setScrollOpacity(isNaN(opacity) ? 0 : opacity);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
