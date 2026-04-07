@@ -10,7 +10,6 @@ import CaseStudySection from './components/CaseStudySection';
 import ProjectSection from './components/ProjectSection';
 import UnifiedBackground from './components/UnifiedBackground';
 import { ProjectPage } from './components/project/ProjectPage';
-import ProcessSection from './components/ProcessSection';
 import FinalCTA from './components/FinalCTA';
 
 function HomePage() {
