@@ -59,8 +59,8 @@ showcaseRows.forEach(row => {
 // This section allows for a different visual rhythm on smaller screens.
 // We filter out text cards and ensure specific photo ordering.
 const mobileShowcaseRows = showcaseRows.map((row, rowIndex) => {
-  // Filter out text cards for mobile - "Voglio solo le foto colorate"
-  let currentRow = row.filter(item => item.type === 'photo');
+  // Keep everything for mobile as well
+  let currentRow = [...row];
   
   if (rowIndex === 1) {
     // Ensure "Porte di Roma" is in the second position (index 1)
@@ -140,22 +140,14 @@ const ParallaxSection: React.FC = () => {
 
           for (let j = 0; j < numCards; j++) {
             const child = children[j] as HTMLElement;
-            // Calculate distance from viewport center
-            const distance = Math.abs(x + (j - centerIndex) * totalCardWidth);
-            
-            // Gradual blur removed as requested
-            child.style.filter = 'none';
             
             // Active state logic
             const isText = child.getAttribute('data-type') === 'text';
             const isHovered = child.matches(':hover');
             
-            // Text cards activate when centered OR hovered
-            // Photo cards activate ONLY when hovered
             // ON MOBILE: All cards are always active (hover effect always on)
-            const isActive = isMobile ? true : (isText 
-              ? (distance < totalCardWidth / 2.2 || isHovered)
-              : isHovered);
+            // ON DESKTOP: Only active if hovered (simplified to avoid distance calc)
+            const isActive = isMobile ? true : isHovered;
             
             if (isActive && !isMobile) {
               if (isText) {

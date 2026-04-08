@@ -73,14 +73,24 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
           {/* Links (Desktop) */}
           <div className={`hidden md:flex gap-8 items-center`}>
             {menuItems.map((item) => (
-               <a 
-                 key={item} 
-                 href={isHome ? `#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}` : `/#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}`}
-                 onClick={(e) => handleNavClick(e, item)}
-                 className="text-[10px] font-sans font-bold uppercase tracking-[0.15em] text-gray-400 hover:text-white transition-colors duration-300"
-               >
-                 {item}
-               </a>
+               item === 'Lavori' ? (
+                 <Link 
+                   key={item} 
+                   to="/lavori"
+                   className="text-[10px] font-sans font-bold uppercase tracking-[0.15em] text-gray-400 hover:text-white transition-colors duration-300"
+                 >
+                   {item}
+                 </Link>
+               ) : (
+                 <a 
+                   key={item} 
+                   href={isHome ? `#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}` : `/#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}`}
+                   onClick={(e) => handleNavClick(e, item)}
+                   className="text-[10px] font-sans font-bold uppercase tracking-[0.15em] text-gray-400 hover:text-white transition-colors duration-300"
+                 >
+                   {item}
+                 </a>
+               )
             ))}
           </div>
           
@@ -189,13 +199,23 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
                     }}
                     className="w-full text-center"
                   >
-                    <a 
-                      href={isHome ? `#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}` : `/#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}`}
-                      onClick={(e) => handleNavClick(e, item)}
-                      className="relative inline-block text-3xl font-display font-black uppercase tracking-tight text-white/50 active:text-white transition-colors duration-300"
-                    >
-                      {item}
-                    </a>
+                    {item === 'Lavori' ? (
+                      <Link 
+                        to="/lavori"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="relative inline-block text-3xl font-display font-black uppercase tracking-tight text-white/50 active:text-white transition-colors duration-300"
+                      >
+                        {item}
+                      </Link>
+                    ) : (
+                      <a 
+                        href={isHome ? `#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}` : `/#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}`}
+                        onClick={(e) => handleNavClick(e, item)}
+                        className="relative inline-block text-3xl font-display font-black uppercase tracking-tight text-white/50 active:text-white transition-colors duration-300"
+                      >
+                        {item}
+                      </a>
+                    )}
                   </motion.div>
                 ))}
 

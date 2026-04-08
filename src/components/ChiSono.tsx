@@ -23,17 +23,29 @@ function VStep({ num, title, description, isFirst, progress, index, isMobile }: 
   // Entrance: adjusted speed
   // Exit: 0.9 to 1.0 (staggered) - Delayed on desktop
   const exitStart = isMobile ? 0.8 : 0.92;
-  const entranceDuration = isMobile ? 0.28 : 0.22;
+  const entranceDuration = isMobile ? 0.35 : 0.45;
   const x = useTransform(
     progress, 
     [0 + startOffset, entranceDuration + startOffset, exitStart - endOffset, 1 - endOffset], 
-    [-400, 0, 0, -400]
+    [-150, 0, 0, -150]
+  );
+  
+  const y = useTransform(
+    progress,
+    [0 + startOffset, entranceDuration + startOffset],
+    [20, 0]
   );
   
   const opacity = useTransform(
     progress, 
-    [0 + startOffset, (entranceDuration * 0.8) + startOffset, exitStart + 0.05 - endOffset, 1 - endOffset], 
+    [0 + startOffset, (entranceDuration * 0.6) + startOffset, exitStart + 0.05 - endOffset, 1 - endOffset], 
     [0, 1, 1, 0]
+  );
+
+  const scale = useTransform(
+    progress,
+    [0 + startOffset, entranceDuration + startOffset],
+    [0.95, 1]
   );
 
   const dividerScale = useTransform(
@@ -44,7 +56,7 @@ function VStep({ num, title, description, isFirst, progress, index, isMobile }: 
 
   return (
     <motion.div
-      style={{ x, opacity }}
+      style={{ x, y, opacity, scale }}
       className={`relative py-6 ${isFirst ? 'pt-0' : ''}`}
     >
       {/* Divider */}

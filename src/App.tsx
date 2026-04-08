@@ -10,6 +10,7 @@ import CaseStudySection from './components/CaseStudySection';
 import ProjectSection from './components/ProjectSection';
 import UnifiedBackground from './components/UnifiedBackground';
 import { ProjectPage } from './components/project/ProjectPage';
+import LavoriPage from './components/LavoriPage';
 import FinalCTA from './components/FinalCTA';
 
 function HomePage() {
@@ -48,7 +49,6 @@ function HomePage() {
       <ChiSono />
       <ServicesSection />
       <ParallaxSection />
-      <CaseStudySection />
       <ProjectSection />
       <FinalCTA />
       <footer className="bg-black/80 backdrop-blur-md py-12 text-center border-t border-white/5 relative z-10">
@@ -57,7 +57,7 @@ function HomePage() {
              <a href="#" className="hover:text-white transition-colors">Twitter</a>
              <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
         </div>
-        <p className="text-gray-700 text-xs font-sans">© 2024 Innovedia. Creato con React & Gemini.</p>
+        <p className="text-gray-700 text-xs font-sans">© 2024 Innovedia. Creato con React.</p>
       </footer>
     </div>
   );
@@ -67,6 +67,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/lavori" element={<LavoriPage />} />
       <Route path="/progetto/:id" element={<ProjectPage />} />
     </Routes>
   );

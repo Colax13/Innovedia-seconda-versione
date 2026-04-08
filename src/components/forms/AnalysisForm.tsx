@@ -257,7 +257,7 @@ const AnalysisForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" autoComplete="off">
       {/* Progress Bar */}
       <div className="flex gap-2">
         {[1, 2, 3, 4].map((i) => (

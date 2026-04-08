@@ -140,7 +140,6 @@ function TextScramble() {
       const problemsTop = problemsEl ? problemsEl.offsetTop : transTop + transH;
 
       // ── PHASE 1: RISE IN ──
-      // Start rising from bottom (110%) when hero is scrolling out
       const riseStart = heroBottom * 0.3;
       const riseEnd = transTop - 100;
       const riseRange = riseEnd - riseStart;
@@ -151,27 +150,24 @@ function TextScramble() {
         return;
       }
 
-      // ── PHASE 2: PHRASE A RISING (STAYS VISIBLE) ──
+      // ── PHASE 2: PHRASE A RISING ──
       if (scrollY >= riseStart && scrollY < riseEnd) {
         const p = riseRange > 0 ? (scrollY - riseStart) / riseRange : 1;
         const eased = 1 - Math.pow(1 - p, 3);
         const topPercent = 110 - (eased * 60); // 110% → 50%
         const opacity = Math.min(1, p * 2.5);
         setPosStyle({ opacity: isNaN(opacity) ? 0 : opacity, top: `${topPercent}%` });
-        // Phrase A stays fully visible (no scramble) while rising
         setMorphProgress(0);
         return;
       }
 
-      // ── PHASE 3: SCRAMBLE A → B (AT CENTER) ──
-      // Morph duration (20% of the zone for a slower Phrase B reveal)
-      const morphDuration = transH * 0.2;
-      const unlockThreshold = vh * 0.1; // Distance from "Il problema" line to start unlocking
+      // ── PHASE 3: SCRAMBLE A → B ──
+      const morphDuration = transH * 0.4;
+      const unlockThreshold = vh * 0.1;
       const unlockPoint = problemsTop - (vh / 2) - unlockThreshold;
 
       if (scrollY >= riseEnd && scrollY < unlockPoint) {
         const prog = morphDuration > 0 ? (scrollY - riseEnd) / morphDuration : 1;
-        // Morph starts from 0 at the center
         const mp = Math.max(0, Math.min(1, prog));
         setPosStyle({ opacity: 1, top: '50%' });
         setMorphProgress(isNaN(mp) ? 0 : mp);
@@ -428,8 +424,8 @@ function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
         animate={scrollDirection === 'down' ? (entered ? "animateDown" : "initial") : "animateUp"}
         variants={variants}
         transition={scrollDirection === 'down' 
-          ? { duration: 1, ease: [0.16, 1, 0.3, 1] } 
-          : { opacity: { duration: 1.5, ease: 'linear' }, default: { duration: 0.5 } }
+          ? { duration: 0.5, ease: [0.16, 1, 0.3, 1] } 
+          : { opacity: { duration: 0.75, ease: 'linear' }, default: { duration: 0.25 } }
         }
         className="relative my-4"
       >
@@ -555,7 +551,7 @@ function SolutionBadge({ visible }: { visible: boolean }) {
         initial={{ opacity: 0 }}
         animate={visible ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: isUp ? 0.2 : 1, delay: isUp ? 0 : 0.1 }}
-        className="mb-6 font-tech text-[9px] tracking-[0.3em] uppercase text-white/20"
+        className="mb-6 font-tech text-[10px] tracking-[0.3em] uppercase text-white/60"
       >
         ma non ti preoccupare
       </motion.p>
@@ -600,7 +596,7 @@ function SolutionBadge({ visible }: { visible: boolean }) {
           />
         </div>
 
-        <p className="font-tech text-[8px] tracking-[0.3em] uppercase text-white/15 animate-pulse">
+        <p className="font-tech text-[10px] tracking-[0.3em] uppercase text-white/40 animate-pulse">
           oppure scopri il nostro metodo ↓
         </p>
       </motion.div>
@@ -646,8 +642,8 @@ export default function BrandImpactSection() {
         </div>
 
         <ProblemCard num="01" text="Sito confuso" tag="— nessuna direzione" delay={0} />
-        <ProblemCard num="02" text="Social casuali" tag="— zero strategia" delay={300} />
-        <ProblemCard num="03" text="Immagine debole" tag="— brand invisibile" delay={600} />
+        <ProblemCard num="02" text="Social casuali" tag="— zero strategia" delay={150} />
+        <ProblemCard num="03" text="Immagine debole" tag="— brand invisibile" delay={300} />
       </section>
 
       {/* Divider */}

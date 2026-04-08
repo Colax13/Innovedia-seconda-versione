@@ -34,7 +34,7 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
   }, []);
 
   useEffect(() => {
-    if (isActive) {
+    if (isActive && !isMobile) {
       startLoop();
     } else {
       stopLoop();
@@ -42,7 +42,7 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isActive]);
+  }, [isActive, isMobile]);
 
   const startLoop = () => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -532,16 +532,24 @@ export default function ProjectSection() {
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
         >
-          {DATA.map((item, i) => (
-            <Card 
-              key={item.id} 
-              item={item} 
-              index={i} 
-              offsetSpring={offsetSpring} 
-              isActive={currentIndex === i}
-              isMobile={isMobile}
-            />
-          ))}
+          {DATA.map((item, i) => {
+            // Only render cards that are within a reasonable distance from the current offset
+            // to improve performance (virtualization-like behavior)
+            const diff = Math.abs(i - (offset % N + N) % N);
+            const isNear = diff <= 3 || diff >= N - 3;
+            if (!isNear) return null;
+
+            return (
+              <Card 
+                key={item.id} 
+                item={item} 
+                index={i} 
+                offsetSpring={offsetSpring} 
+                isActive={currentIndex === i}
+                isMobile={isMobile}
+              />
+            );
+          })}
         </div>
 
         {/* Right Arrow */}
@@ -581,7 +589,7 @@ export default function ProjectSection() {
             hover: { backgroundColor: "#ffffff", borderColor: "#ffffff" }
           }}
           transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-          onClick={() => navigate('/progetti')} 
+          onClick={() => navigate('/lavori')} 
           className="group relative h-[41px] md:h-12 px-8 md:px-12 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer border shadow-[0_0_20px_rgba(6,182,212,0.1)]"
         >
           <div className="relative z-10 flex h-full items-center justify-center">

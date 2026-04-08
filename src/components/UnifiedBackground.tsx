@@ -42,55 +42,30 @@ export default function UnifiedBackground() {
         <div style={{
           position:"absolute", width:"70vw", height:"70vw", borderRadius:"50%",
           top:"-15%", left:"-10%",
-          background:"radial-gradient(circle, rgba(6,182,212,0.45) 0%, rgba(8,145,178,0.15) 50%, transparent 75%)",
+          background:"radial-gradient(circle, rgba(6,182,212,0.3) 0%, rgba(8,145,178,0.1) 50%, transparent 75%)",
           filter:"blur(80px)",
-          animation:"blob1 18s ease-in-out infinite",
           transform:`translate(${mouse.x * 18}px, ${mouse.y * 14}px)`,
-          transition:"transform 0.8s ease",
+          transition:"transform 1.2s ease-out",
         }} />
 
         {/* Blob 2 — Blu profondo/Viola */}
         <div style={{
           position:"absolute", width:"60vw", height:"60vw", borderRadius:"50%",
           top:"20%", right:"-15%",
-          background:"radial-gradient(circle, rgba(59,130,246,0.4) 0%, rgba(30,64,175,0.15) 50%, transparent 75%)",
+          background:"radial-gradient(circle, rgba(59,130,246,0.25) 0%, rgba(30,64,175,0.1) 50%, transparent 75%)",
           filter:"blur(90px)",
-          animation:"blob2 22s ease-in-out infinite",
           transform:`translate(${mouse.x * -12}px, ${mouse.y * 16}px)`,
-          transition:"transform 0.8s ease",
+          transition:"transform 1.2s ease-out",
         }} />
 
         {/* Blob 3 — Verde acqua/Smeraldo */}
         <div style={{
           position:"absolute", width:"55vw", height:"55vw", borderRadius:"50%",
           bottom:"-10%", left:"20%",
-          background:"radial-gradient(circle, rgba(16,185,129,0.35) 0%, rgba(6,95,70,0.12) 50%, transparent 75%)",
+          background:"radial-gradient(circle, rgba(16,185,129,0.2) 0%, rgba(6,95,70,0.08) 50%, transparent 75%)",
           filter:"blur(85px)",
-          animation:"blob3 25s ease-in-out infinite",
           transform:`translate(${mouse.x * 10}px, ${mouse.y * -12}px)`,
-          transition:"transform 0.8s ease",
-        }} />
-
-        {/* Blob 4 — Indaco */}
-        <div style={{
-          position:"absolute", width:"50vw", height:"50vw", borderRadius:"50%",
-          top:"10%", left:"35%",
-          background:"radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(67,56,202,0.12) 50%, transparent 75%)",
-          filter:"blur(100px)",
-          animation:"blob4 20s ease-in-out infinite",
-          transform:`translate(${mouse.x * -8}px, ${mouse.y * 10}px)`,
-          transition:"transform 0.8s ease",
-        }} />
-
-        {/* Blob 5 — Ciano chiaro centro */}
-        <div style={{
-          position:"absolute", width:"40vw", height:"40vw", borderRadius:"50%",
-          bottom:"15%", right:"10%",
-          background:"radial-gradient(circle, rgba(34,211,238,0.25) 0%, rgba(8,145,178,0.1) 50%, transparent 75%)",
-          filter:"blur(70px)",
-          animation:"blob1 28s ease-in-out infinite reverse",
-          transform:`translate(${mouse.x * 14}px, ${mouse.y * -10}px)`,
-          transition:"transform 0.8s ease",
+          transition:"transform 1.2s ease-out",
         }} />
 
         {/* Overlay noise/grain per dare texture */}
