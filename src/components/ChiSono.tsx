@@ -136,7 +136,7 @@ export default function ChiSono() {
   return (
     <section 
       ref={sectionRef} 
-      id="chi-sono" 
+      id="metodo"
       className="relative py-24 md:py-40 px-8 md:px-[clamp(2rem,8vw,10rem)] overflow-hidden bg-[#050505] z-10"
     >
       <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start max-w-7xl mx-auto">
