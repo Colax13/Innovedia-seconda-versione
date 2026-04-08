@@ -9,12 +9,10 @@ import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar';
 import UnifiedBackground from '../UnifiedBackground';
-import { useForms } from '../../context/FormContext';
 
 export const ProjectPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { openAnalysisForm, openServiceForm } = useForms();
     const project = projects.find(p => p.id === Number(id));
     
     useEffect(() => {
@@ -234,14 +232,12 @@ export const ProjectPage: React.FC = () => {
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                         <button
-                            onClick={openAnalysisForm}
                             className="px-10 py-5 bg-[#06b6d4] text-black font-display font-bold text-sm uppercase tracking-widest rounded-full hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-300 text-center"
                         >
                             RICHIEDI L'ANALISI GRATUITA
                         </button>
                         
                         <button
-                            onClick={openServiceForm}
                             className="px-10 py-5 bg-transparent border border-white/10 text-white font-display font-bold text-sm uppercase tracking-widest rounded-full transition-all duration-300 text-center"
                         >
                             PARLAMI DEL TUO PROGETTO
