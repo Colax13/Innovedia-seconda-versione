@@ -121,120 +121,134 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay - Moved outside the nav to avoid clipping from parent transforms */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ clipPath: 'circle(0% at 90% 5%)' }}
-            animate={{ clipPath: 'circle(150% at 90% 5%)' }}
-            exit={{ clipPath: 'circle(0% at 90% 5%)' }}
-            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 bg-black z-[90] flex flex-col justify-center items-center pointer-events-auto overflow-hidden"
-          >
-            {/* Noise Texture Overlay */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-[102]" 
-              style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+          <>
+            {/* Cyan Accent Layer */}
+            <motion.div
+              initial={{ clipPath: 'circle(0% at 90% 5%)' }}
+              animate={{ clipPath: 'circle(150% at 90% 5%)' }}
+              exit={{ clipPath: 'circle(0% at 90% 5%)' }}
+              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+              className="fixed inset-0 bg-[#06b6d4] z-[89] pointer-events-none"
+              style={{ willChange: 'clip-path' }}
             />
 
-            {/* Background Decorative Elements */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-              <motion.div 
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 90, 0],
-                  x: [0, 50, 0],
-                  y: [0, -30, 0]
-                }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#06b6d4]/15 blur-[120px] rounded-full" 
-              />
-              <motion.div 
-                animate={{ 
-                  scale: [1.2, 1, 1.2],
-                  rotate: [0, -90, 0],
-                  x: [0, -50, 0],
-                  y: [0, 30, 0]
-                }}
-                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-purple-500/10 blur-[120px] rounded-full" 
-              />
-              <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-            </div>
-
-            <div className="relative z-10 flex flex-col items-center gap-4 w-full px-10" style={{ perspective: '1200px' }}>
-              {menuItems.map((item, i) => (
-                <motion.div
-                  key={item}
-                  initial={{ opacity: 0, y: 30, rotateX: -30, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 15, rotateX: 15, scale: 0.95 }}
-                  transition={{ 
-                    delay: 0.1 + i * 0.06, 
-                    type: "spring",
-                    stiffness: 120,
-                    damping: 18
-                  }}
-                  className="w-full text-center"
-                >
-                  <a 
-                    href={isHome ? `#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}` : `/#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}`}
-                    onClick={(e) => handleNavClick(e, item)}
-                    className="relative inline-block text-3xl font-display font-black uppercase tracking-tight text-white/50 active:text-white transition-colors duration-300"
-                  >
-                    {item}
-                  </a>
-                </motion.div>
-              ))}
-
-              <div className="flex flex-col gap-3 w-full max-w-[280px] mt-8">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <a 
-                    href="#contatti"
-                    onClick={(e) => handleNavClick(e, 'Contatti')}
-                    className="block w-full py-4 bg-white text-black text-center font-display font-black text-xs uppercase tracking-[0.2em] rounded-xl shadow-[0_10px_30px_rgba(255,255,255,0.1)]"
-                  >
-                    Richiedi analisi gratuita
-                  </a>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  <a 
-                    href="#contatti"
-                    onClick={(e) => handleNavClick(e, 'Contatti')}
-                    className="block w-full py-4 bg-transparent border border-white/20 text-white text-center font-display font-black text-xs uppercase tracking-[0.2em] rounded-xl backdrop-blur-md"
-                  >
-                    Parlami del tuo progetto
-                  </a>
-                </motion.div>
-              </div>
-            </div>
-
-            {/* Footer info in menu */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-              className="absolute bottom-10 left-0 w-full text-center px-6"
+            {/* Main Black Menu Layer */}
+            <motion.div
+              initial={{ clipPath: 'circle(0% at 90% 5%)' }}
+              animate={{ clipPath: 'circle(150% at 90% 5%)' }}
+              exit={{ clipPath: 'circle(0% at 90% 5%)' }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.76, 0, 0.24, 1] }}
+              className="fixed inset-0 bg-black z-[90] flex flex-col justify-center items-center pointer-events-auto overflow-hidden"
+              style={{ willChange: 'clip-path' }}
             >
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-12 h-px bg-white/10" />
-                <p className="text-[9px] font-tech uppercase tracking-[0.4em] text-white/30">
-                  Innovazione Digitale & Design
-                </p>
-                <p className="text-[8px] font-sans text-white/10 uppercase tracking-widest mt-1">
-                  © 2024 Innovedia
-                </p>
+              {/* Noise Texture Overlay */}
+              <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-[102]" 
+                style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} 
+              />
+
+              {/* Background Decorative Elements */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+                <motion.div 
+                  animate={{ 
+                    scale: [1, 1.2, 1],
+                    rotate: [0, 90, 0],
+                    x: [0, 50, 0],
+                    y: [0, -30, 0]
+                  }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#06b6d4]/15 blur-[120px] rounded-full" 
+                />
+                <motion.div 
+                  animate={{ 
+                    scale: [1.2, 1, 1.2],
+                    rotate: [0, -90, 0],
+                    x: [0, -50, 0],
+                    y: [0, 30, 0]
+                  }}
+                  transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                  className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-purple-500/10 blur-[120px] rounded-full" 
+                />
+                <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
               </div>
+
+              <div className="relative z-10 flex flex-col items-center gap-4 w-full px-10" style={{ perspective: '1200px' }}>
+                {menuItems.map((item, i) => (
+                  <motion.div
+                    key={item}
+                    initial={{ opacity: 0, y: 30, rotateX: -30, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 15, rotateX: 15, scale: 0.95 }}
+                    transition={{ 
+                      delay: 0.3 + i * 0.06, 
+                      type: "spring",
+                      stiffness: 120,
+                      damping: 18
+                    }}
+                    className="w-full text-center"
+                  >
+                    <a 
+                      href={isHome ? `#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}` : `/#${item === 'Metodo' ? 'metodo' : item.toLowerCase().replace(' ', '-')}`}
+                      onClick={(e) => handleNavClick(e, item)}
+                      className="relative inline-block text-3xl font-display font-black uppercase tracking-tight text-white/50 active:text-white transition-colors duration-300"
+                    >
+                      {item}
+                    </a>
+                  </motion.div>
+                ))}
+
+                <div className="flex flex-col gap-3 w-full max-w-[280px] mt-8">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <a 
+                      href="#contatti"
+                      onClick={(e) => handleNavClick(e, 'Contatti')}
+                      className="block w-full py-4 bg-white text-black text-center font-display font-black text-xs uppercase tracking-[0.2em] rounded-xl shadow-[0_10px_30px_rgba(255,255,255,0.1)]"
+                    >
+                      Richiedi analisi gratuita
+                    </a>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.7 }}
+                  >
+                    <a 
+                      href="#contatti"
+                      onClick={(e) => handleNavClick(e, 'Contatti')}
+                      className="block w-full py-4 bg-transparent border border-white/20 text-white text-center font-display font-black text-xs uppercase tracking-[0.2em] rounded-xl backdrop-blur-md"
+                    >
+                      Parlami del tuo progetto
+                    </a>
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Footer info in menu */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9, duration: 0.8 }}
+                className="absolute bottom-10 left-0 w-full text-center px-6"
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-px bg-white/10" />
+                  <p className="text-[9px] font-tech uppercase tracking-[0.4em] text-white/30">
+                    Innovazione Digitale & Design
+                  </p>
+                  <p className="text-[8px] font-sans text-white/10 uppercase tracking-widest mt-1">
+                    © 2024 Innovedia
+                  </p>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
