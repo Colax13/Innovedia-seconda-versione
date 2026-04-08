@@ -598,26 +598,11 @@ function SolutionBadge({ visible }: { visible: boolean }) {
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
           />
-          <FlipButton 
-            text="Il Metodo" 
-            onClick={() => {
-              const el = document.getElementById('metodo');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-          />
         </div>
 
-        <motion.div
-          onClick={() => {
-            const el = document.getElementById('metodo');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }}
-          className="cursor-pointer group"
-        >
-          <p className="font-tech text-[8px] tracking-[0.3em] uppercase text-white/15 group-hover:text-pixar-cyan transition-colors animate-pulse">
-            oppure scopri il nostro metodo ↓
-          </p>
-        </motion.div>
+        <p className="font-tech text-[8px] tracking-[0.3em] uppercase text-white/15 animate-pulse">
+          oppure scopri il nostro metodo ↓
+        </p>
       </motion.div>
     </motion.div>
   );
