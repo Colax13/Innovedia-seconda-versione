@@ -619,7 +619,10 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   hover: { backgroundColor: "rgba(6, 182, 212, 0.15)", borderColor: "#06b6d4" }
                 }}
                 transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                onClick={() => scrollTo('contatti')}
+                onClick={() => {
+                  const el = document.getElementById('contatti');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="group relative h-[41px] md:h-12 px-6 md:px-10 border rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer w-full sm:w-auto"
               >
                 <div className="relative z-10 flex h-full items-center justify-center">

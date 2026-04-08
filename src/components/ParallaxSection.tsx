@@ -57,22 +57,18 @@ showcaseRows.forEach(row => {
 // MOBILE-ONLY ORDER CUSTOMIZATION
 // =============================================================================
 // This section allows for a different visual rhythm on smaller screens.
-// We can explicitly define the order for each row to ensure text cards
-// and photos appear in the desired sequence for mobile users.
+// We filter out text cards and ensure specific photo ordering.
 const mobileShowcaseRows = showcaseRows.map((row, rowIndex) => {
-  const currentRow = [...row];
-  if (rowIndex === 0) {
-    // Row 1: Move text card (4+) to index 0 (replace Ritual Hair Spa)
-    [currentRow[0], currentRow[2]] = [currentRow[2], currentRow[0]];
-  } else if (rowIndex === 1) {
-    // Row 2: Move text card (15+) to index 4 (replace Porte di Roma)
-    [currentRow[2], currentRow[4]] = [currentRow[4], currentRow[2]];
-  } else if (rowIndex === 2) {
-    // Row 3: Move text card (100%) to index 0 (replace Banana Republic)
-    [currentRow[0], currentRow[2]] = [currentRow[2], currentRow[0]];
-  } else if (rowIndex === 3) {
-    // Row 4: Move text card (20+) to index 4 (replace Free Time Bar)
-    [currentRow[2], currentRow[4]] = [currentRow[4], currentRow[2]];
+  // Filter out text cards for mobile - "Voglio solo le foto colorate"
+  let currentRow = row.filter(item => item.type === 'photo');
+  
+  if (rowIndex === 1) {
+    // Ensure "Porte di Roma" is in the second position (index 1)
+    const pdrIndex = currentRow.findIndex(item => item.title === "Porte di Roma");
+    if (pdrIndex !== -1) {
+      const pdr = currentRow.splice(pdrIndex, 1)[0];
+      currentRow.splice(1, 0, pdr);
+    }
   }
   return currentRow;
 });
@@ -156,9 +152,10 @@ const ParallaxSection: React.FC = () => {
             
             // Text cards activate when centered OR hovered
             // Photo cards activate ONLY when hovered
-            const isActive = isText 
+            // ON MOBILE: All cards are always active (hover effect always on)
+            const isActive = isMobile ? true : (isText 
               ? (distance < totalCardWidth / 2.2 || isHovered)
-              : isHovered;
+              : isHovered);
             
             if (isActive && !isMobile) {
               if (isText) {
@@ -180,7 +177,8 @@ const ParallaxSection: React.FC = () => {
               
               const overlay = child.querySelector(".overlay") as HTMLElement;
               const thumb = child.querySelector(".thumb") as HTMLElement;
-              if (overlay) overlay.style.opacity = "1";
+              // Hide overlay text on mobile as requested: "elimina le scritte sopra le card"
+              if (overlay) overlay.style.opacity = "0";
               if (thumb) {
                 thumb.style.transform = "scale(1.1)";
                 thumb.style.filter = "grayscale(0%) brightness(1.1)";
@@ -241,49 +239,53 @@ const ParallaxSection: React.FC = () => {
       }} />
 
       {/* Background text */}
-      <div style={{
-        position: "absolute", inset: 0,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        zIndex: 0, pointerEvents: "none", overflow: "hidden",
-      }}>
-        <h2 style={{
-          fontFamily: "'Barlow Condensed', sans-serif",
-          fontWeight: 800,
-          fontSize: "15vw",
-          lineHeight: 1,
-          color: "transparent",
-          WebkitTextStroke: "1px rgba(255,255,255,0.06)",
-          textTransform: "uppercase",
-          letterSpacing: "0.15em",
-          whiteSpace: "nowrap",
-          transform: "rotate(-6deg) scale(1.1)",
-          userSelect: "none",
+      {!isMobile && (
+        <div style={{
+          position: "absolute", inset: 0,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          zIndex: 0, pointerEvents: "none", overflow: "hidden",
         }}>
-          Capolavori
-        </h2>
-      </div>
+          <h2 style={{
+            fontFamily: "'Barlow Condensed', sans-serif",
+            fontWeight: 800,
+            fontSize: "15vw",
+            lineHeight: 1,
+            color: "transparent",
+            WebkitTextStroke: "1px rgba(255,255,255,0.06)",
+            textTransform: "uppercase",
+            letterSpacing: "0.15em",
+            whiteSpace: "nowrap",
+            transform: "rotate(-6deg) scale(1.1)",
+            userSelect: "none",
+          }}>
+            Capolavori
+          </h2>
+        </div>
+      )}
 
       {/* Label */}
-      <div style={{
-        position: "absolute", top: 32, left: 0, right: 0,
-        textAlign: "center", zIndex: 20, pointerEvents: "none",
-      }}>
-        <span style={{
-          display: "inline-block",
-          padding: "4px 14px",
-          borderRadius: 999,
-          border: "1px solid rgba(255,255,255,0.15)",
-          background: "rgba(0,0,0,0.5)",
-          color: "rgba(255,255,255,0.5)",
-          fontSize: 10,
-          fontFamily: "'Barlow', sans-serif",
-          fontWeight: 700,
-          letterSpacing: "0.2em",
-          textTransform: "uppercase",
+      {!isMobile && (
+        <div style={{
+          position: "absolute", top: 32, left: 0, right: 0,
+          textAlign: "center", zIndex: 20, pointerEvents: "none",
         }}>
-          Eccellenza Visiva
-        </span>
-      </div>
+          <span style={{
+            display: "inline-block",
+            padding: "4px 14px",
+            borderRadius: 999,
+            border: "1px solid rgba(255,255,255,0.15)",
+            background: "rgba(0,0,0,0.5)",
+            color: "rgba(255,255,255,0.5)",
+            fontSize: 10,
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 700,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+          }}>
+            Eccellenza Visiva
+          </span>
+        </div>
+      )}
 
       {/* Rows */}
       <div style={{

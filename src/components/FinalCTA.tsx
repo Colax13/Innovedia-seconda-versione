@@ -6,7 +6,7 @@ const FinalCTA: React.FC = () => {
   const { openAnalysisForm, openServiceForm } = useForms();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030303] text-white py-32">
+    <section id="contatti" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030303] text-white py-32">
       {/* Background Glow */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.1)_0%,transparent_70%)]" />

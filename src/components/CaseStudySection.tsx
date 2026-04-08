@@ -116,45 +116,45 @@ const CaseStudySection: React.FC = () => {
   // Image Scroll Animations - Delayed on Mobile
   const img1X = useTransform(
     activeProgress, 
-    isMobile ? [0.15, 0.45] : [0, 0.3, 0.7, 1], 
+    isMobile ? [0.05, 0.35] : [0, 0.3, 0.7, 1], 
     isMobile ? [200, 0] : [200, 0, 0, 200]
   );
   const img1Opacity = useTransform(
     activeProgress, 
-    isMobile ? [0.15, 0.4] : [0, 0.25, 0.75, 1], 
+    isMobile ? [0.05, 0.3] : [0, 0.25, 0.75, 1], 
     isMobile ? [0, 1] : [0, 1, 1, 0]
   );
   
   const img2X = useTransform(
     activeProgress, 
-    isMobile ? [0.25, 0.55] : [0.1, 0.4, 0.6, 0.9], 
+    isMobile ? [0.15, 0.45] : [0.1, 0.4, 0.6, 0.9], 
     isMobile ? [150, 0] : [150, 0, 0, 150]
   );
   const img2Opacity = useTransform(
     activeProgress, 
-    isMobile ? [0.25, 0.5] : [0.1, 0.35, 0.65, 0.9], 
+    isMobile ? [0.15, 0.4] : [0.1, 0.35, 0.65, 0.9], 
     isMobile ? [0, 1] : [0, 1, 1, 0]
   );
 
   const img3X = useTransform(
     activeProgress, 
-    isMobile ? [0.2, 0.5] : [0.05, 0.35, 0.65, 0.95], 
+    isMobile ? [0.1, 0.4] : [0.05, 0.35, 0.65, 0.95], 
     isMobile ? [-150, 0] : [-150, 0, 0, -150]
   );
   const img3Opacity = useTransform(
     activeProgress, 
-    isMobile ? [0.2, 0.45] : [0.05, 0.3, 0.7, 0.95], 
+    isMobile ? [0.1, 0.35] : [0.05, 0.3, 0.7, 0.95], 
     isMobile ? [0, 1] : [0, 1, 1, 0]
   );
 
   const img4X = useTransform(
     activeProgress, 
-    isMobile ? [0.3, 0.6] : [0.15, 0.45, 0.55, 0.85], 
+    isMobile ? [0.2, 0.5] : [0.15, 0.45, 0.55, 0.85], 
     isMobile ? [150, 0] : [150, 0, 0, 150]
   );
   const img4Opacity = useTransform(
     activeProgress, 
-    isMobile ? [0.3, 0.55] : [0.15, 0.4, 0.6, 0.85], 
+    isMobile ? [0.2, 0.45] : [0.15, 0.4, 0.6, 0.85], 
     isMobile ? [0, 1] : [0, 1, 1, 0]
   );
 
