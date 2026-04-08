@@ -572,11 +572,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   hover: { backgroundColor: "#ffffff", borderColor: "#ffffff" }
                 }}
                 transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                onClick={() => scrollTo('metodo')}
+                onClick={() => scrollTo('lavori')}
                 className="group relative h-[41px] md:h-12 px-6 md:px-10 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer border shadow-[0_0_20px_rgba(6,182,212,0.1)] w-full sm:w-auto"
               >
                 <div className="relative z-10 flex h-full items-center justify-center">
-                  {"Il Metodo".split("").map((char, i) => (
+                  {"I miei lavori".split("").map((char, i) => (
                     <span key={i} className="relative inline-block overflow-hidden">
                       <motion.span
                         variants={{
