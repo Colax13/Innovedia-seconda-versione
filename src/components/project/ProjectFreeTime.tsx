@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import Navbar from '../Navbar';
 import OptimizedImage from '../OptimizedImage';
+import { useForms } from '../../context/FormContext';
 
 const ProjectFreeTime: React.FC = () => {
   const navigate = useNavigate();
+  const { openAnalysisForm, openServiceForm } = useForms();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -318,11 +320,19 @@ const ProjectFreeTime: React.FC = () => {
         <div className="rv"><h2 className="cth">PARLIAMOCI.</h2></div>
         <div className="rv"><p className="cts">Raccontami la tua attivita. Capiremo insieme da dove partire.</p></div>
         <div className="rv" style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
-          <button className="ctb" style={{ background: 'none', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer' }}>
+          <button 
+            onClick={openAnalysisForm}
+            className="ctb" 
+            style={{ background: 'none', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer' }}
+          >
             RICHIEDI ANALISI
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
           </button>
-          <button className="ctb" style={{ background: 'none', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer' }}>
+          <button 
+            onClick={openServiceForm}
+            className="ctb" 
+            style={{ background: 'none', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer' }}
+          >
             PARLAMI DEL TUO PROGETTO
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
           </button>

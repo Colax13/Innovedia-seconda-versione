@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import Navbar from '../Navbar';
 import OptimizedImage from '../OptimizedImage';
+import { useForms } from '../../context/FormContext';
 
 const GREEN = "#2d7a4f";
 const GREEN_LIGHT = "#3a9e66";
@@ -306,6 +307,7 @@ function Tags() {
 // ── CTA ───────────────────────────────────────────────────────────────────────
 function CTA() {
   const navigate = useNavigate();
+  const { openAnalysisForm, openServiceForm } = useForms();
   const [ref, vis] = useInView(.15);
   const r = (d=0): React.CSSProperties => ({ opacity:vis?1:0, transform:vis?"translateY(0)":"translateY(22px)", transition:`all .8s ${d}s cubic-bezier(.23,1,.32,1)` });
   
@@ -329,6 +331,7 @@ function CTA() {
 
         <div style={{ ...r(.25), display:"flex", gap:16, width:"100%", justifyContent:"center" }} className="cta-buttons">
           <button
+            onClick={openAnalysisForm}
             style={{
               padding:"20px 40px",
               background:CYAN,
@@ -352,6 +355,7 @@ function CTA() {
           </button>
           
           <button
+            onClick={openServiceForm}
             style={{
               padding:"20px 40px",
               background:"transparent",

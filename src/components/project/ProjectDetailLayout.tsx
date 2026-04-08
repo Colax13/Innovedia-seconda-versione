@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import Navbar from '../Navbar';
 import OptimizedImage from '../OptimizedImage';
+import { useForms } from '../../context/FormContext';
 
 interface Stat {
   value: string;
@@ -46,6 +47,7 @@ export interface Project {
 
 export const ProjectDetailLayout: React.FC<{ project: Project }> = ({ project }) => {
   const navigate = useNavigate();
+  const { openAnalysisForm, openServiceForm } = useForms();
   const detail = project.detail!;
 
   return (
@@ -258,12 +260,14 @@ export const ProjectDetailLayout: React.FC<{ project: Project }> = ({ project })
 
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <button
+              onClick={openAnalysisForm}
               className="px-10 py-5 bg-[#06b6d4] text-black font-display font-bold text-sm uppercase tracking-widest rounded-full hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-300 text-center"
             >
               RICHIEDI L'ANALISI GRATUITA
             </button>
             
             <button
+              onClick={openServiceForm}
               className="px-10 py-5 bg-transparent border border-white/10 text-white font-display font-bold text-sm uppercase tracking-widest rounded-full transition-all duration-300 text-center"
             >
               PARLAMI DEL TUO PROGETTO

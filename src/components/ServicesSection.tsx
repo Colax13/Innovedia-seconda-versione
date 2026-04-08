@@ -9,49 +9,29 @@ interface ServiceCardMobileProps {
     isLast: boolean;
 }
 
-const ServiceCardMobile: React.FC<ServiceCardMobileProps> = ({ service, index, scrollYProgress, isLast }) => {
-    const isFirst = index === 0;
-    
-    // Recalculated ranges for 200vh height
-    const step = 0.25; 
-    const start = isFirst ? 0 : 0.1 + (index - 1) * step;
-    const end = isFirst ? 0.01 : 0.1 + index * step;
-    
-    // Exit should be perfectly synced with the NEXT card's entrance
-    const exitStart = 0.1 + index * step;
-    const exitEnd = 0.1 + (index + 1) * step;
-    
-    // 1. Direzione dell'Ingresso (y: "150%" -> "0%") - Starting further down
-    const y = useTransform(
-        scrollYProgress, 
-        isFirst ? [0, 1] : [start, end], 
-        isFirst ? ["0%", "0%"] : ["150%", "0%"]
-    );
-    
-    // 6. Animazione di Uscita (Shrink & Fade)
-    const scale = useTransform(
-        scrollYProgress,
-        isLast ? [start, end] : [start, end, exitStart, exitEnd],
-        isLast ? [1, 1] : [1, 1, 1, 0.95]
-    );
+const StackingCardMobile: React.FC<{ service: any; index: number }> = ({ service, index }) => {
+    const cardRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: cardRef,
+        offset: ["start start", "end start"]
+    });
 
-    const opacity = useTransform(
-        scrollYProgress,
-        isLast ? [start, end] : [start, end, exitStart, exitEnd],
-        isLast ? [1, 1] : [1, 1, 1, 0]
-    );
+    // Subtle scale and opacity reduction as the card gets covered by the next one
+    const scale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+    const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
 
     return (
         <motion.div
+            ref={cardRef}
             style={{ 
-                y,
                 scale, 
                 opacity,
-                zIndex: index + 10,
+                // Each card sticks slightly lower than the previous one for a stacked look
+                top: `${60 + (index * 20)}px`,
             }}
-            className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black"
+            className="sticky w-full aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-black mb-10 last:mb-0"
         >
-            {/* Background Image Layer - Added blur for depth */}
+            {/* Background Image Layer - Restored blur and opacity */}
             <div className="absolute inset-0 z-0">
                  <OptimizedImage 
                     src={service.image} 
@@ -60,7 +40,7 @@ const ServiceCardMobile: React.FC<ServiceCardMobileProps> = ({ service, index, s
                  />
             </div>
             
-            {/* MUTED OVERLAY - Increased incidence and darkness for better readability */}
+            {/* Restored Muted Overlay */}
             <div 
                 className="absolute inset-0 z-10" 
                 style={{ 
@@ -68,7 +48,7 @@ const ServiceCardMobile: React.FC<ServiceCardMobileProps> = ({ service, index, s
                 }} 
             />
             
-            {/* Content Layer - Highest Z-Index */}
+            {/* Content Layer - Restored padding and font sizes */}
             <div className="p-8 flex flex-col h-full relative z-20">
                 <div className="flex justify-between items-start mb-4">
                     <span className="font-display text-3xl text-white/60">
@@ -104,42 +84,12 @@ const ServiceCardMobile: React.FC<ServiceCardMobileProps> = ({ service, index, s
     );
 };
 
-const ProgressDot: React.FC<{ index: number, scrollYProgress: any }> = ({ index, scrollYProgress }) => {
-    // Same ranges as cards for synchronization
-    const step = 0.25;
-    const start = index === 0 ? 0 : 0.1 + (index - 1) * step;
-    const end = index === 0 ? 0.01 : 0.1 + index * step;
-    
-    // Dot opacity based on scroll
-    const dotOpacity = useTransform(
-        scrollYProgress,
-        [start, end],
-        [0.3, 1]
-    );
-    
-    // Dot scale based on scroll
-    const dotScale = useTransform(
-        scrollYProgress,
-        [start, end],
-        [1, 1.4]
-    );
-
-    return (
-        <motion.div 
-            style={{ opacity: dotOpacity, scale: dotScale }}
-            className="w-2 h-2 rounded-full bg-[#06b6d4]/60 shadow-[0_0_8px_rgba(6,182,212,0.3)]"
-        />
-    );
-};
-
 const ServicesSection: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const sectionRef = useRef<HTMLElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -190,93 +140,38 @@ const ServicesSection: React.FC = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                } else {
-                    setIsVisible(false);
-                }
+                if (entry.isIntersecting) setIsVisible(true);
+                else setIsVisible(false);
             },
             { threshold: 0.1 }
         );
         if (sectionRef.current) observer.observe(sectionRef.current);
-        return () => {
-            observer.disconnect();
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        };
+        return () => observer.disconnect();
     }, []);
-
-    useEffect(() => {
-        const handleCarouselScroll = () => {
-            if (window.innerWidth >= 768 || !carouselRef.current) return;
-            
-            const container = carouselRef.current;
-            const scrollLeft = container.scrollLeft;
-            const cardWidth = container.offsetWidth * 0.85; // 85vw
-            const index = Math.round(scrollLeft / (cardWidth + 16)); // 16 is gap-4
-            
-            if (index !== activeIndex && index >= 0 && index < services.length) {
-                setActiveIndex(index);
-            }
-        };
-
-        const carousel = carouselRef.current;
-        if (carousel) {
-            carousel.addEventListener('scroll', handleCarouselScroll);
-        }
-        return () => {
-            if (carousel) {
-                carousel.removeEventListener('scroll', handleCarouselScroll);
-            }
-        };
-    }, [activeIndex, services.length]);
-
-    const { scrollYProgress: rawScrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start start", "end end"]
-    });
-
-    // 8. Fluidità Globale (useSpring on scrollYProgress)
-    const scrollYProgress = useSpring(rawScrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001
-    });
-
-    // Soft unlock: The sticky container slides up slightly at the end of the scroll
-    // Starts when the last card is at ~90% of its animation (around 0.78)
-    const stickyY = useTransform(scrollYProgress, [0.78, 1], [0, -150]);
 
     return (
         <section 
             id="servizi"
             ref={sectionRef} 
-            className={`flex flex-col justify-start bg-transparent text-white relative border-t border-white/5 z-30 ${isMobile ? 'h-[200vh]' : 'min-h-screen pt-24 pb-24 px-4 md:px-12 overflow-hidden'}`} 
-            style={{ perspective: '2000px' }}
+            className={`flex flex-col justify-start bg-transparent text-white relative border-t border-white/5 z-30 min-h-screen pt-24 pb-24 px-6 md:px-12`} 
         >
-            <motion.div 
-                style={{ y: isMobile ? stickyY : 0 }}
-                className={`${isMobile ? 'sticky top-0 h-screen w-full flex flex-col justify-center px-6 overflow-hidden' : 'max-w-[1400px] mx-auto w-full'}`}
-            >
+            <div className="max-w-[1400px] mx-auto w-full">
                 <div 
                     className={`transform transition-all duration-1000
                         ${!isMobile && isVisible 
                             ? 'opacity-100 translate-y-0 scale-100' 
                             : !isMobile ? 'opacity-0 translate-y-[150px] scale-95' : 'opacity-100'} 
                     `} 
-                    style={{ 
-                        transformOrigin: 'center center',
-                        transitionTimingFunction: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-                    }}
                 >
-                    <div className={`mb-8 text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-end border-b border-white/10 pb-8 ${isMobile ? 'mt-[-5vh]' : ''}`}>
+                    <div className="mb-16 text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-end border-b border-white/10 pb-12">
                         <div>
-                            <span className="font-sans text-[#06b6d4] text-[10px] font-bold uppercase tracking-[0.3em] block mb-2">COSA COSTRUISCO PER TE</span>
-                            <h2 className="font-display text-5xl md:text-7xl uppercase text-white tracking-tighter">
+                            <span className="font-sans text-[#06b6d4] text-[10px] font-bold uppercase tracking-[0.3em] block mb-3">COSA COSTRUISCO PER TE</span>
+                            <h2 className="font-display text-6xl md:text-8xl uppercase text-white tracking-tighter">
                                 Servizi
                             </h2>
                         </div>
-                        <p className="hidden md:block text-gray-400 font-sans max-w-sm text-right text-sm leading-relaxed">
-                            4 pilastri. Un unico obiettivo: farti vendere online.
+                        <p className="hidden md:block text-gray-400 font-sans max-w-sm text-right text-base leading-relaxed">
+                            4 pilastri fondamentali. Un unico obiettivo: far crescere il tuo business online.
                         </p>
                     </div>
 
@@ -284,7 +179,7 @@ const ServicesSection: React.FC = () => {
                     {!isMobile && (
                         <div 
                             ref={carouselRef}
-                            className="flex flex-row md:flex-row gap-4 h-auto md:h-[550px] overflow-x-auto md:overflow-visible pb-8 md:pb-0 snap-x snap-mandatory hide-scrollbar scroll-smooth px-[7.5vw] md:px-0"
+                            className="flex flex-row gap-4 h-[550px] overflow-visible"
                         >
                             {services.map((service, index) => {
                                 const isActive = activeIndex === index;
@@ -297,13 +192,11 @@ const ServicesSection: React.FC = () => {
                                         style={{ transitionDelay: isVisible ? staggerDelay : '0ms' }}
                                         className={`
                                             service-card
-                                            relative rounded-2xl overflow-hidden cursor-pointer group
-                                            flex-shrink-0 snap-center
-                                            w-[85vw] md:w-auto
-                                            ${isActive ? 'h-[420px] md:h-auto md:flex-[3]' : 'h-[420px] md:h-auto md:flex-1'}
+                                            relative rounded-[2.5rem] overflow-hidden cursor-pointer group
+                                            flex-shrink-0
+                                            ${isActive ? 'md:flex-[3]' : 'md:flex-1'}
                                             border border-white/5 hover:border-white/10
-                                            transition-[height,flex,opacity,transform] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-                                            origin-top
+                                            transition-[flex,opacity,transform] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
                                             ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-32'}
                                         `}
                                     >
@@ -318,13 +211,13 @@ const ServicesSection: React.FC = () => {
                                         <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 transition-opacity duration-700 ${isActive ? 'opacity-30' : ''}`}></div>
                                         <div className={`absolute inset-0 bg-[#080808] transition-opacity duration-500 -z-10 ${isActive ? 'opacity-80' : 'opacity-95'}`}></div>
                                         
-                                        <div className="absolute inset-0 p-8 md:p-10 flex flex-col h-full z-10">
+                                        <div className="absolute inset-0 p-10 flex flex-col h-full z-10">
                                             <div className="flex justify-between items-start mb-4">
                                                 <span className={`font-display text-4xl transition-colors duration-500 ${isActive ? 'text-white' : 'text-gray-400'}`}>
                                                     0{service.id}
                                                 </span>
-                                                <div className={`w-10 h-10 rounded-full border border-white/5 flex items-center justify-center transition-all duration-500 ${isActive ? 'bg-white text-black scale-100 rotate-0' : 'bg-transparent text-gray-700 -rotate-45'}`}>
-                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <div className={`w-12 h-12 rounded-full border border-white/5 flex items-center justify-center transition-all duration-500 ${isActive ? 'bg-white text-black scale-100 rotate-0' : 'bg-transparent text-gray-700 -rotate-45'}`}>
+                                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d={service.icon}></path>
                                                     </svg>
                                                 </div>
@@ -332,7 +225,7 @@ const ServicesSection: React.FC = () => {
 
                                             <div className="mt-auto relative">
                                                 <h3 className={`
-                                                    font-display text-2xl md:text-4xl uppercase leading-none transition-all duration-500 origin-bottom-left
+                                                    font-display text-4xl uppercase leading-none transition-all duration-500 origin-bottom-left
                                                     ${isActive ? 'text-white translate-y-0' : 'text-gray-500 md:-rotate-90 md:absolute md:bottom-0 md:left-0 md:origin-bottom-left md:whitespace-nowrap md:translate-x-10 md:-translate-y-6'}
                                                 `}>
                                                     {service.title}
@@ -340,17 +233,17 @@ const ServicesSection: React.FC = () => {
 
                                                 <div className={`
                                                     overflow-hidden transition-all duration-700 ease-out
-                                                    ${isActive ? 'max-h-[300px] opacity-100 mt-6' : 'max-h-0 opacity-0 mt-0'}
+                                                    ${isActive ? 'max-h-[300px] opacity-100 mt-8' : 'max-h-0 opacity-0 mt-0'}
                                                 `}>
-                                                    <p className="font-sans text-gray-300 text-sm leading-relaxed mb-6 pl-1 font-medium">
+                                                    <p className="font-sans text-gray-300 text-base leading-relaxed mb-8 pl-1 font-medium">
                                                         {service.desc}
                                                     </p>
                                                     
-                                                    <div className="flex flex-wrap gap-2">
+                                                    <div className="flex flex-wrap gap-2.5">
                                                         {service.tags.map((tag, i) => (
                                                             <span 
                                                                 key={i} 
-                                                                className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-sans font-bold uppercase tracking-widest text-gray-300"
+                                                                className="px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[11px] font-sans font-bold uppercase tracking-widest text-gray-300"
                                                                 style={{ transitionDelay: `${i * 100}ms` }}
                                                             >
                                                                 {tag}
@@ -366,33 +259,20 @@ const ServicesSection: React.FC = () => {
                         </div>
                     )}
 
-                    {/* Mobile Stacking Cards */}
+                    {/* Mobile Stacking Cards - Vertical Row */}
                     {isMobile && (
-                        <div className="relative h-[50vh] w-full" style={{ perspective: "1200px" }}>
+                        <div className="flex flex-col w-full">
                             {services.map((service, index) => (
-                                <ServiceCardMobile 
+                                <StackingCardMobile 
                                     key={service.id} 
                                     service={service} 
                                     index={index} 
-                                    scrollYProgress={scrollYProgress} 
-                                    isLast={index === services.length - 1}
                                 />
                             ))}
-                            
-                            {/* Progress Dots */}
-                            <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 flex gap-3 z-50">
-                                {services.map((_, i) => (
-                                    <ProgressDot 
-                                        key={i} 
-                                        index={i} 
-                                        scrollYProgress={scrollYProgress} 
-                                    />
-                                ))}
-                            </div>
                         </div>
                     )}
                 </div>
-            </motion.div>
+            </div>
         </section>
     );
 };

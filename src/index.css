@@ -8,9 +8,25 @@
 }
 
 @layer base {
-  html, body {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-[#050508] text-white antialiased;
+    width: 100%;
+    min-height: 100vh;
+    /* Removed overflow-x: hidden from body to prevent breaking sticky position */
+  }
+
+  #root {
     @apply overflow-x-hidden;
     width: 100%;
+  }
+  
+  option {
+    background-color: #0a0a0a !important;
+    color: white !important;
   }
 }
 

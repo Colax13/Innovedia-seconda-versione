@@ -16,7 +16,7 @@ interface VStepProps {
 
 function VStep({ num, title, description, isFirst, progress, index, isMobile }: VStepProps) {
   // Stagger offsets
-  const baseDelay = isMobile ? 0.05 : 0.22; // Much earlier on mobile
+  const baseDelay = isMobile ? 0.05 : 0.15; // Much earlier on mobile and desktop
   const startOffset = baseDelay + (index * (isMobile ? 0.04 : 0.07));
   const endOffset = index * 0.03;
 
@@ -106,8 +106,8 @@ export default function ChiSono() {
   });
 
   // Photo Animation: Entrance from Right, Exit to Right
-  // Synchronized with the first VStep (starts at 0.22 on desktop, later on mobile)
-  const photoStart = isMobile ? 0.45 : 0.22;
+  // Synchronized with the first VStep (starts at 0.15 on desktop, earlier on mobile)
+  const photoStart = isMobile ? 0.30 : 0.15;
   const photoExitStart = isMobile ? 1 : 0.9; // Delayed exit on desktop
   const photoX = useTransform(
     scrollYProgress, 

@@ -1,7 +1,10 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { useForms } from '../context/FormContext';
 
 const FinalCTA: React.FC = () => {
+  const { openAnalysisForm, openServiceForm } = useForms();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030303] text-white py-32">
       {/* Background Glow */}
@@ -42,6 +45,7 @@ const FinalCTA: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={openAnalysisForm}
               className="px-10 py-5 bg-[#06b6d4] text-black font-display font-bold text-sm uppercase tracking-widest rounded-full hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-300 text-center"
             >
               RICHIEDI L'ANALISI GRATUITA
@@ -50,6 +54,7 @@ const FinalCTA: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.05)' }}
               whileTap={{ scale: 0.98 }}
+              onClick={openServiceForm}
               className="px-10 py-5 bg-transparent border border-white/10 text-white font-display font-bold text-sm uppercase tracking-widest rounded-full transition-all duration-300 text-center"
             >
               PARLAMI DEL TUO PROGETTO
