@@ -16,18 +16,18 @@ interface VStepProps {
 
 function VStep({ num, title, description, isFirst, progress, index, isMobile }: VStepProps) {
   // Stagger offsets
-  const baseDelay = isMobile ? 0.05 : 0.15; // Much earlier on mobile and desktop
-  const startOffset = baseDelay + (index * (isMobile ? 0.04 : 0.07));
+  const baseDelay = isMobile ? 0.02 : 0.1; // More immediate entrance
+  const startOffset = baseDelay + (index * (isMobile ? 0.03 : 0.05));
   const endOffset = index * 0.03;
 
   // Entrance: adjusted speed
   // Exit: 0.9 to 1.0 (staggered) - Delayed on desktop
   const exitStart = isMobile ? 0.8 : 0.92;
-  const entranceDuration = isMobile ? 0.35 : 0.45;
+  const entranceDuration = isMobile ? 0.3 : 0.4;
   const x = useTransform(
     progress, 
     [0 + startOffset, entranceDuration + startOffset, exitStart - endOffset, 1 - endOffset], 
-    [-150, 0, 0, -150]
+    [-100, 0, 0, -100] // Reduced start distance for "fluidity"
   );
   
   const y = useTransform(
@@ -64,7 +64,7 @@ function VStep({ num, title, description, isFirst, progress, index, isMobile }: 
         <motion.div
           className="absolute top-0 left-0 right-0 h-px origin-left"
           style={{
-            background: 'linear-gradient(90deg, rgba(6,182,212,0.15), transparent 80%)',
+            background: 'linear-gradient(90deg, rgba(0, 229, 255, 0.2), transparent 80%)',
             scaleX: dividerScale
           }}
         />
@@ -79,7 +79,7 @@ function VStep({ num, title, description, isFirst, progress, index, isMobile }: 
         {/* V letter */}
         <span
           className="font-display text-[clamp(32px,4vw,48px)] font-extrabold leading-none text-pixar-cyan shrink-0"
-          style={{ textShadow: '0 0 20px rgba(6,182,212,0.3)' }}
+          style={{ textShadow: '0 0 25px rgba(0, 229, 255, 0.45)' }}
         >
           V
         </span>
@@ -169,7 +169,7 @@ export default function ChiSono() {
             </span>
             <div
               className="flex-1 h-px"
-              style={{ background: 'linear-gradient(90deg, rgba(6,182,212,0.2), transparent)' }}
+              style={{ background: 'linear-gradient(90deg, rgba(0, 229, 255, 0.3), transparent)' }}
             />
           </motion.div>
 
@@ -187,7 +187,7 @@ export default function ChiSono() {
             </motion.p>
             <motion.p
               style={{ 
-                textShadow: '0 0 30px rgba(6,182,212,0.25)',
+                textShadow: '0 0 35px rgba(0, 229, 255, 0.35)',
                 ...(isMobile ? { y: titleY, opacity: titleOpacity } : {}) 
               }}
               initial={!isMobile ? { opacity: 0, y: 20 } : undefined}
@@ -221,7 +221,7 @@ export default function ChiSono() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="inline-flex items-center gap-3 py-2 px-5 rounded-full mb-12 bg-pixar-cyan/5 border border-pixar-cyan/10"
           >
-            <div className="w-1.5 h-1.5 rounded-full bg-pixar-cyan shadow-[0_0_10px_#06b6d4]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-pixar-cyan shadow-[0_0_10px_#00E5FF]" />
             <span className="font-tech text-[9px] tracking-[0.3em] uppercase text-pixar-cyan/80">
               Il sistema 3V
             </span>

@@ -63,7 +63,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
                       {...register('tipo_richiedente', { required: true })}
                       className="hidden peer"
                     />
-                    <div className="p-4 text-center border border-white/10 rounded-lg bg-white/5 peer-checked:border-[#06b6d4] peer-checked:bg-[#06b6d4]/10 transition-all">
+                    <div className="p-4 text-center border border-white/10 rounded-lg bg-white/5 peer-checked:border-[#00E5FF] peer-checked:bg-[#00E5FF]/10 transition-all">
                       <span className="text-sm font-medium text-white">{opt}</span>
                     </div>
                   </label>
@@ -84,7 +84,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
                       id="servizi_richiesti"
                       value={servizio}
                       {...register('servizi_richiesti')}
-                      className="w-4 h-4 rounded border-white/20 bg-transparent text-[#06b6d4] focus:ring-[#06b6d4]"
+                      className="w-4 h-4 rounded border-white/20 bg-transparent text-[#00E5FF] focus:ring-[#00E5FF]"
                     />
                     <span className="text-sm text-white/80">{servizio}</span>
                   </label>
@@ -97,7 +97,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
               <textarea
                 id="descrizione_progetto"
                 {...register('descrizione_progetto', { required: true })}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#06b6d4] focus:outline-none transition-all min-h-[100px]"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] focus:outline-none transition-all min-h-[100px]"
                 placeholder="Raccontami brevemente la tua idea..."
               />
             </div>
@@ -107,7 +107,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
               <select
                 id="budget"
                 {...register('budget', { required: true })}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#06b6d4] focus:outline-none transition-all appearance-none"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] focus:outline-none transition-all appearance-none"
               >
                 <option value="">Seleziona...</option>
                 <option value="< 1000€">&lt; 1.000€</option>
@@ -131,7 +131,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
               <input
                 id="nome"
                 {...register('nome', { required: true })}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#06b6d4] focus:outline-none transition-all"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] focus:outline-none transition-all"
                 placeholder="Il tuo nome"
               />
             </div>
@@ -141,7 +141,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
                 id="email"
                 type="email"
                 {...register('email', { required: true })}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#06b6d4] focus:outline-none transition-all"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] focus:outline-none transition-all"
                 placeholder="email@esempio.com"
               />
             </div>
@@ -150,7 +150,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
               <input
                 id="whatsapp"
                 {...register('whatsapp')}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#06b6d4] focus:outline-none transition-all"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#00E5FF] focus:outline-none transition-all"
                 placeholder="+39 333 1234567"
               />
             </div>
@@ -166,7 +166,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
                       {...register('tempistiche', { required: true })}
                       className="hidden peer"
                     />
-                    <div className="p-4 text-center border border-white/10 rounded-lg bg-white/5 peer-checked:border-[#06b6d4] peer-checked:bg-[#06b6d4]/10 transition-all">
+                    <div className="p-4 text-center border border-white/10 rounded-lg bg-white/5 peer-checked:border-[#00E5FF] peer-checked:bg-[#00E5FF]/10 transition-all">
                       <span className="text-sm font-medium text-white">{opt}</span>
                     </div>
                   </label>
@@ -188,7 +188,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
           <div
             key={i}
             className={`h-1 flex-1 rounded-full transition-all duration-500 ${
-              i <= step ? 'bg-[#06b6d4]' : 'bg-white/10'
+              i <= step ? 'bg-[#00E5FF]' : 'bg-white/10'
             }`}
           />
         ))}
@@ -216,7 +216,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
           <button
             type="button"
             onClick={nextStep}
-            className="flex items-center gap-2 px-8 py-3 bg-[#06b6d4] text-black font-bold rounded-full hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all"
+            className="flex items-center gap-2 px-8 py-3 bg-[#00E5FF] text-black font-bold rounded-full hover:shadow-[0_0_20px_rgba(0, 229, 255, 0.4)] transition-all"
           >
             <span>Avanti</span>
             <ArrowRight className="w-4 h-4" />
@@ -225,7 +225,7 @@ const ServiceForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex items-center gap-2 px-8 py-3 bg-[#06b6d4] text-black font-bold rounded-full hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-8 py-3 bg-[#00E5FF] text-black font-bold rounded-full hover:shadow-[0_0_20px_rgba(0, 229, 255, 0.45)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>

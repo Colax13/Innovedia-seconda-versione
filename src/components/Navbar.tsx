@@ -57,7 +57,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
             pointer-events-auto transition-all duration-500 ease-out
             flex justify-between items-center px-6 md:px-10 py-3
             ${scrolled 
-                ? 'w-[90%] md:w-auto bg-black/80 backdrop-blur-xl border border-[#06b6d4]/30 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.8)]' 
+                ? 'w-[90%] md:w-auto bg-black/80 backdrop-blur-xl border border-[#00E5FF]/40 rounded-full shadow-[0_8px_40px_rgba(0,0,0,0.9)]' 
                 : 'w-full bg-black/40 backdrop-blur-sm border-b border-white/5'}
           `}
         >
@@ -99,7 +99,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
               <a 
                 href={isHome ? "#contatti" : "/#contatti"} 
                 onClick={(e) => handleNavClick(e, 'Contatti')}
-                className={`relative px-5 py-2 overflow-hidden rounded-full group bg-white/10 hover:bg-white transition-colors duration-300 border border-[#06b6d4]`}
+                className={`relative px-5 py-2 overflow-hidden rounded-full group bg-white/10 hover:bg-white transition-colors duration-300 border border-[#00E5FF]`}
               >
                   <span className="relative z-10 text-[10px] font-sans font-bold uppercase tracking-wider text-white group-hover:text-black transition-colors duration-300">
                       Parliamo
@@ -141,7 +141,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
               animate={{ clipPath: 'circle(150% at 90% 5%)' }}
               exit={{ clipPath: 'circle(0% at 90% 5%)' }}
               transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-              className="fixed inset-0 bg-[#06b6d4] z-[89] pointer-events-none"
+              className="fixed inset-0 bg-[#00E5FF] z-[89] pointer-events-none"
               style={{ willChange: 'clip-path' }}
             />
 
@@ -169,7 +169,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
                     y: [0, -30, 0]
                   }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                  className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#06b6d4]/15 blur-[120px] rounded-full" 
+                  className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#00E5FF]/20 blur-[120px] rounded-full" 
                 />
                 <motion.div 
                   animate={{ 

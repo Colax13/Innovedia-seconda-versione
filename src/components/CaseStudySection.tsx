@@ -37,12 +37,12 @@ function FlipButton({ text, onClick, primary = false, noBorder = false }: { text
       whileHover="hover"
       whileTap={{ scale: 0.98 }}
       variants={{
-        initial: { backgroundColor: "rgba(255, 255, 255, 0.05)", borderColor: noBorder ? "transparent" : (primary ? "#06b6d4" : "rgba(255, 255, 255, 0.2)") },
+        initial: { backgroundColor: "rgba(255, 255, 255, 0.05)", borderColor: noBorder ? "transparent" : (primary ? "#00E5FF" : "rgba(255, 255, 255, 0.2)") },
         hover: { backgroundColor: "#ffffff", borderColor: "#ffffff" }
       }}
       transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
       onClick={onClick}
-      className={`group relative h-10 px-7 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer ${noBorder ? '' : 'border'} shadow-[0_0_20px_rgba(6,182,212,0.1)] w-full sm:w-auto`}
+      className={`group relative h-10 px-7 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer ${noBorder ? '' : 'border'} shadow-[0_0_20px_rgba(0, 229, 255, 0.1)] w-full sm:w-auto`}
     >
       <div className="relative z-10 flex h-full items-center justify-center">
         {text.split("").map((char, i) => (
@@ -212,7 +212,7 @@ const CaseStudySection: React.FC = () => {
                 </span>
                 <div
                   className="flex-1 h-px hidden md:block"
-                  style={{ background: 'linear-gradient(90deg, rgba(6,182,212,0.2), transparent)' }}
+                  style={{ background: 'linear-gradient(90deg, rgba(0, 229, 255, 0.3), transparent)' }}
                 />
               </motion.div>
 
@@ -253,7 +253,7 @@ const CaseStudySection: React.FC = () => {
                     },
                     hover: { 
                       y: -10, 
-                      boxShadow: '0 20px 40px rgba(6, 182, 212, 0.12)',
+                      boxShadow: '0 20px 40px rgba(0, 229, 255, 0.15)',
                       borderColor: 'rgba(255,255,255,0.15)',
                       transition: { duration: 0.4, ease: "easeOut" }
                     }

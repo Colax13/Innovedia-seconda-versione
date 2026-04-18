@@ -6,10 +6,10 @@ const FinalCTA: React.FC = () => {
   const { openAnalysisForm, openServiceForm } = useForms();
 
   return (
-    <section id="contatti" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030303] text-white py-32">
+    <section id="contatti" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#020205] text-white py-32">
       {/* Background Glow */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.1)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0, 229, 255, 0.1)_0%,transparent_70%)]" />
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center flex flex-col items-center">
@@ -22,13 +22,13 @@ const FinalCTA: React.FC = () => {
         >
           <div className="w-12 h-px bg-cyan-500/30 mb-8" />
           
-          <span className="font-sans text-[#06b6d4] text-[10px] font-bold uppercase tracking-[0.4em] block mb-12">
+          <span className="font-sans text-[#00E5FF] text-[10px] font-bold uppercase tracking-[0.4em] block mb-12">
             PROSSIMO PASSO
           </span>
           
           <h2 className="font-display text-[clamp(40px,8vw,100px)] font-extrabold uppercase tracking-tighter leading-[0.9] mb-10 max-w-4xl">
             SCOPRI COSA <br />
-            MANCA AL <span className="text-[#06b6d4]">TUO BRAND</span>
+            MANCA AL <span className="text-[#00E5FF]">TUO BRAND</span>
           </h2>
           
           <motion.p 
@@ -46,7 +46,7 @@ const FinalCTA: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={openAnalysisForm}
-              className="px-10 py-5 bg-[#06b6d4] text-black font-display font-bold text-sm uppercase tracking-widest rounded-full hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-300 text-center"
+              className="px-10 py-5 bg-[#00E5FF] text-black font-display font-bold text-sm uppercase tracking-widest rounded-full hover:shadow-[0_0_30px_rgba(0, 229, 255, 0.45)] transition-all duration-300 text-center"
             >
               RICHIEDI L'ANALISI GRATUITA
             </motion.button>

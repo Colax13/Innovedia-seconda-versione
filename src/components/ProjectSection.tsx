@@ -80,7 +80,7 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
     setGlowPos({ x: (x / rect.width) * 100, y: (y / rect.height) * 100 });
   };
 
-  const c = project.color || "#06b6d4";
+  const c = project.color || "#00E5FF";
   const tags = project.tags ? project.tags.slice(0, 2) : [];
 
   useEffect(() => {
@@ -110,16 +110,16 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
           width: "100%", height: "100%",
           borderRadius: "1.5rem",
           overflow: "hidden",
-          background: "#0a0a0a",
+          background: "#08080C",
           transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isVisualActive ? 1.02 : 1}) translateY(${entered ? 0 : 40}px)`,
           opacity: entered ? 1 : 0,
           transition: entered
             ? `box-shadow .4s, border-color .4s, ${isVisualActive ? '' : 'transform .6s cubic-bezier(.23,1,.32,1)'}`
             : "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease",
-          border: `1px solid ${isVisualActive ? c : "rgba(255,255,255,0.1)"}`,
+          border: `1px solid ${isVisualActive ? c : "rgba(255,255,255,0.15)"}`,
           boxShadow: isVisualActive
-            ? `0 0 30px ${c}44, 0 10px 40px rgba(0,0,0,0.8)`
-            : "0 10px 30px rgba(0,0,0,0.5)",
+            ? `0 0 40px ${c}66, 0 10px 40px rgba(0,0,0,0.85)`
+            : "0 10px 30px rgba(0,0,0,0.6)",
           willChange: "transform, opacity",
         }}
       >
@@ -478,19 +478,19 @@ export default function ProjectSection() {
   const currentIndex = ((Math.round(offset) % N) + N) % N;
 
   return (
-    <motion.section 
+      <motion.section 
       id="lavori"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 0.8 }}
-      className="relative w-full min-h-[125vh] md:min-h-[115vh] overflow-hidden bg-[#050508] flex flex-col items-center pt-24 pb-16 md:pb-24 px-4 select-none"
+      className="relative w-full min-h-[125vh] md:min-h-[115vh] overflow-hidden bg-[#020205] flex flex-col items-center pt-24 pb-16 md:pb-24 px-4 select-none"
     >
       {/* Cinematic Background Lighting - Site Style */}
-      <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-cyan-500/5 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-cyan-400/20 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-400/20 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-cyan-400/10 blur-[160px] rounded-full pointer-events-none" />
       
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
@@ -518,7 +518,7 @@ export default function ProjectSection() {
             onClick={prev}
             whileHover={{ rotate: -360, scale: 1.2 }}
             transition={{ rotate: { duration: 0.4, ease: "circInOut" }, scale: { duration: 0.2 } }}
-            className="h-9 w-9 flex items-center justify-center rounded-full bg-transparent border border-cyan-500/50 hover:bg-cyan-500 hover:text-black text-cyan-400 transition-colors cursor-pointer shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+            className="h-9 w-9 flex items-center justify-center rounded-full bg-transparent border border-[#00E5FF]/60 hover:bg-[#00E5FF] hover:text-black text-[#00E5FF] transition-colors cursor-pointer shadow-[0_0_20px_rgba(0,229,255,0.4)]"
           >
             <ArrowLeft size={18} strokeWidth={2.5} />
           </motion.button>
@@ -558,7 +558,7 @@ export default function ProjectSection() {
             onClick={next}
             whileHover={{ rotate: 360, scale: 1.2 }}
             transition={{ rotate: { duration: 0.4, ease: "circInOut" }, scale: { duration: 0.2 } }}
-            className="h-9 w-9 flex items-center justify-center rounded-full bg-transparent border border-cyan-500/50 hover:bg-cyan-500 hover:text-black text-cyan-400 transition-colors cursor-pointer shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+            className="h-9 w-9 flex items-center justify-center rounded-full bg-transparent border border-[#00E5FF]/60 hover:bg-[#00E5FF] hover:text-black text-[#00E5FF] transition-colors cursor-pointer shadow-[0_0_20px_rgba(0,229,255,0.4)]"
           >
             <ArrowRight size={18} strokeWidth={2.5} />
           </motion.button>
@@ -573,7 +573,7 @@ export default function ProjectSection() {
               onClick={() => goTo(i)}
               className={`cursor-pointer rounded-full transition-all duration-500 ease-out ${
                 i === currentIndex 
-                  ? 'w-10 h-2 bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.8)]' 
+                  ? 'w-10 h-2 bg-[#00E5FF] shadow-[0_0_15px_rgba(0,229,255,0.9)]' 
                   : 'w-2 h-2 bg-white/20 hover:bg-white/40'
               }`}
             />
@@ -585,12 +585,12 @@ export default function ProjectSection() {
           initial="initial"
           whileHover="hover"
           variants={{
-            initial: { backgroundColor: "rgba(255, 255, 255, 0.1)", borderColor: "#06b6d4" },
+            initial: { backgroundColor: "rgba(255, 255, 255, 0.12)", borderColor: "#00E5FF" },
             hover: { backgroundColor: "#ffffff", borderColor: "#ffffff" }
           }}
           transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
           onClick={() => navigate('/lavori')} 
-          className="group relative h-[41px] md:h-12 px-8 md:px-12 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer border shadow-[0_0_20px_rgba(6,182,212,0.1)]"
+          className="group relative h-[41px] md:h-12 px-8 md:px-12 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer border shadow-[0_0_20px_rgba(0,229,255,0.2)]"
         >
           <div className="relative z-10 flex h-full items-center justify-center">
             {"Tutti i lavori".split("").map((char, i) => (

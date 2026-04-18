@@ -27,7 +27,7 @@ export const ProjectPage: React.FC = () => {
                 <UnifiedBackground />
                 <Navbar />
                 <h1 className="text-4xl font-display mb-4">Progetto non trovato</h1>
-                <Link to="/" className="text-[#06b6d4] hover:underline">Torna alla home</Link>
+                <Link to="/" className="text-[#00E5FF] hover:underline">Torna alla home</Link>
             </div>
         );
     }
@@ -55,7 +55,7 @@ export const ProjectPage: React.FC = () => {
             
             <button 
                 onClick={() => navigate('/#lavori')}
-                className="fixed top-8 left-8 md:left-12 z-[100] w-12 h-12 hidden md:flex items-center justify-center bg-black/20 backdrop-blur-xl border border-white/10 rounded-full group hover:bg-white hover:border-[#06b6d4] transition-all duration-500 shadow-2xl"
+                className="fixed top-8 left-8 md:left-12 z-[100] w-12 h-12 hidden md:flex items-center justify-center bg-black/20 backdrop-blur-xl border border-white/10 rounded-full group hover:bg-white hover:border-[#00E5FF] transition-all duration-500 shadow-2xl"
                 title="Torna ai lavori"
             >
                 <ArrowLeft className="w-5 h-5 text-white group-hover:text-black transition-colors duration-300 group-hover:-translate-x-0.5 transition-transform" />
@@ -205,7 +205,7 @@ export const ProjectPage: React.FC = () => {
                             href={project.link} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="group inline-flex items-center gap-2 text-white hover:text-[#06b6d4] transition-colors border-b border-transparent hover:border-[#06b6d4] pb-1"
+                            className="group inline-flex items-center gap-2 text-white hover:text-[#00E5FF] transition-colors border-b border-transparent hover:border-[#00E5FF] pb-1"
                         >
                             <span className="font-sans font-bold uppercase tracking-widest text-xs">Vedi Link Completo</span>
                             <ExternalLink className="w-3 h-3" />
@@ -219,13 +219,13 @@ export const ProjectPage: React.FC = () => {
                 <div className="absolute top-0 left-[12%] right-[12%] h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
                 
                 <div className="max-w-4xl mx-auto flex flex-col items-center">
-                    <span className="font-sans text-[#06b6d4] text-[10px] font-bold uppercase tracking-[0.4em] block mb-12">
+                    <span className="font-sans text-[#00E5FF] text-[10px] font-bold uppercase tracking-[0.4em] block mb-12">
                         PROSSIMO PASSO
                     </span>
                     
                     <h2 className="font-display text-[clamp(40px,7vw,90px)] font-extrabold uppercase tracking-tighter leading-[0.9] mb-10">
                         SCOPRI COSA <br />
-                        MANCA AL <span className="text-[#06b6d4]">TUO BRAND</span>
+                        MANCA AL <span className="text-[#00E5FF]">TUO BRAND</span>
                     </h2>
                     
                     <p className="font-sans text-lg text-white/50 font-light max-w-2xl mx-auto mb-16 leading-relaxed">
@@ -235,7 +235,7 @@ export const ProjectPage: React.FC = () => {
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                         <button
                             onClick={openAnalysisForm}
-                            className="px-10 py-5 bg-[#06b6d4] text-black font-display font-bold text-sm uppercase tracking-widest rounded-full hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-300 text-center"
+                            className="px-10 py-5 bg-[#00E5FF] text-black font-display font-bold text-sm uppercase tracking-widest rounded-full hover:shadow-[0_0_30px_rgba(0, 229, 255, 0.45)] transition-all duration-300 text-center"
                         >
                             RICHIEDI L'ANALISI GRATUITA
                         </button>

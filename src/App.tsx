@@ -49,9 +49,10 @@ function HomePage() {
       <ChiSono />
       <ServicesSection />
       <ParallaxSection />
+      <CaseStudySection />
       <ProjectSection />
       <FinalCTA />
-      <footer className="bg-black/80 backdrop-blur-md py-12 text-center border-t border-white/5 relative z-10">
+      <footer className="bg-[#020205]/80 backdrop-blur-md py-12 text-center border-t border-white/5 relative z-10">
         <div className="flex justify-center gap-8 mb-8 text-xs font-tech uppercase tracking-widest text-gray-500">
              <a href="#" className="hover:text-white transition-colors">Instagram</a>
              <a href="#" className="hover:text-white transition-colors">Twitter</a>

@@ -157,11 +157,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       const grad = ctx.createLinearGradient(-w / 2, -h / 2, w / 2, h / 2);
       grad.addColorStop(0, 'rgba(255,255,255,.12)');
       grad.addColorStop(.5, 'transparent');
-      grad.addColorStop(1, 'rgba(6,182,212,.08)');
+      grad.addColorStop(1, 'rgba(0,229,255,.12)');
       ctx.fillStyle = grad;
       ctx.fillRect(-w / 2, -h / 2, w, h);
 
-      ctx.strokeStyle = 'rgba(255,255,255,.2)';
+      ctx.strokeStyle = 'rgba(255,255,255,.25)';
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
@@ -184,21 +184,21 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       ctx.lineTo(x - size / 2, y - size / 2 + round);
       ctx.quadraticCurveTo(x - size / 2, y - size / 2, x - size / 2 + round, y - size / 2);
       if (isTrail) {
-        ctx.fillStyle = `rgba(6, 182, 212, ${op * 0.5})`;
+        ctx.fillStyle = `rgba(0, 229, 255, ${op * 0.6})`;
         ctx.fill();
-        ctx.strokeStyle = `rgba(6, 182, 212, ${op * 0.3})`;
+        ctx.strokeStyle = `rgba(0, 229, 255, ${op * 0.4})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       } else {
         const grad = ctx.createRadialGradient(x, y, 0, x, y, size);
         grad.addColorStop(0, '#ffffff');
-        grad.addColorStop(0.3, '#06b6d4');
-        grad.addColorStop(1, '#0284c7');
+        grad.addColorStop(0.3, '#00E5FF');
+        grad.addColorStop(1, '#00B4D8');
         ctx.fillStyle = grad;
         ctx.fill();
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = 'rgba(6,182,212, 0.8)';
-        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = 'rgba(0, 229, 255, 0.9)';
+        ctx.strokeStyle = 'rgba(255,255,255,0.5)';
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -216,7 +216,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       if (morphT < 0.8) {
         for (let i = 2; i >= 0; i--) {
           const gr = ctx.createRadialGradient(x, y, r * 0.2, x, y, r * (1.2 + i * 0.4));
-          gr.addColorStop(0, `rgba(6,182,212,${glow * 0.2 / (i + 1) * (1 - morphT)})`);
+          gr.addColorStop(0, `rgba(0, 229, 255, ${glow * 0.3 / (i + 1) * (1 - morphT)})`);
           gr.addColorStop(1, 'transparent');
           ctx.fillStyle = gr;
           ctx.beginPath(); 
@@ -226,10 +226,10 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       }
       if (morphT < 1) {
         const sg = ctx.createRadialGradient(x - r * 0.15, y - r * 0.15, r * 0.05, x, y, r);
-        sg.addColorStop(0, `rgba(6,220,240,${1 - morphT})`);
-        sg.addColorStop(0.35, `rgba(6,182,212,${0.95 * (1 - morphT)})`);
-        sg.addColorStop(0.7, `rgba(2,84,180,${0.9 * (1 - morphT)})`);
-        sg.addColorStop(1, `rgba(4,12,28,${0.95 * (1 - morphT)})`);
+        sg.addColorStop(0, `rgba(180, 245, 255, ${1 - morphT})`);
+        sg.addColorStop(0.35, `rgba(0, 229, 255, ${0.98 * (1 - morphT)})`);
+        sg.addColorStop(0.7, `rgba(0, 150, 255, ${0.95 * (1 - morphT)})`);
+        sg.addColorStop(1, `rgba(2, 8, 20, ${0.98 * (1 - morphT)})`);
         ctx.fillStyle = sg;
         ctx.beginPath(); 
         ctx.arc(x, y, Math.max(1, r), 0, Math.PI * 2); 
@@ -441,9 +441,9 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         
         ctx.save();
         ctx.globalAlpha = p.op;
-        ctx.fillStyle = '#06b6d4';
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = '#06b6d4';
+        ctx.fillStyle = '#00E5FF';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#00E5FF';
         // Draw square "pixels"
         ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
         ctx.restore();
@@ -525,7 +525,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 duration: 1, 
                 ease: [0.22, 1, 0.36, 1]
               }}
-              className="font-display font-black text-[clamp(80px,13vw,180px)] tracking-tight leading-none flex items-baseline text-white drop-shadow-[0_0_40px_rgba(6,182,212,0.4)]"
+              className="font-display font-black text-[clamp(80px,13vw,180px)] tracking-tight leading-none flex items-baseline text-white drop-shadow-[0_0_50px_rgba(0,229,255,0.6)]"
             >
               <span>Innoved</span>
               <span className="relative inline-block">
@@ -568,12 +568,12 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 initial="initial"
                 whileHover="hover"
                 variants={{
-                  initial: { backgroundColor: "rgba(255, 255, 255, 0.1)", borderColor: "#06b6d4" },
+                  initial: { backgroundColor: "rgba(255, 255, 255, 0.12)", borderColor: "#00E5FF" },
                   hover: { backgroundColor: "#ffffff", borderColor: "#ffffff" }
                 }}
                 transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                 onClick={() => scrollTo('lavori')}
-                className="group relative h-[41px] md:h-12 px-6 md:px-10 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer border shadow-[0_0_20px_rgba(6,182,212,0.1)] w-full sm:w-auto"
+                className="group relative h-[41px] md:h-12 px-6 md:px-10 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer border shadow-[0_0_20px_rgba(0,229,255,0.2)] w-full sm:w-auto"
               >
                 <div className="relative z-10 flex h-full items-center justify-center">
                   {"I miei lavori".split("").map((char, i) => (
@@ -616,7 +616,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 whileHover="hover"
                 variants={{
                   initial: { backgroundColor: "transparent", borderColor: "rgba(255, 255, 255, 0.2)" },
-                  hover: { backgroundColor: "rgba(6, 182, 212, 0.15)", borderColor: "#06b6d4" }
+                  hover: { backgroundColor: "rgba(0, 229, 255, 0.2)", borderColor: "#00E5FF" }
                 }}
                 transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                 onClick={() => {
@@ -631,7 +631,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                       <motion.span
                         variants={{
                           initial: { y: 0, rotateX: 0, color: "rgba(255, 255, 255, 0.6)" },
-                          hover: { y: "-100%", rotateX: 90, color: "#06b6d4" }
+                          hover: { y: "-100%", rotateX: 90, color: "#00E5FF" }
                         }}
                         transition={{ 
                           delay: i * 0.015, 
@@ -644,8 +644,8 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                       </motion.span>
                       <motion.span
                         variants={{
-                          initial: { y: "100%", rotateX: -90, color: "#06b6d4" },
-                          hover: { y: 0, rotateX: 0, color: "#06b6d4" }
+                          initial: { y: "100%", rotateX: -90, color: "#00E5FF" },
+                          hover: { y: 0, rotateX: 0, color: "#00E5FF" }
                         }}
                         transition={{ 
                           delay: i * 0.015, 
@@ -684,7 +684,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
       {/* Loading State */}
       {loaded < SRCS.length && (
-        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-[#050508]">
+        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-[#020205]">
           <div className="w-12 h-12 border-2 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin" />
         </div>
       )}

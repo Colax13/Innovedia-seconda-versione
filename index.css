@@ -5,11 +5,11 @@
   --font-display: "Barlow Condensed", ui-sans-serif, system-ui, sans-serif;
   --font-tech: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  --color-pixar-dark: #030303;
-  --color-pixar-cyan: #06b6d4;
-  --color-pixar-purple: #9D00FF;
+  --color-pixar-dark: #020205;
+  --color-pixar-cyan: #00E5FF;
+  --color-pixar-purple: #A100FF;
   --color-pixar-pink: #FF00FF;
-  --color-pixar-card: #0A0A0A;
+  --color-pixar-card: #08080C;
 
   --letter-spacing-tighter: -0.05em;
   --letter-spacing-tight: -0.025em;
@@ -38,7 +38,7 @@
 }
 
 body {
-  background-color: #030303;
+  background-color: #020205;
   color: white;
   overflow-x: hidden;
   font-family: "Barlow", sans-serif;
@@ -53,7 +53,7 @@ html {
 
 /* Custom Selection Color */
 ::selection {
-  background: rgba(6, 182, 212, 0.3);
+  background: rgba(0, 229, 255, 0.4);
   color: white;
 }
 
