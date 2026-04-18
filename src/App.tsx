@@ -46,10 +46,10 @@ function HomePage() {
       <Navbar show={heroPhase === 3} />
       <Hero onPhaseChange={setHeroPhase} skipAnimation={heroPhase === 3} />
       <BrandImpactSection />
+      <CaseStudySection />
       <ChiSono />
       <ServicesSection />
       <ParallaxSection />
-      <CaseStudySection />
       <ProjectSection />
       <FinalCTA />
       <footer className="bg-[#020205]/80 backdrop-blur-md py-12 text-center border-t border-white/5 relative z-10">

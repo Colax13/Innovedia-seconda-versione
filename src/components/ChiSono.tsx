@@ -183,7 +183,7 @@ export default function ChiSono() {
               transition={!isMobile ? { duration: 0.8, delay: 0.1 } : undefined}
               className={`font-display text-[clamp(24px,4.5vw,48px)] font-bold uppercase tracking-wide leading-[1.05] mb-0 md:mb-[0.15em] text-white ${isMobile ? '' : 'opacity-25'}`}
             >
-              Non ti serve un sito.
+              Non è Fortuna.
             </motion.p>
             <motion.p
               style={{ 
@@ -196,7 +196,7 @@ export default function ChiSono() {
               transition={!isMobile ? { duration: 0.8, delay: 0.1 } : undefined}
               className="font-display text-[clamp(24px,4.5vw,48px)] font-bold uppercase tracking-wide leading-[1.05] text-pixar-cyan"
             >
-              Ti serve un sistema.
+              È un sistema.
             </motion.p>
           </div>
 

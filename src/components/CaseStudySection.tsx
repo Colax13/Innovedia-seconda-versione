@@ -162,7 +162,7 @@ const CaseStudySection: React.FC = () => {
     {
       value: (
         <span>
-          +<Counter value={20} delay={0.5} />
+          +<Counter value={30} delay={0.5} />
           <span className="text-pixar-cyan">%</span>
         </span>
       ),
@@ -208,7 +208,7 @@ const CaseStudySection: React.FC = () => {
                 className="flex items-center justify-center md:justify-start gap-6 mb-6"
               >
                 <span className="font-tech text-[10px] font-medium tracking-[0.4em] uppercase text-pixar-cyan/60 whitespace-nowrap">
-                  lo abbiamo già fatto
+                  Caso studio di successo
                 </span>
                 <div
                   className="flex-1 h-px hidden md:block"
@@ -392,34 +392,84 @@ const CaseStudySection: React.FC = () => {
               </div>
             </motion.div>
             
-            {/* Main Background Glow for the whole stack */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[100%] bg-pixar-cyan/5 blur-[150px] rounded-full -z-10 pointer-events-none" />
-          </div>
-
-          {/* Mobile CTA Section - Appears after images on mobile, hidden on desktop */}
-          <div className="lg:col-span-3 md:hidden mt-24">
-            <div className="space-y-8">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 1, delay: 0.8 }}
-                className="pt-4 flex flex-col items-center text-center"
-              >
-                <p className="font-tech text-[10px] tracking-widest text-white/30 uppercase mb-4">
-                  Vuoi risultati simili?
-                </p>
-                <FlipButton 
-                  text="Richiedi un'analisi gratuita" 
-                  primary
-                  onClick={() => {
-                    const el = document.getElementById('contatti');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                />
-              </motion.div>
-            </div>
           </div>
         </div>
+
+        {/* Testimonial Quote - Striking & Polished */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-[240px] mb-[30px] md:mt-[60px] md:mb-[240px] max-w-4xl mx-auto relative group"
+        >
+          {/* Subtle Technical Backdrop */}
+          <div className="absolute -inset-x-4 -inset-y-8 md:-inset-x-16 md:-inset-y-12 bg-white/[0.01] rounded-[32px] md:rounded-[40px] border border-white/5 overflow-hidden transition-all duration-1000 group-hover:bg-white/[0.02]">
+            {/* Minimal Scanline */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.02]"
+              style={{
+                backgroundImage: 'linear-gradient(rgba(0, 229, 255, 0.1) 1px, transparent 1px)',
+                backgroundSize: '100% 4px'
+              }}
+            />
+            {/* Edge Accents */}
+            <div className="absolute top-0 right-1/4 w-px h-8 bg-gradient-to-b from-pixar-cyan/30 to-transparent" />
+            <div className="absolute bottom-0 left-1/4 w-px h-8 bg-gradient-to-t from-pixar-cyan/30 to-transparent" />
+          </div>
+
+          <div className="relative text-center">
+            {/* Background Icon/Watermark - Scaled down */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[110px] md:text-[240px] text-pixar-cyan/5 leading-none select-none pointer-events-none -z-10">
+              ”
+            </div>
+
+            <blockquote className="font-sans text-[clamp(18px,3.5vw,32px)] font-extralight leading-[1.3] text-white tracking-tight mb-8 md:mb-10 px-6">
+              "Prima facevo tutto con il <span className="font-normal text-pixar-cyan/80">passaparola</span>, 
+              adesso mi arrivano clienti che hanno visto i video su <span className="relative inline-block">
+                <span className="relative z-10 italic">Instagram</span>
+                <motion.span 
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  transition={{ delay: 1, duration: 1.2 }}
+                  className="absolute bottom-2 left-0 right-0 h-[2px] bg-pixar-cyan/40 -z-10 origin-left"
+                />
+              </span>"
+            </blockquote>
+
+            <div className="flex flex-col items-center gap-6">
+              {/* Profile Accent - Scaled down for mobile */}
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-pixar-cyan/20 bg-pixar-cyan/5 flex items-center justify-center relative">
+                  <div className="absolute inset-0 rounded-full border border-pixar-cyan/40 animate-pulse" />
+                  <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 md:w-[18px] md:h-[18px] text-pixar-cyan/60">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                
+                <div className="flex flex-col items-start gap-1">
+                  <span className="font-display text-base md:text-lg font-bold tracking-wider text-white uppercase italic">Daniele</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-pixar-cyan animate-pulse" />
+                    <span className="font-tech text-[9px] md:text-[10px] tracking-[0.3em] uppercase text-white/30">Proprietario RD Salon</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Decorative Corner Brackets - Desktop (TL & BR only, aligned with backdrop) */}
+          <div className="hidden md:block absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-pixar-cyan rounded-tl-2xl -translate-x-10 -translate-y-8" />
+          <div className="hidden md:block absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-pixar-cyan rounded-br-2xl translate-x-10 translate-y-8" />
+
+          {/* Decorative Frame - Mobile (TL & BR only, shrunken and aligned) */}
+          <div className="md:hidden">
+            {/* Top-Left */}
+            <div className="absolute top-0 left-0 w-6 h-6 -translate-x-1 -translate-y-3 border-t-2 border-l-2 border-pixar-cyan rounded-tl-xl" />
+            {/* Bottom-Right */}
+            <div className="absolute bottom-0 right-0 w-6 h-6 translate-x-1 translate-y-3 border-b-2 border-r-2 border-pixar-cyan rounded-br-xl" />
+          </div>
+        </motion.div>
       </div>
     </section>
   );
