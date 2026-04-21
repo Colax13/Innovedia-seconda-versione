@@ -502,14 +502,9 @@ export default function ProjectSection() {
           <span className="font-sans text-cyan-400 text-[10px] font-bold uppercase tracking-[0.3em] block mb-2">
             PORTFOLIO
           </span>
-          <div className="flex flex-col">
-            <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tighter text-white leading-none">
-              Progetti
-            </h2>
-            <span className="font-tech text-[10px] md:text-xs tracking-[0.3em] uppercase text-white/40 mt-1 md:mt-2">
-              & project work
-            </span>
-          </div>
+          <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tighter text-white">
+            Progetti
+          </h2>
         </div>
         <p className="hidden md:block text-gray-400 font-sans max-w-sm text-right text-sm leading-relaxed">
           Una selezione di lavori che raccontano la nostra visione e il nostro impegno per l'eccellenza digitale.
@@ -632,7 +627,6 @@ export default function ProjectSection() {
             ))}
           </div>
         </motion.button>
-        
       </div>
     </motion.section>
   );

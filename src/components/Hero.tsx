@@ -443,7 +443,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         ctx.globalAlpha = p.op;
         ctx.fillStyle = '#00E5FF';
         ctx.shadowBlur = 10;
-        ctx.shadowColor = '#00E5FF';
+        ctx.shadowColor = ctx.fillStyle as string;
         // Draw square "pixels"
         ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
         ctx.restore();
@@ -684,7 +684,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
       {/* Loading State */}
       {loaded < SRCS.length && (
-        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-[#020205]">
+        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-[#050508]">
           <div className="w-12 h-12 border-2 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin" />
         </div>
       )}

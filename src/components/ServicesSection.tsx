@@ -104,7 +104,7 @@ const ServicesSection: React.FC = () => {
             title: "Sito Web",
             desc: "Non un template con il tuo logo. Un sito costruito per convertire chi ci atterra.",
             tags: ["UX DESIGN", "SVILUPPO", "PERFORMANCE"],
-            color: "from-[#00E5FF] to-transparent",
+            color: "from-cyan-400/20 to-transparent",
             icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
             image: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?q=80&w=1200&auto=format&fit=crop"
         },
@@ -113,7 +113,7 @@ const ServicesSection: React.FC = () => {
             title: "Brand Identity",
             desc: "Non solo un logo. Un'identità visiva completa che ti rende riconoscibile ovunque.",
             tags: ["LOGO", "VISUAL IDENTITY", "TONE OF VOICE"],
-            color: "from-[#00E5FF] to-transparent",
+            color: "from-cyan-400/20 to-transparent",
             icon: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z",
             image: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1200&auto=format&fit=crop"
         },
@@ -122,16 +122,16 @@ const ServicesSection: React.FC = () => {
             title: "Contenuti & Social",
             desc: "Non post quando ti ricordi. Un piano preciso che sa cosa dire, a chi e quando.",
             tags: ["CONTENT PLAN", "COPYWRITING", "ANALYTICS"],
-            color: "from-[#00E5FF] to-transparent",
+            color: "from-cyan-400/20 to-transparent",
             icon: "M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z",
             image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1200&auto=format&fit=crop"
         },
         {
             id: 4,
-            title: "marketing automation",
-            desc: "Un sistema che lavora in automatico per portarti nuovi contatti ogni giorno e per fidelizzare quelli che già hai.",
+            title: "Automazioni",
+            desc: "Non lavoro manuale ogni giorno. Un sistema che porta contatti e li segue per te.",
             tags: ["GESTIONALE", "AUTOMAZIONE", "WORKFLOW"],
-            color: "from-[#00E5FF] to-transparent",
+            color: "from-cyan-400/20 to-transparent",
             icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
             image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop"
         }
@@ -209,7 +209,7 @@ const ServicesSection: React.FC = () => {
                                         </div>
 
                                         <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 transition-opacity duration-700 ${isActive ? 'opacity-30' : ''}`}></div>
-                                        <div className={`absolute inset-0 bg-[#020205] transition-opacity duration-500 -z-10 ${isActive ? 'opacity-80' : 'opacity-95'}`}></div>
+                                        <div className={`absolute inset-0 bg-[#030303] transition-opacity duration-500 -z-10 ${isActive ? 'opacity-70' : 'opacity-90'}`}></div>
                                         
                                         <div className="absolute inset-0 p-10 flex flex-col h-full z-10">
                                             <div className="flex justify-between items-start mb-4">

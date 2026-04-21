@@ -53,7 +53,7 @@ export const ProjectDetailLayout: React.FC<{ project: Project }> = ({ project })
   return (
     <>
       <Navbar />
-      <div className="bg-[#020205] text-white font-sans selection:bg-orange-500/30">
+      <div className="bg-[#050508] text-white font-sans selection:bg-orange-500/30">
 
       <button 
         onClick={() => navigate('/#lavori')}
@@ -71,7 +71,7 @@ export const ProjectDetailLayout: React.FC<{ project: Project }> = ({ project })
             alt={project.title} 
             className="w-full h-full object-cover brightness-[0.3] saturate-[0.6] animate-in fade-in duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-transparent" style={{ backgroundImage: `linear-gradient(140deg, ${project.accentColor || project.color}18 0%, transparent 50%), linear-gradient(to top, #020205 0%, rgba(2,2,5,0.15) 65%, transparent 100%)` }} />
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-transparent" style={{ backgroundImage: `linear-gradient(140deg, ${project.accentColor || project.color}18 0%, transparent 50%), linear-gradient(to top, #050508 0%, rgba(5,5,8,0.15) 65%, transparent 100%)` }} />
         </div>
         <div className="absolute top-[70px] left-6 md:left-12 right-6 md:right-12 h-px bg-gradient-to-r from-transparent via-orange-500/30 to-transparent z-[2]" style={{ backgroundImage: `linear-gradient(90deg, transparent, ${project.accentColor || project.color}45, transparent)` }} />
         
@@ -241,7 +241,7 @@ export const ProjectDetailLayout: React.FC<{ project: Project }> = ({ project })
       </main>
 
       {/* CTA - Matching the site as requested */}
-      <section className="relative z-10 border-t border-white/10 text-center py-32 px-6 overflow-hidden bg-[#020205]">
+      <section className="relative z-10 border-t border-white/10 text-center py-32 px-6 overflow-hidden bg-[#030303]">
         <div className="absolute top-0 left-[12%] right-[12%] h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
         
         <div className="max-w-4xl mx-auto flex flex-col items-center">

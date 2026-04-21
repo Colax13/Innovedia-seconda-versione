@@ -93,7 +93,7 @@ const ProjectRDSalon: React.FC = () => {
           --a: #C084FC;
           --a2: #9B6FD4;
           --cyan: #00E5FF;
-          --bg: #020205;
+          --bg: #050508;
           background: var(--bg);
           color: #fff;
           font-family: 'Barlow', sans-serif;
@@ -113,13 +113,13 @@ const ProjectRDSalon: React.FC = () => {
         .b1 { position: absolute; width: 70vw; height: 70vw; border-radius: 50%; top: -18%; left: -14%; background: radial-gradient(circle,rgba(155,111,212,.2),rgba(109,40,217,.07) 45%,transparent 70%); filter: blur(88px); animation: b1 22s ease-in-out infinite; }
         .b2 { position: absolute; width: 60vw; height: 60vw; border-radius: 50%; top: 25%; right: -16%; background: radial-gradient(circle,rgba(192,132,252,.14),rgba(139,92,246,.05) 45%,transparent 70%); filter: blur(100px); animation: b2 28s ease-in-out infinite; }
         .b3 { position: absolute; width: 48vw; height: 48vw; border-radius: 50%; bottom: -10%; left: 20%; background: radial-gradient(circle,rgba(155,111,212,.1),transparent 65%); filter: blur(80px); animation: b3 32s ease-in-out infinite; }
-        .bv { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%,transparent 22%,rgba(2,2,5,.8) 100%); }
+        .bv { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%,transparent 22%,rgba(5,5,8,.8) 100%); }
 
         /* hero */
         #hero { position: relative; height: 92vh; min-height: 560px; overflow: hidden; }
         #hbg { position: absolute; inset: 0; }
         #hbg img { width: 100%; height: 100%; object-fit: cover; object-position: top; filter: brightness(.28) saturate(.55); }
-        #hov { position: absolute; inset: 0; background: linear-gradient(140deg,rgba(155,111,212,.12) 0%,transparent 50%),linear-gradient(to top,#020205,rgba(2,2,5,.1) 65%,transparent); }
+        #hov { position: absolute; inset: 0; background: linear-gradient(140deg,rgba(155,111,212,.12) 0%,transparent 50%),linear-gradient(to top,#050508,rgba(5,5,8,.1) 65%,transparent); }
         #hline { position: absolute; top: 60px; left: 48px; right: 48px; height: 1px; background: linear-gradient(90deg,transparent,rgba(192,132,252,.4),transparent); z-index: 2; }
         #hc { position: absolute; bottom: 0; left: 0; right: 0; padding: 0 52px 68px; z-index: 5; }
         .hm { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
@@ -479,7 +479,7 @@ const ProjectRDSalon: React.FC = () => {
 
           {/* MOOD */}
           <div className="vc" id="vc1" onClick={() => openV(1)}>
-            <video className="vthumb" src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1770651786/Ginevra_t229x1.mov" muted playsInline preload="metadata"></video>
+            <video className="vthumb" src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1776813461/0422_u3cqlq.mov" muted playsInline preload="metadata"></video>
             <div className="vov"></div>
             <div className="vplay"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             <div className="vlbl">
@@ -489,7 +489,7 @@ const ProjectRDSalon: React.FC = () => {
             <div className={`vplayer ${activeVideo === 1 ? 'active' : ''}`} id="vp1">
               <div className="vcls" onClick={(e) => closeV(e, 1)}>✕</div>
               <video controls playsInline muted preload="auto" style={{ width: '100%', height: '100%', objectFit: 'contain' }}>
-                <source src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1770651786/Ginevra_t229x1.mov" type="video/mp4" />
+                <source src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1776813461/0422_u3cqlq.mov" type="video/mp4" />
               </video>
             </div>
           </div>
@@ -530,14 +530,89 @@ const ProjectRDSalon: React.FC = () => {
 
         </div>
       </div>
-      <div className="sp"></div>
-
-      {/* ══ 03 FOTO ══ */}
+      {/* ══ 03 AUTOMAZIONI ══ */}
       <div className="skb rv">
         <div className="ski">
           <div className="skn">03</div>
           <div>
             <div className="sklbl">Capitolo terzo</div>
+            <div className="skt">Automazioni<br /><span style={{ WebkitTextStroke: '1.5px rgba(192,132,252,.45)', color: 'transparent' }}>Il sistema che lavora da solo</span></div>
+            <p className="skd">La continuazione logica: prima i contenuti, poi il sistema che li sfrutta. Automatizziamo i processi per liberare tempo e generare entrate in modo costante.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="inn" style={{ paddingBottom: '80px' }}>
+        <div className="sg">
+          <div className="rv">
+            <span className="lbl">Il sistema</span>
+            <h2 className="sh">Tre flussi.{"\n"}Un'unica{"\n"}strategia.</h2>
+            <div className="sb"></div>
+            <p className="sp2">Non si tratta solo di inviare messaggi, ma di costruire un'infrastruttura che lavora per il salone 24/7. Dall'acquisto di un buono al mantenimento della relazione, tutto è orchestrato per massimizzare il valore di ogni cliente.</p>
+          </div>
+          <div className="rv hidden md:block" style={{ transitionDelay: '.12s' }}>
+            <div className="si" style={{ border: '1px solid rgba(192,132,252,0.2)' }}>
+              <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839205/Buoni_e-commerce_u3fsgi.jpg" alt="Automazioni Mockup" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="inn" style={{ paddingBottom: '32px' }}>
+        <div className="vg rv" style={{ transitionDelay: '.08s' }}>
+          
+          {/* BLOCCO 1: BUONO HAIR SPA */}
+          <div className="vc" style={{ height: '400px', width: '315.656px', paddingBottom: '24px', paddingLeft: '24px', cursor: 'default', display: 'flex', flexDirection: 'column', gap: '8px', background: 'rgba(10,8,15,0.4)', borderColor: 'rgba(192,132,252,0.15)' }}>
+            <div className="vtag">Attivo Ora</div>
+            <div className="vtit" style={{ fontSize: '20px' }}>Buono Hair Spa automatico</div>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: '1.6', margin: 0 }}>
+              La cliente acquista online, il sistema le manda un buono Hair Spa in automatico. Nessun intervento manuale.
+            </p>
+            <div className="si" style={{ marginTop: '16px', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+              <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1776813820/Screenshot_1_dnc1tc.png" alt="Mockup Buono" style={{ height: '175px', width: '264.641px', objectFit: 'cover' }} />
+            </div>
+          </div>
+
+          {/* BLOCCO 2: EMAIL MARKETING */}
+          <div className="vc" style={{ height: '400px', width: '315.172px', paddingBottom: '20px', paddingLeft: '26px', paddingRight: '24px', paddingTop: '20px', cursor: 'default', display: 'flex', flexDirection: 'column', gap: '8px', background: 'rgba(10,8,15,0.4)', borderColor: 'rgba(192,132,252,0.15)' }}>
+            <div className="flex items-center gap-3">
+              <div className="vtag">In costruzione</div>
+              <span style={{ fontSize: '8px', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: '#C084FC', border: '1px solid rgba(192, 132, 252, 0.4)', borderRadius: '4px', padding: '3px 8px', background: 'rgba(192,132,252,0.1)' }}>In arrivo</span>
+            </div>
+            <div className="vtit" style={{ fontSize: '20px' }}>Email marketing</div>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: '1.6', margin: 0 }}>
+              Newsletter, promozioni stagionali, auguri di compleanno, festività. Comunicazioni personalizzate che mantengono il salone nella testa della cliente tutto l'anno.
+            </p>
+            <div className="si" style={{ marginTop: '16px', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+              <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1776813922/Screenshot_2_xigq1m.png" alt="Mockup Email" style={{ height: '165px', objectFit: 'cover' }} />
+            </div>
+          </div>
+
+          {/* BLOCCO 3: CANALE WHATSAPP */}
+          <div className="vc" style={{ height: '400px', width: '314.188px', padding: '20px 24px', cursor: 'default', display: 'flex', flexDirection: 'column', gap: '8px', background: 'rgba(10,8,15,0.4)', borderColor: 'rgba(192,132,252,0.15)' }}>
+            <div className="flex items-center gap-3">
+              <div className="vtag">In costruzione</div>
+              <span style={{ fontSize: '8px', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: '#C084FC', border: '1px solid rgba(192, 132, 252, 0.4)', borderRadius: '4px', padding: '3px 8px', background: 'rgba(192,132,252,0.1)' }}>In arrivo</span>
+            </div>
+            <div className="vtit" style={{ fontSize: '20px' }}>Canale WhatsApp</div>
+            <p style={{ fontFamily: "'Barlow', sans-serif", fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: '1.6', margin: 0 }}>
+              Comunicazioni dirette, novità, offerte esclusive. Dove le clienti sono già — sul telefono.
+            </p>
+            <div className="si" style={{ marginTop: '16px', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+              <OptimizedImage src="https://www.bitmat.it/wp-content/uploads/2026/04/whatsapp.png" alt="Mockup WhatsApp" style={{ height: '175px', width: '263.188px', objectFit: 'cover' }} />
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div className="sp"></div>
+
+      {/* ══ 04 FOTO ══ */}
+      <div className="skb rv">
+        <div className="ski">
+          <div className="skn">04</div>
+          <div>
+            <div className="sklbl">Capitolo quarto</div>
             <div className="skt">Fotografia<br /><span style={{ WebkitTextStroke: '1.5px rgba(192,132,252,.45)', color: 'transparent' }}>del Salone</span></div>
             <p className="skd">Un solo shooting strutturato per alimentare sito, social e stampa. Luce naturale, spazi, dettagli — tutto quello che fa dire "voglio venire qui".</p>
           </div>
@@ -604,8 +679,8 @@ const ProjectRDSalon: React.FC = () => {
       {/* STATS */}
       <div className="inn" style={{ paddingBottom: '112px' }}>
         <div className="stg rv">
-          <div className="stc"><div className="stv">+70</div><div className="stl">Nuovi appuntamenti in 3 mesi</div></div>
-          <div className="stc"><div className="stv">3</div><div className="stl">Canali costruiti da zero</div></div>
+          <div className="stc"><div className="stv">+400</div><div className="stl">Clienti acquisiti in 6 mesi</div></div>
+          <div className="stc"><div className="stv">5</div><div className="stl">Canali costruiti da zero</div></div>
           <div className="stc"><div className="stv">2</div><div className="stl">Brand collegati in cross-selling</div></div>
         </div>
       </div>

@@ -8,7 +8,7 @@ import { useForms } from '../../context/FormContext';
 const GREEN = "#2d7a4f";
 const GREEN_LIGHT = "#3a9e66";
 const CYAN = "#00E5FF";
-const BG = "#020205";
+const BG = "#050508";
 
 const IMGS = {
   hero:      "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773855714/Hero_page_uvt2fm.jpg",
@@ -60,7 +60,7 @@ function Blobs() {
       <div style={{position:"absolute",width:"70vw",height:"70vw",borderRadius:"50%",top:"-20%",left:"-15%",background:"radial-gradient(circle,rgba(45,122,79,.22) 0%,rgba(45,122,79,.07) 45%,transparent 70%)",filter:"blur(90px)",animation:"b1 22s ease-in-out infinite"}}/>
       <div style={{position:"absolute",width:"60vw",height:"60vw",borderRadius:"50%",top:"30%",right:"-18%",background:"radial-gradient(circle,rgba(6,182,212,.12) 0%,rgba(30,64,175,.05) 45%,transparent 70%)",filter:"blur(100px)",animation:"b2 28s ease-in-out infinite"}}/>
       <div style={{position:"absolute",width:"50vw",height:"50vw",borderRadius:"50%",bottom:"-10%",left:"20%",background:"radial-gradient(circle,rgba(45,122,79,.15) 0%,transparent 65%)",filter:"blur(80px)",animation:"b3 32s ease-in-out infinite"}}/>
-      <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 40%,transparent 25%,rgba(2,2,5,.82) 100%)"}}/>
+      <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 40%,transparent 25%,rgba(5,5,8,.82) 100%)"}}/>
     </div>
   );
 }
@@ -312,7 +312,7 @@ function CTA() {
   const r = (d=0): React.CSSProperties => ({ opacity:vis?1:0, transform:vis?"translateY(0)":"translateY(22px)", transition:`all .8s ${d}s cubic-bezier(.23,1,.32,1)` });
   
   return (
-    <section ref={ref} style={{ position:"relative", zIndex:1, borderTop:"1px solid rgba(255,255,255,.06)", textAlign:"center", padding:"120px 52px 72px", overflow:"hidden", background:"#020205" }}>
+    <section ref={ref} style={{ position:"relative", zIndex:1, borderTop:"1px solid rgba(255,255,255,.06)", textAlign:"center", padding:"120px 52px 72px", overflow:"hidden", background:"#030303" }}>
       <div style={{ position:"absolute", top:0, left:"12%", right:"12%", height:1, background:`linear-gradient(90deg,transparent,${CYAN}55,transparent)` }}/>
       
       <div style={{ maxWidth:900, margin:"0 auto", display:"flex", flexDirection:"column", alignItems:"center" }}>

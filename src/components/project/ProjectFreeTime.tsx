@@ -56,7 +56,7 @@ const ProjectFreeTime: React.FC = () => {
           .project-free-time {
             --o: #E8671A;
             --c: #E8671A;
-            --bg: #020205;
+            --bg: #050508;
             background: var(--bg);
             color: #fff;
             font-family: 'Barlow', sans-serif;
@@ -75,12 +75,12 @@ const ProjectFreeTime: React.FC = () => {
         .b1 { position: absolute; width: 75vw; height: 75vw; border-radius: 50%; top: -20%; left: -15%; background: radial-gradient(circle,rgba(232,103,26,.2),rgba(232,103,26,.07) 45%,transparent 70%); filter: blur(90px); animation: b1 22s ease-in-out infinite; }
         .b2 { position: absolute; width: 65vw; height: 65vw; border-radius: 50%; top: 30%; right: -18%; background: radial-gradient(circle,rgba(232,103,26,.16),rgba(232,103,26,.06) 45%,transparent 70%); filter: blur(100px); animation: b2 28s ease-in-out infinite; }
         .b3 { position: absolute; width: 50vw; height: 50vw; border-radius: 50%; bottom: -10%; left: 20%; background: radial-gradient(circle,rgba(232,103,26,.12),transparent 65%); filter: blur(80px); animation: b3 32s ease-in-out infinite; }
-        .bv { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%,transparent 25%,rgba(2,2,5,.8) 100%); }
+        .bv { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%,transparent 25%,rgba(5,5,8,.8) 100%); }
 
         #hero { position: relative; height: 92vh; min-height: 560px; overflow: hidden; }
         #hbg { position: absolute; inset: 0; }
         #hbg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.28) saturate(.6); }
-        #hov { position: absolute; inset: 0; background: linear-gradient(140deg,rgba(232,103,26,.1),transparent 50%),linear-gradient(to top,#020205,rgba(2,2,5,.1) 65%,transparent); }
+        #hov { position: absolute; inset: 0; background: linear-gradient(140deg,rgba(232,103,26,.1),transparent 50%),linear-gradient(to top,#050508,rgba(5,5,8,.1) 65%,transparent); }
         #hl { position: absolute; top: 60px; left: 48px; right: 48px; height: 1px; background: linear-gradient(90deg,transparent,rgba(232,103,26,.3),transparent); z-index: 2; }
         #hc { position: absolute; bottom: 0; left: 0; right: 0; padding: 0 52px 68px; z-index: 5; }
         .hm { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }

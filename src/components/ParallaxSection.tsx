@@ -8,33 +8,33 @@ const showcaseRows = [
   [
     { type: "photo", title: "Ritual Hair Spa", category: "E-commerce", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769513413/Hair_Spa_sofu9v.jpg" },
     { type: "photo", title: "RD Salon", category: "Web Design", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379623/1765792030088_xvxpzz.jpg" },
+    { type: "text", label: "PRESENZA", stat: "ONLINE", sub: "con ogni elemento al posto giusto" },
     { type: "photo", title: "Gentle Boozers", category: "Social Media", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769516773/GB_instagram_pvf2cv.jpg" },
     { type: "photo", title: "Free Time Bar", category: "Branding", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773848189/Logo_su_panino_tpz4ke.jpg" },
-    { type: "photo", title: "Ritual Hair Spa", category: "E-commerce", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769513413/Hair_Spa_sofu9v.jpg" },
   ],
-  // ROW 2
+  // ROW 2 — centro alto: testo tra le foto
   [
     { type: "photo", title: "GF Service", category: "Web Design", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773085029/Screenshot_1_ybfwjn.jpg" },
     { type: "photo", title: "Funeral Home", category: "Web Design", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089047/Screenshot_1_ygkfos.jpg" },
+    { type: "text", label: "CONTENUTI", stat: "SEO", sub: "che ti fanno trovare sempre" },
     { type: "photo", title: "Garden Planet", category: "Web Design", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769516352/Garden_Planet_design_nm1hq2.jpg" },
     { type: "photo", title: "Porte di Roma", category: "Fotografia", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769516050/2025-11-23T15_58_07_C0377_y53ubm.jpg" },
-    { type: "photo", title: "GF Service", category: "Web Design", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773085029/Screenshot_1_ybfwjn.jpg" },
   ],
-  // ROW 3
+  // ROW 3 — centro basso: testo tra le foto
   [
     { type: "photo", title: "Banana Republic", category: "Social Media", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769512968/Banana_Republic_wwrxir.jpg" },
     { type: "photo", title: "Vita Attiva", category: "Branding", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773085187/Screenshot_2_rgb9g1.jpg" },
+    { type: "text", label: "USER", stat: "EXPERIENCE", sub: "finalizzata alla vendita" },
     { type: "photo", title: "Hair Spa", category: "Web Design", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084326/Screenshot_2_ohz6ij.jpg" },
     { type: "photo", title: "RD Salon", category: "Web Design", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084409/Screenshot_6_kscqtg.jpg" },
-    { type: "photo", title: "Banana Republic", category: "Social Media", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769512968/Banana_Republic_wwrxir.jpg" },
   ],
   // ROW 4
   [
     { type: "photo", title: "GF Service", category: "Web Design", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773085031/Screenshot_3_w3ubpb.jpg" },
     { type: "photo", title: "Funeral Home", category: "Web Design", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089052/Screenshot_8_exvaml.jpg" },
+    { type: "text", label: "BRAND", stat: "IDENTITY", sub: "riconoscibile su ogni canale" },
     { type: "photo", title: "Porte di Roma", category: "Fotografia", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1766016460/1765739430363_qaqvc8.jpg" },
     { type: "photo", title: "Free Time Bar", category: "Branding", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773082284/Brandin_Free_time-04_ixq7ut.jpg" },
-    { type: "photo", title: "GF Service", category: "Web Design", src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773085031/Screenshot_3_w3ubpb.jpg" },
   ]
 ];
 
@@ -145,16 +145,50 @@ const ParallaxSection: React.FC = () => {
             const isText = child.getAttribute('data-type') === 'text';
             const isHovered = child.matches(':hover');
             
-            const thumb = child.querySelector(".thumb") as HTMLElement;
-            // Always colorful, always active
-            child.style.borderColor = "rgba(255,255,255,0.15)";
-            child.style.boxShadow = isHovered ? "0 25px 50px rgba(0,229,255,0.15)" : "0 10px 30px rgba(0,0,0,0.6)";
-            child.style.transform = isHovered ? "scale(1.05)" : "scale(1)";
-            child.style.zIndex = isHovered ? "10" : "1";
-
-            if (thumb) {
-              thumb.style.transform = isHovered ? "scale(1.1)" : "scale(1)";
-              thumb.style.filter = "grayscale(0%) brightness(1.05)";
+            // ON MOBILE: All cards are always active (hover effect always on)
+            // ON DESKTOP: Only active if hovered (simplified to avoid distance calc)
+            const isActive = isMobile ? true : isHovered;
+            
+            if (isActive && !isMobile) {
+              if (isText) {
+                // Neon effect for text cards (data cards)
+                child.style.borderColor = "#00E5FF";
+                child.style.boxShadow = `0 0 25px rgba(0, 229, 255, 0.5), 0 0 50px rgba(0, 229, 255, 0.2), inset 0 0 15px rgba(0, 229, 255, 0.3)`;
+              } else {
+                // Photo cards: clean look, no neon, just standard active/hover style
+                child.style.borderColor = "rgba(255,255,255,0.2)";
+                child.style.boxShadow = "0 20px 40px rgba(0,0,0,0.8)";
+              }
+            } else if (isActive && isMobile) {
+              // Mobile active state: no neon for text cards
+              child.style.borderColor = isText ? "rgba(6,182,212,0.6)" : "rgba(255,255,255,0.2)";
+              child.style.boxShadow = isText ? "none" : "0 20px 40px rgba(0,0,0,0.8)";
+              
+              child.style.transform = "scale(1.05)";
+              child.style.zIndex = "10";
+              
+              const overlay = child.querySelector(".overlay") as HTMLElement;
+              const thumb = child.querySelector(".thumb") as HTMLElement;
+              // Hide overlay text on mobile as requested: "elimina le scritte sopra le card"
+              if (overlay) overlay.style.opacity = "0";
+              if (thumb) {
+                thumb.style.transform = "scale(1.1)";
+                thumb.style.filter = "grayscale(0%) brightness(1.1)";
+              }
+            } else {
+              // Inactive state
+              child.style.borderColor = isText ? "rgba(6,182,212,0.2)" : "rgba(255,255,255,0.05)";
+              child.style.boxShadow = isText ? "none" : "0 10px 30px rgba(0,0,0,0.6)";
+              child.style.transform = "scale(1)";
+              child.style.zIndex = "1";
+              
+              const overlay = child.querySelector(".overlay") as HTMLElement;
+              const thumb = child.querySelector(".thumb") as HTMLElement;
+              if (overlay) overlay.style.opacity = "0";
+              if (thumb) {
+                thumb.style.transform = "scale(1)";
+                thumb.style.filter = "grayscale(100%) brightness(0.8)";
+              }
             }
           }
         });
@@ -176,36 +210,85 @@ const ParallaxSection: React.FC = () => {
       position: "relative",
       width: "100%",
       overflow: "hidden",
-      background: "#020205",
+      background: "rgba(0,0,0,0.85)",
       padding: "192px 0",
       zIndex: 10,
     }}>
       {/* Ambient blobs */}
       <div style={{
         position: "absolute", top: 0, left: "25%",
-        width: 800, height: 800, borderRadius: "50%",
-        background: `rgba(0,229,255,0.08)`,
-        filter: "blur(140px)", pointerEvents: "none",
+        width: 600, height: 600, borderRadius: "50%",
+        background: `rgba(6,182,212,0.07)`,
+        filter: "blur(120px)", pointerEvents: "none",
         contain: "strict",
       }} />
       <div style={{
         position: "absolute", bottom: 0, right: "25%",
         width: 400, height: 400, borderRadius: "50%",
-        background: `rgba(0,229,255,0.05)`,
+        background: `rgba(6,182,212,0.05)`,
         filter: "blur(120px)", pointerEvents: "none",
         contain: "strict",
       }} />
+
+      {/* Background text */}
+      {!isMobile && (
+        <div style={{
+          position: "absolute", inset: 0,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          zIndex: 0, pointerEvents: "none", overflow: "hidden",
+        }}>
+          <h2 style={{
+            fontFamily: "'Barlow Condensed', sans-serif",
+            fontWeight: 800,
+            fontSize: "15vw",
+            lineHeight: 1,
+            color: "transparent",
+            WebkitTextStroke: "1px rgba(255,255,255,0.06)",
+            textTransform: "uppercase",
+            letterSpacing: "0.15em",
+            whiteSpace: "nowrap",
+            transform: "rotate(-6deg) scale(1.1)",
+            userSelect: "none",
+          }}>
+            Capolavori
+          </h2>
+        </div>
+      )}
+
+      {/* Label */}
+      {!isMobile && (
+        <div style={{
+          position: "absolute", top: 32, left: 0, right: 0,
+          textAlign: "center", zIndex: 20, pointerEvents: "none",
+        }}>
+          <span style={{
+            display: "inline-block",
+            padding: "4px 14px",
+            borderRadius: 999,
+            border: "1px solid rgba(255,255,255,0.15)",
+            background: "rgba(0,0,0,0.5)",
+            color: "rgba(255,255,255,0.5)",
+            fontSize: 10,
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 700,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+          }}>
+            Eccellenza Visiva
+          </span>
+        </div>
+      )}
 
       {/* Rows */}
       <div style={{
         position: "relative", zIndex: 10,
         display: "flex", flexDirection: "column",
-        gap: 24,
+        gap: 32,
         transform: "rotate(-6deg) scale(1.05)",
         transformOrigin: "center",
         padding: "48px 0",
       }}>
-        {showcaseRows.map((row, rowIndex) => {
+        {(isMobile ? mobileShowcaseRows : showcaseRows).map((row, rowIndex) => {
           return (
             <div
               key={rowIndex}
@@ -213,7 +296,7 @@ const ParallaxSection: React.FC = () => {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                gap: 24,
+                gap: 32,
                 width: "100%",
                 whiteSpace: "nowrap",
                 willChange: "transform",
@@ -221,8 +304,10 @@ const ParallaxSection: React.FC = () => {
                 WebkitBackfaceVisibility: "hidden",
               }}
             >
-              {[...row, ...row].map((item, idx) => (
-                <CardItem key={`${rowIndex}-${idx}`} item={item} />
+              {[...row, ...row, ...row].map((item, idx) => (
+                item.type === "text"
+                  ? <TextCard key={`${rowIndex}-${idx}`} item={item} />
+                  : <CardItem key={`${rowIndex}-${idx}`} item={item} rowIndex={rowIndex} />
               ))}
             </div>
           );
@@ -319,7 +404,7 @@ function TextCard({ item }: { item: any }) {
   );
 }
 
-function CardItem({ item }: { item: any }) {
+function CardItem({ item, rowIndex }: { item: any, rowIndex: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -331,16 +416,16 @@ function CardItem({ item }: { item: any }) {
       onMouseLeave={() => setIsHovered(false)}
       style={{
         position: "relative",
-        width: 380, aspectRatio: "16/9",
+        width: 340, aspectRatio: "16/9",
         flexShrink: 0,
-        borderRadius: 16,
+        borderRadius: 12,
         overflow: "hidden",
-        border: `1px solid rgba(255,255,255,0.1)`,
-        boxShadow: "0 15px 35px rgba(0,0,0,0.5)",
-        background: "#030305",
+        border: `1px solid ${isHovered ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.05)"}`,
+        boxShadow: isHovered ? "0 20px 40px rgba(0,0,0,0.8)" : "0 10px 30px rgba(0,0,0,0.6)",
+        background: "#111",
         cursor: "pointer",
-        transition: "all .6s cubic-bezier(0.165, 0.84, 0.44, 1)",
-        transform: isHovered ? "scale(1.05)" : "scale(1)",
+        transition: "all .4s cubic-bezier(0.165, 0.84, 0.44, 1)",
+        transform: isHovered ? "scale(1.02)" : "scale(1)",
       }}
     >
       <OptimizedImage
@@ -350,11 +435,42 @@ function CardItem({ item }: { item: any }) {
         style={{
           width: "100%", height: "100%",
           objectFit: "cover",
-          filter: "grayscale(0%) brightness(1)",
-          transform: isHovered ? "scale(1.12)" : "scale(1)",
-          transition: "transform .8s cubic-bezier(0.165, 0.84, 0.44, 1)",
+          filter: isHovered ? "grayscale(0%)" : "grayscale(100%)",
+          transform: isHovered ? "scale(1.1)" : "scale(1)",
+          transition: "transform .7s cubic-bezier(0.165, 0.84, 0.44, 1), filter .5s ease",
         }}
       />
+      <div
+        className="overlay"
+        style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)",
+          opacity: isHovered ? 1 : 0,
+          transition: "opacity .3s ease",
+          display: "flex", flexDirection: "column", justifyContent: "flex-end",
+          padding: 20,
+          zIndex: 2,
+        }}
+      >
+        <span style={{
+          fontSize: 10, fontWeight: 700,
+          fontFamily: "'Barlow', sans-serif",
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          color: ACCENT,
+          marginBottom: 4, display: "block",
+        }}>
+          {item.category}
+        </span>
+        <h3 style={{
+          fontFamily: "'Barlow Condensed', sans-serif",
+          fontWeight: 700, fontSize: 20,
+          color: "#fff", lineHeight: 1,
+          letterSpacing: "0.05em",
+        }}>
+          {item.title}
+        </h3>
+      </div>
     </div>
   );
 }

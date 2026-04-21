@@ -27,8 +27,12 @@ function ParticleField() {
       alpha!: number;
       phase!: number;
       speed!: number;
+      color!: string;
 
-      constructor() { this.init(); }
+      constructor() { 
+        this.init(); 
+        this.color = 'rgba(0, 229, 255, ';
+      }
       init() {
         this.x = Math.random() * W; this.y = Math.random() * H;
         this.vx = (Math.random() - .5) * .25; this.vy = (Math.random() - .5) * .25;
@@ -42,7 +46,7 @@ function ParticleField() {
       draw() {
         if (!ctx) return;
         const a = this.alpha * (.5 + Math.sin(this.phase) * .5);
-        ctx.fillStyle = `rgba(0, 229, 255, ${a})`;
+        ctx.fillStyle = `${this.color}${a})`;
         ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
       }
     }
@@ -75,6 +79,28 @@ function ParticleField() {
   }, []);
 
   return <canvas ref={canvasRef} className="fixed inset-0 z-[1] pointer-events-none" />;
+}
+
+// ============================================================
+// SCANLINE
+// ============================================================
+function Scanline() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    let y = -10, raf: number;
+    function move() {
+      y += .4; if (y > window.innerHeight) y = -10;
+      if (ref.current) ref.current.style.transform = `translateY(${y}px)`;
+      raf = requestAnimationFrame(move);
+    }
+    raf = requestAnimationFrame(move);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  return (
+    <div ref={ref} className="fixed top-0 left-0 right-0 h-px z-[9996] pointer-events-none"
+      style={{ background: 'linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.08), transparent)' }} />
+  );
 }
 
 // ============================================================
@@ -114,8 +140,8 @@ function TextScramble() {
       const transTop = transEl.offsetTop;
       const transH = transEl.offsetHeight;
 
-      const nextSectionEl = document.getElementById('caso-studio');
-      const nextSectionTop = nextSectionEl ? nextSectionEl.offsetTop : transTop + transH;
+      const problemsEl = document.getElementById('problems-section');
+      const problemsTop = problemsEl ? problemsEl.offsetTop : transTop + transH;
 
       // ── PHASE 1: RISE IN ──
       const riseStart = heroBottom * 0.3;
@@ -140,9 +166,9 @@ function TextScramble() {
       }
 
       // ── PHASE 3: SCRAMBLE A → B ──
-      const morphDuration = transH * 0.08; // Ulteriormente velocizzato da 0.15
+      const morphDuration = transH * 0.4;
       const unlockThreshold = vh * 0.1;
-      const unlockPoint = nextSectionTop - (vh / 2) - unlockThreshold;
+      const unlockPoint = problemsTop - (vh / 2) - unlockThreshold;
 
       if (scrollY >= riseEnd && scrollY < unlockPoint) {
         const prog = morphDuration > 0 ? (scrollY - riseEnd) / morphDuration : 1;
@@ -171,10 +197,10 @@ function TextScramble() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const rawAlphaA = morphProgress < 0.52 ? 1 - morphProgress / 0.52 : 0;
+  const rawAlphaA = morphProgress < 0.6 ? 1 - morphProgress / 0.6 : 0;
   const alphaA = isNaN(rawAlphaA) ? 0 : rawAlphaA;
   
-  const rawAlphaB = morphProgress > 0.48 ? Math.min(1, (morphProgress - 0.48) / 0.52) : 0;
+  const rawAlphaB = morphProgress > 0.5 ? Math.min(1, (morphProgress - 0.5) / 0.5) : 0;
   const alphaB = isNaN(rawAlphaB) ? 0 : rawAlphaB;
   const scrambleA = morphProgress;
   const scrambleB = 1 - morphProgress;
@@ -534,11 +560,7 @@ function SolutionBadge({ visible }: { visible: boolean }) {
         ma non ti preoccupare
       </motion.p>
       <div
-        onClick={() => {
-          const el = document.getElementById('metodo');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
-        className="inline-flex items-center gap-4 py-5 px-12 rounded-full border border-pixar-cyan/[0.25] relative overflow-hidden cursor-pointer group hover:border-pixar-cyan/[0.5] transition-all duration-500"
+        className="inline-flex items-center gap-4 py-5 px-12 rounded-full border border-pixar-cyan/[0.25] relative overflow-hidden"
         style={{ background: 'linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(161,0,255,0.05))', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
       >
         <motion.div
@@ -556,7 +578,7 @@ function SolutionBadge({ visible }: { visible: boolean }) {
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           className="w-2 h-2 rounded-full bg-pixar-cyan"
         />
-        <span className="font-display text-[clamp(16px,2.5vw,28px)] font-bold tracking-widest uppercase text-white group-hover:text-pixar-cyan transition-colors duration-500">
+        <span className="font-display text-[clamp(16px,2.5vw,28px)] font-bold tracking-widest uppercase text-white">
           La soluzione <span className="text-pixar-cyan" style={{ textShadow: '0 0 30px rgba(0, 180, 216, 0.5)' }}>esiste</span>
         </span>
       </div>
@@ -567,8 +589,19 @@ function SolutionBadge({ visible }: { visible: boolean }) {
         transition={{ duration: isUp ? 0.3 : 1, delay: isUp ? 0 : 1.5 }}
         className="mt-6 md:mt-12 flex flex-col items-center gap-8"
       >
-        <p className="font-tech text-center text-[10px] tracking-[0.3em] uppercase text-white/40 animate-pulse">
-          scopri il nostro metodo ↓
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+          <FlipButton 
+            text="Richiedi un'analisi gratuita" 
+            primary
+            onClick={() => {
+              const el = document.getElementById('contatti');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+          />
+        </div>
+
+        <p className="font-tech text-[10px] tracking-[0.3em] uppercase text-white/40 animate-pulse">
+          oppure scopri il nostro metodo ↓
         </p>
       </motion.div>
     </motion.div>
@@ -587,15 +620,71 @@ export default function BrandImpactSection() {
   return (
     <>
       <ParticleField />
+      <Scanline />
       <TextScramble />
 
       {/* Scroll space for text scramble A → B */}
       <section id="scramble-zone" className="relative h-[80vh] md:h-[100vh]">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.05]">
+          <div className="absolute left-0 right-0 h-px bg-pixar-cyan" style={{ top: '25%' }} />
+          <div className="absolute left-0 right-0 h-px bg-pixar-cyan" style={{ top: '50%' }} />
+          <div className="absolute left-0 right-0 h-px bg-pixar-cyan" style={{ top: '75%' }} />
+          <div className="absolute top-0 bottom-0 w-px bg-pixar-cyan" style={{ left: '20%' }} />
+          <div className="absolute top-0 bottom-0 w-px bg-pixar-cyan" style={{ left: '50%' }} />
+          <div className="absolute top-0 bottom-0 w-px bg-pixar-cyan" style={{ left: '80%' }} />
+        </div>
       </section>
 
+      {/* Divider */}
+      <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.1), transparent)' }} />
 
+      {/* Problems */}
+      <section id="problems-section" className="relative min-h-[60vh] md:min-h-screen flex flex-col justify-center px-8 md:px-[clamp(2rem,8vw,10rem)] py-4 md:py-12 overflow-hidden">
+        <div className="flex items-center gap-8 mb-4 md:mb-16">
+          <span className="font-tech text-[10px] tracking-[0.4em] uppercase text-pixar-cyan/70 whitespace-nowrap">Il problema</span>
+          <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(0, 229, 255, 0.25), transparent)' }} />
+        </div>
 
+        <ProblemCard num="01" text="Sito confuso" tag="— nessuna direzione" delay={0} />
+        <ProblemCard num="02" text="Social casuali" tag="— zero strategia" delay={150} />
+        <ProblemCard num="03" text="Immagine debole" tag="— brand invisibile" delay={300} />
+      </section>
 
+      {/* Divider */}
+      <div className="w-full h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.1), transparent)' }} />
+
+      {/* Final */}
+      <section className="relative min-h-[80vh] md:min-h-screen flex flex-col justify-center items-center px-8 py-5 md:py-16 text-center overflow-hidden">
+        {/* Corner brackets */}
+        <motion.div
+          ref={bracketsRef}
+          initial={{ opacity: 0 }}
+          animate={bracketsInView ? { opacity: 0.06 } : {}}
+          transition={{ duration: 1.5, delay: 0.3 }}
+          className="absolute inset-0 pointer-events-none"
+        >
+          <div className="absolute top-[12%] left-[6%] w-[60px] h-[60px] border border-pixar-cyan border-r-0 border-b-0" />
+          <div className="absolute top-[12%] right-[6%] w-[60px] h-[60px] border border-pixar-cyan border-l-0 border-b-0" />
+          <div className="absolute bottom-[12%] left-[6%] w-[60px] h-[60px] border border-pixar-cyan border-r-0 border-t-0" />
+          <div className="absolute bottom-[12%] right-[6%] w-[60px] h-[60px] border border-pixar-cyan border-l-0 border-t-0" />
+        </motion.div>
+
+        <motion.p
+          ref={finalRef}
+          initial={{ opacity: 0, y: 50 }}
+          animate={finalInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="font-sans text-[clamp(18px,3vw,36px)] font-light leading-relaxed text-white/60 max-w-[750px] mt-6 md:mt-12"
+        >
+          Se non sei <span className="text-pixar-cyan" style={{ textShadow: '0 0 25px rgba(0, 229, 255, 0.5)' }}>credibile</span> online,<br />
+          perdi <strong className="font-semibold text-white">fiducia</strong> prima ancora<br />
+          di parlare con il cliente.
+        </motion.p>
+
+        <SolutionBadge visible={finalInView} />
+      </section>
+
+      <div className="h-[4vh]" />
     </>
   );
 }

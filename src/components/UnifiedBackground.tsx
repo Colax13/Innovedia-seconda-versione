@@ -31,79 +31,68 @@ export default function UnifiedBackground() {
   return (
     <>
       <style>{`
-        @keyframes orbit {
-          from { transform: rotate(0deg) translateX(20px) rotate(0deg); }
-          to { transform: rotate(360deg) translateX(20px) rotate(-360deg); }
-        }
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.5; transform: scale(1); }
-          50% { opacity: 0.8; transform: scale(1.05); }
-        }
-        .blob-anim {
-          animation: orbit 20s linear infinite;
-        }
+        @keyframes blob1 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(60px,-40px) scale(1.1)} 66%{transform:translate(-30px,50px) scale(0.95)} }
+        @keyframes blob2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-50px,60px) scale(1.08)} 66%{transform:translate(40px,-30px) scale(0.97)} }
+        @keyframes blob3 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(40px,50px) scale(0.92)} 66%{transform:translate(-60px,-20px) scale(1.06)} }
+        @keyframes blob4 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-40px,-50px) scale(1.05)} 66%{transform:translate(50px,30px) scale(0.94)} }
       `}</style>
       <div style={{ position:"fixed", inset:0, zIndex:-1, background:"#020205", overflow:"hidden" }}>
 
-        {/* Blob 1 — Ciano Elettrico */}
-        <div 
-          className="blob-anim"
-          style={{
-            position:"absolute", width:"110vw", height:"110vw", borderRadius:"50%",
-            top:"-35%", left:"-25%",
-            background:"radial-gradient(circle, rgba(0,229,255,0.55) 0%, rgba(0,180,216,0.25) 45%, transparent 70%)",
-            filter:"blur(120px)",
-            transform:`translate(${mouse.x * 30}px, ${mouse.y * 25}px)`,
-            transition:"transform 1.8s cubic-bezier(0.23, 1, 0.32, 1)",
-            opacity: 0.8
-          }} 
-        />
-
-        {/* Blob 2 — Blu Elettrico / Viola Brillante */}
-        <div 
-          className="blob-anim"
-          style={{
-            position:"absolute", width:"95vw", height:"95vw", borderRadius:"50%",
-            top:"10%", right:"-30%",
-            background:"radial-gradient(circle, rgba(37,99,235,0.45) 0%, rgba(161,0,255,0.22) 50%, transparent 75%)",
-            filter:"blur(130px)",
-            transform:`translate(${mouse.x * -20}px, ${mouse.y * 30}px)`,
-            transition:"transform 1.8s cubic-bezier(0.23, 1, 0.32, 1)",
-            opacity: 0.7,
-            animationDelay: "-5s"
-          }} 
-        />
-
-        {/* Blob 3 — Verde Fluorescente / Teal */}
-        <div 
-          className="blob-anim"
-          style={{
-            position:"absolute", width:"90vw", height:"90vw", borderRadius:"50%",
-            bottom:"-25%", left:"15%",
-            background:"radial-gradient(circle, rgba(0,255,180,0.35) 0%, rgba(13,148,136,0.2) 50%, transparent 75%)",
-            filter:"blur(110px)",
-            transform:`translate(${mouse.x * 20}px, ${mouse.y * -20}px)`,
-            transition:"transform 1.8s cubic-bezier(0.23, 1, 0.32, 1)",
-            opacity: 0.6,
-            animationDelay: "-10s"
-          }} 
-        />
-
-        {/* Blob 4 — Deep Purple Glow (New) */}
+        {/* Top-Left Cyan Blob */}
         <div style={{
-          position:"absolute", width:"90vw", height:"90vw", borderRadius:"50%",
-          bottom:"10%", right:"10%",
-          background:"radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)",
-          filter:"blur(120px)",
-          transform:`translate(${mouse.x * -10}px, ${mouse.y * -10}px)`,
-          transition:"transform 2s cubic-bezier(0.23, 1, 0.32, 1)",
+          position: "absolute",
+          width: "80vw",
+          height: "80vw",
+          borderRadius: "50%",
+          top: "-15%",
+          left: "-15%",
+          background: "radial-gradient(circle, rgba(34, 211, 238, 0.2) 0%, transparent 70%)",
+          filter: "blur(130px)",
+          transform: `translate(${mouse.x * 20}px, ${mouse.y * 15}px)`,
+          transition: "transform 1.8s cubic-bezier(0.23, 1, 0.32, 1)",
         }} />
 
-        {/* Vignette centrale per far risaltare il testo */}
+        {/* Bottom-Right Cyan Blob */}
         <div style={{
-          position:"absolute", inset:0,
-          background:"radial-gradient(ellipse at center, transparent 30%, rgba(2,2,5,0.85) 100%)",
+          position: "absolute",
+          width: "80vw",
+          height: "80vw",
+          borderRadius: "50%",
+          bottom: "-15%",
+          right: "-15%",
+          background: "radial-gradient(circle, rgba(34, 211, 238, 0.2) 0%, transparent 70%)",
+          filter: "blur(130px)",
+          transform: `translate(${mouse.x * -15}px, ${mouse.y * -20}px)`,
+          transition: "transform 1.8s cubic-bezier(0.23, 1, 0.32, 1)",
         }} />
+
+        {/* Center Cyan Glow */}
+        <div style={{
+          position: "absolute",
+          width: "100vw",
+          height: "100vw",
+          borderRadius: "50%",
+          top: "50%",
+          left: "50%",
+          transform: `translate(calc(-50% + ${mouse.x * 10}px), calc(-50% + ${mouse.y * 10}px))`,
+          background: "radial-gradient(circle, rgba(34, 211, 238, 0.1) 0%, transparent 70%)",
+          filter: "blur(160px)",
+          transition: "transform 2s cubic-bezier(0.23, 1, 0.32, 1)",
+        }} />
+
+        {/* Overlay noise/grain per dare texture */}
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+          opacity: 0.03,
+          mixBlendMode: "overlay",
+        }} />
+
+{/* Vignette luminosa per dare profondità */}
+<div style={{
+  position: "absolute", inset: 0,
+  background: "radial-gradient(ellipse at center, transparent 20%, rgba(10, 11, 30, 0.6) 100%)",
+}} />
       </div>
     </>
   );
