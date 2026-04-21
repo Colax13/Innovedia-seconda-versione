@@ -44,7 +44,7 @@ export default function LavoriPage() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 1 }}
               >
-                Visioni
+                PROGETTI
               </motion.span>
               <motion.span
                 initial={{ y: 80, opacity: 0 }}
@@ -52,7 +52,7 @@ export default function LavoriPage() {
                 transition={{ delay: 0.4, duration: 1 }}
                 className="text-pixar-cyan underline decoration-[0.05em] underline-offset-[0.1em]"
               >
-                Tangibili
+                REALIZZATI
               </motion.span>
             </h1>
 
@@ -63,8 +63,7 @@ export default function LavoriPage() {
               className="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-20"
             >
               <p className="font-sans text-white/50 max-w-xl text-lg md:text-xl leading-relaxed font-light">
-                Esplora la convergenza tra estetica Pixar e strategia digitale. 
-                Ogni progetto è un tassello di un ecosistema progettato per durare.
+                Tra lavori personali e project work, in questa sezione sono raccolti tutti i lavori che ho realizzato.
               </p>
               
               <div className="flex items-center gap-4 text-[10px] font-tech text-white/30 uppercase tracking-widest">

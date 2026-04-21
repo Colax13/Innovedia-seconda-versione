@@ -562,7 +562,7 @@ const ProjectRDSalon: React.FC = () => {
         <div className="vg rv" style={{ transitionDelay: '.08s' }}>
           
           {/* BLOCCO 1: BUONO HAIR SPA */}
-          <div className="vc" style={{ height: '400px', width: '315.656px', paddingBottom: '24px', paddingLeft: '24px', cursor: 'default', display: 'flex', flexDirection: 'column', gap: '8px', background: 'rgba(10,8,15,0.4)', borderColor: 'rgba(192,132,252,0.15)' }}>
+          <div className="vc" style={{ height: '400px', width: '315.656px', paddingTop: '20px', paddingBottom: '20px', paddingRight: '24px', paddingLeft: '24px', cursor: 'default', display: 'flex', flexDirection: 'column', gap: '8px', background: 'rgba(10,8,15,0.4)', borderColor: 'rgba(192,132,252,0.15)' }}>
             <div className="vtag">Attivo Ora</div>
             <div className="vtit" style={{ fontSize: '20px' }}>Buono Hair Spa automatico</div>
             <p style={{ fontFamily: "'Barlow', sans-serif", fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: '1.6', margin: 0 }}>

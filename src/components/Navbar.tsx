@@ -51,13 +51,13 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-[100] flex justify-center py-6 pointer-events-none transition-all duration-1000 ${show ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
+      <nav className={`fixed top-0 w-full z-[100] flex justify-center pointer-events-none transition-all duration-500 ${scrolled ? 'pt-0' : 'py-6'} ${show ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
         <div 
           className={`
             pointer-events-auto transition-all duration-500 ease-out
             flex justify-between items-center px-6 md:px-10 py-3
             ${scrolled 
-                ? 'w-[90%] md:w-auto bg-black/80 backdrop-blur-xl border border-[#00E5FF]/40 rounded-full shadow-[0_8px_40px_rgba(0,0,0,0.9)]' 
+                ? 'w-[92%] md:w-auto bg-black/80 backdrop-blur-xl border border-[#00E5FF]/40 rounded-full shadow-[0_8px_40px_rgba(0,0,0,0.8)]' 
                 : 'w-full bg-black/40 backdrop-blur-sm border-b border-white/5'}
           `}
         >
