@@ -2,6 +2,7 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,6 +21,21 @@ async function startServer() {
       appType: "spa",
     });
     app.use(vite.middlewares);
+
+    // Fallback per le Single Page Application in sviluppo
+    app.get('*', async (req, res, next) => {
+      const url = req.originalUrl;
+      try {
+        // Leggi index.html dalla root
+        let template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
+        // Trasforma il file tramite Vite (per iniettare i moduli corretti)
+        template = await vite.transformIndexHtml(url, template);
+        res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
+      } catch (e: any) {
+        vite.ssrFixStacktrace(e);
+        next(e);
+      }
+    });
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
