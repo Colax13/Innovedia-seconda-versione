@@ -23,7 +23,7 @@ async function startServer() {
     app.use(vite.middlewares);
 
     // Fallback per le Single Page Application in sviluppo
-    app.get('*', async (req, res, next) => {
+    app.get('*all', async (req, res, next) => {
       const url = req.originalUrl;
       try {
         // Leggi index.html dalla root
@@ -39,7 +39,7 @@ async function startServer() {
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    app.get('*', (req, res) => {
+    app.get('*all', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
