@@ -527,12 +527,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
               }}
               className="font-display font-black text-[clamp(80px,13vw,180px)] tracking-tight leading-none flex items-baseline text-white drop-shadow-[0_0_50px_rgba(0,229,255,0.6)]"
             >
-          <span>Ludov</span>
+          <span>Colasant</span>
               <span className="relative inline-block">
                 ı
                 <span ref={dotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />
               </span>
-              <span>co</span>
             </motion.div>
 
             <motion.div
