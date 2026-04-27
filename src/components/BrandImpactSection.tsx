@@ -601,7 +601,7 @@ function SolutionBadge({ visible }: { visible: boolean }) {
         </div>
 
         <p className="font-tech text-[10px] tracking-[0.3em] uppercase text-white/40 animate-pulse">
-          oppure scopri il nostro metodo ↓
+          oppure scopri il mio metodo ↓
         </p>
       </motion.div>
     </motion.div>
@@ -645,9 +645,9 @@ export default function BrandImpactSection() {
           <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(0, 229, 255, 0.25), transparent)' }} />
         </div>
 
-        <ProblemCard num="01" text="Sito confuso" tag="— nessuna direzione" delay={0} />
-        <ProblemCard num="02" text="Social casuali" tag="— zero strategia" delay={150} />
-        <ProblemCard num="03" text="Immagine debole" tag="— brand invisibile" delay={300} />
+        <ProblemCard num="01" text="Nessuno ti trova" tag="— Cercano online, trovano il tuo concorrente" delay={0} />
+        <ProblemCard num="02" text="Posti a caso" tag="— Pubblichi quando ti ricordi, non arriva nessuno" delay={150} />
+        <ProblemCard num="03" text="Non ti riconoscono" tag="— Online sembri uno dei tanti, o peggio: non esisti" delay={300} />
       </section>
 
       {/* Divider */}

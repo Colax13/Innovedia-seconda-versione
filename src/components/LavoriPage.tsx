@@ -161,7 +161,7 @@ export default function LavoriPage() {
              <a href="#" className="hover:text-pixar-cyan transition-colors">Twitter</a>
              <a href="#" className="hover:text-pixar-cyan transition-colors">LinkedIn</a>
         </div>
-        <p className="text-gray-800 text-[10px] font-tech uppercase tracking-[0.2em]">© 2024 Innovedia — Digital Excellence</p>
+        <p className="text-gray-800 text-[10px] font-tech uppercase tracking-[0.2em]">© 2024 Ludovico Colasanti — Digital Excellence</p>
       </footer>
     </div>
   );

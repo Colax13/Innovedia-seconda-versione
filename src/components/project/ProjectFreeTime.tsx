@@ -338,7 +338,7 @@ const ProjectFreeTime: React.FC = () => {
           </button>
         </div>
         <div className="rv ctf">
-          <span className="ctfb">Innovedia</span>
+          <span className="ctfb">Ludovico Colasanti</span>
           <span className="ctfc">© 2025 Ludovico Colasanti</span>
         </div>
       </section>

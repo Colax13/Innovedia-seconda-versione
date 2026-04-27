@@ -67,7 +67,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
             className="text-white font-display text-xl font-bold tracking-tight cursor-pointer select-none mr-0 md:mr-12 hover:opacity-80 transition-opacity z-[101]"
             onClick={() => setMobileMenuOpen(false)}
           >
-            INNOVEDIA
+            LUDOVICO COLASANTI
           </Link>
 
           {/* Links (Desktop) */}
@@ -263,7 +263,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
                     Innovazione Digitale & Design
                   </p>
                   <p className="text-[8px] font-sans text-white/10 uppercase tracking-widest mt-1">
-                    © 2024 Innovedia
+                    © 2024 Ludovico Colasanti
                   </p>
                 </div>
               </motion.div>

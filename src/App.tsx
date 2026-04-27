@@ -12,6 +12,7 @@ import UnifiedBackground from './components/UnifiedBackground';
 import { ProjectPage } from './components/project/ProjectPage';
 import LavoriPage from './components/LavoriPage';
 import FinalCTA from './components/FinalCTA';
+import CustomCursor from './components/CustomCursor';
 
 function HomePage() {
   const [heroPhase, setHeroPhase] = React.useState(() => {
@@ -58,7 +59,7 @@ function HomePage() {
              <a href="#" className="hover:text-white transition-colors">Twitter</a>
              <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
         </div>
-        <p className="text-gray-700 text-xs font-sans">© 2024 Innovedia. Creato con React.</p>
+        <p className="text-gray-700 text-xs font-sans">© 2024 Ludovico Colasanti. Creato con React.</p>
       </footer>
     </div>
   );
@@ -66,11 +67,14 @@ function HomePage() {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/lavori" element={<LavoriPage />} />
-      <Route path="/progetto/:id" element={<ProjectPage />} />
-    </Routes>
+    <div className="lg:cursor-none min-h-screen">
+      <CustomCursor />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/lavori" element={<LavoriPage />} />
+        <Route path="/progetto/:id" element={<ProjectPage />} />
+      </Routes>
+    </div>
   );
 }
 

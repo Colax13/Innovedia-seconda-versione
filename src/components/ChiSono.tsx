@@ -271,7 +271,7 @@ export default function ChiSono() {
             <div className="relative overflow-hidden rounded-xl bg-pixar-card border border-white/5">
               <motion.img
                 src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774028261/Senza_titolo-1_yamovm.png"
-                alt="Ludovico — Innovedia"
+                alt="Ludovico Colasanti"
                 className="w-full h-auto block object-cover"
                 loading="lazy"
                 referrerPolicy="no-referrer"

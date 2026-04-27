@@ -380,7 +380,7 @@ function CTA() {
       </div>
       
       <div style={{ marginTop:96, paddingTop:24, borderTop:"1px solid rgba(255,255,255,.05)", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-        <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:800, fontSize:13, letterSpacing:".15em", color:"rgba(255,255,255,.2)", textTransform:"uppercase" }}>Innovedia</span>
+        <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:800, fontSize:13, letterSpacing:".15em", color:"rgba(255,255,255,.2)", textTransform:"uppercase" }}>Ludovico Colasanti</span>
         <span style={{ fontSize:10, color:"rgba(255,255,255,.15)" }}>© 2025 Ludovico Colasanti</span>
       </div>
     </section>

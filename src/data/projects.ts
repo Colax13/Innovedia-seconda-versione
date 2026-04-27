@@ -297,7 +297,7 @@ export const projects = [
             { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089047/Screenshot_1_ygkfos.jpg", caption: "About Aziendale" },
             { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089052/Screenshot_8_exvaml.jpg", caption: "Hero Page" },
             { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089054/Screenshot_4_d6u1nh.jpg", caption: "Gestionale" },
-            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089049/Screenshot_2_ai8qiq.jpg", caption: "I Nostri Servizi" },
+            { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089049/Screenshot_2_ai8qiq.jpg", caption: "I Miei Servizi" },
             { url: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1775572185/Ultimi_manifesti_slugvh.jpg", caption: "Sezione Manifesti" }
         ],
         link: "https://agenziafunebre.colasantiludovico.it/",

@@ -507,7 +507,7 @@ export default function ProjectSection() {
           </h2>
         </div>
         <p className="hidden md:block text-gray-400 font-sans max-w-sm text-right text-sm leading-relaxed">
-          Una selezione di lavori che raccontano la nostra visione e il nostro impegno per l'eccellenza digitale.
+          Una selezione di lavori che raccontano la mia visione e il mio impegno per l'eccellenza digitale.
         </p>
       </motion.div>
 

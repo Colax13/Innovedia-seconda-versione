@@ -179,7 +179,7 @@ const ServicesSection: React.FC = () => {
                     {!isMobile && (
                         <div 
                             ref={carouselRef}
-                            className="flex flex-row gap-4 h-[550px] overflow-visible"
+                            className="flex flex-row gap-4 h-[460px] overflow-visible"
                         >
                             {services.map((service, index) => {
                                 const isActive = activeIndex === index;
@@ -192,7 +192,7 @@ const ServicesSection: React.FC = () => {
                                         style={{ transitionDelay: isVisible ? staggerDelay : '0ms' }}
                                         className={`
                                             service-card
-                                            relative rounded-[2.5rem] overflow-hidden cursor-pointer group
+                                            relative rounded-[2.5rem] overflow-hidden group
                                             flex-shrink-0
                                             ${isActive ? 'md:flex-[3]' : 'md:flex-1'}
                                             border border-white/5 hover:border-white/10
@@ -211,13 +211,13 @@ const ServicesSection: React.FC = () => {
                                         <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 transition-opacity duration-700 ${isActive ? 'opacity-30' : ''}`}></div>
                                         <div className={`absolute inset-0 bg-[#030303] transition-opacity duration-500 -z-10 ${isActive ? 'opacity-70' : 'opacity-90'}`}></div>
                                         
-                                        <div className="absolute inset-0 p-10 flex flex-col h-full z-10">
+                                        <div className="absolute inset-0 p-8 flex flex-col h-full z-10">
                                             <div className="flex justify-between items-start mb-4">
-                                                <span className={`font-display text-4xl transition-colors duration-500 ${isActive ? 'text-white' : 'text-gray-400'}`}>
+                                                <span className={`font-display text-3xl transition-colors duration-500 ${isActive ? 'text-white' : 'text-gray-400'}`}>
                                                     0{service.id}
                                                 </span>
-                                                <div className={`w-12 h-12 rounded-full border border-white/5 flex items-center justify-center transition-all duration-500 ${isActive ? 'bg-white text-black scale-100 rotate-0' : 'bg-transparent text-gray-700 -rotate-45'}`}>
-                                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <div className={`w-10 h-10 rounded-full border border-white/5 flex items-center justify-center transition-all duration-500 ${isActive ? 'bg-white text-black scale-100 rotate-0' : 'bg-transparent text-gray-700 -rotate-45'}`}>
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d={service.icon}></path>
                                                     </svg>
                                                 </div>
@@ -233,17 +233,17 @@ const ServicesSection: React.FC = () => {
 
                                                 <div className={`
                                                     overflow-hidden transition-all duration-700 ease-out
-                                                    ${isActive ? 'max-h-[300px] opacity-100 mt-8' : 'max-h-0 opacity-0 mt-0'}
+                                                    ${isActive ? 'max-h-[300px] opacity-100 mt-6' : 'max-h-0 opacity-0 mt-0'}
                                                 `}>
-                                                    <p className="font-sans text-gray-300 text-base leading-relaxed mb-8 pl-1 font-medium">
+                                                    <p className="font-sans text-gray-300 text-sm leading-relaxed mb-6 pl-1 font-medium">
                                                         {service.desc}
                                                     </p>
                                                     
-                                                    <div className="flex flex-wrap gap-2.5">
+                                                    <div className="flex flex-wrap gap-2">
                                                         {service.tags.map((tag, i) => (
                                                             <span 
                                                                 key={i} 
-                                                                className="px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[11px] font-sans font-bold uppercase tracking-widest text-gray-300"
+                                                                className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-sans font-bold uppercase tracking-widest text-gray-300"
                                                                 style={{ transitionDelay: `${i * 100}ms` }}
                                                             >
                                                                 {tag}

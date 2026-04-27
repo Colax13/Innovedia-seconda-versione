@@ -276,7 +276,7 @@ export const ProjectDetailLayout: React.FC<{ project: Project }> = ({ project })
         </div>
         
         <div className="mt-24 pt-6 border-t border-white/5 flex justify-between items-center max-w-[1080px] mx-auto">
-          <span className="font-display font-extrabold text-[13px] tracking-widest text-white/20 uppercase">Innovedia</span>
+          <span className="font-display font-extrabold text-[13px] tracking-widest text-white/20 uppercase">Ludovico Colasanti</span>
           <span className="text-[10px] text-white/15">© 2025 Ludovico Colasanti</span>
         </div>
       </section>

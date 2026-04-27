@@ -162,7 +162,7 @@ const CaseStudySection: React.FC = () => {
     {
       value: (
         <span>
-          +<Counter value={20} delay={0.5} />
+          +<Counter value={30} delay={0.5} />
           <span className="text-pixar-cyan">%</span>
         </span>
       ),
@@ -208,7 +208,7 @@ const CaseStudySection: React.FC = () => {
                 className="flex items-center justify-center md:justify-start gap-6 mb-6"
               >
                 <span className="font-tech text-[10px] font-medium tracking-[0.4em] uppercase text-pixar-cyan/60 whitespace-nowrap">
-                  lo abbiamo già fatto
+                  l'ho già fatto
                 </span>
                 <div
                   className="flex-1 h-px hidden md:block"
@@ -231,7 +231,7 @@ const CaseStudySection: React.FC = () => {
                   transition={{ duration: 0.8, delay: isMobile ? 0 : 0.2 }}
                   className="font-sans text-[clamp(16px,2vw,18px)] font-light leading-relaxed text-white/60 mb-12 md:mb-0"
                 >
-                  Da salone locale a brand digitale. Partiti da zero, abbiamo costruito Sito, e-commerce spa, strategia social integrata.
+                  Da salone locale a brand digitale. Partiti da zero, ho costruito Sito, e-commerce spa, strategia social integrata.
                 </motion.p>
               </div>
             </div>

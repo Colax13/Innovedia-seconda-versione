@@ -527,15 +527,15 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
               }}
               className="font-display font-black text-[clamp(80px,13vw,180px)] tracking-tight leading-none flex items-baseline text-white drop-shadow-[0_0_50px_rgba(0,229,255,0.6)]"
             >
-              <span>Innoved</span>
+          <span>Ludov</span>
               <span className="relative inline-block">
                 ı
                 <span ref={dotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />
               </span>
-              <span>a</span>
+              <span>co</span>
             </motion.div>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={phase === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
               style={{ opacity: scrollOpacity }}
@@ -546,10 +546,10 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 stiffness: 50,
                 damping: 20
               }}
-              className="text-[10px] md:text-[clamp(8px,1.2vw,14px)] font-tech font-medium tracking-[0.2em] md:tracking-[0.4em] uppercase text-white/60 mt-6 text-center leading-relaxed md:leading-normal whitespace-normal px-6 md:px-4 max-w-[300px] md:max-w-none"
+              className="text-[10px] md:text-[clamp(10px,1.1vw,13px)] font-tech font-medium tracking-normal md:tracking-[0.02em] uppercase text-white/50 mt-6 text-center leading-relaxed md:leading-normal whitespace-normal px-6 md:px-4 max-w-[420px] md:max-w-[550px]"
             >
-              Trasformo aziende in brand che vendono
-            </motion.p>
+              Porto clienti alla tua attività locale. <br /> Sito, social, automazioni in un sistema che lavora per te.
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
