@@ -646,7 +646,7 @@ export default function BrandImpactSection() {
         </div>
 
         <ProblemCard num="01" text="Nessuno ti trova" tag="— Cercano online, trovano il tuo concorrente" delay={0} />
-        <ProblemCard num="02" text="Posti a caso" tag="— Pubblichi quando ti ricordi, non arriva nessuno" delay={150} />
+        <ProblemCard num="02" text="Post fatti a caso" tag="— Pubblichi quando ti ricordi, non arriva nessuno" delay={150} />
         <ProblemCard num="03" text="Non ti riconoscono" tag="— Online sembri uno dei tanti, o peggio: non esisti" delay={300} />
       </section>
 
