@@ -10,14 +10,24 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -51,27 +61,43 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-[100] flex justify-center pointer-events-none transition-all duration-500 ${scrolled ? 'pt-0' : 'py-6'} ${show ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
-        <div 
-          className={`
-            pointer-events-auto transition-all duration-500 ease-out
-            flex justify-between items-center px-6 md:px-10 py-3
-            ${scrolled 
-                ? 'w-[92%] md:w-auto bg-black/80 backdrop-blur-xl border border-[#00E5FF]/40 rounded-full shadow-[0_8px_40px_rgba(0,0,0,0.8)]' 
-                : 'w-full bg-black/40 backdrop-blur-sm border-b border-white/5'}
-          `}
+      <nav className={`fixed top-0 w-full z-[100] flex justify-center pointer-events-none ${show ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'} transition-all duration-500`}>
+        <motion.div 
+          initial={false}
+          animate={{
+            width: scrolled ? (isMobile ? '94%' : 'auto') : '100%',
+            paddingTop: scrolled ? (isMobile ? '8px' : '12px') : (isMobile ? '12px' : '20px'),
+            paddingBottom: scrolled ? (isMobile ? '8px' : '12px') : (isMobile ? '12px' : '20px'),
+            paddingLeft: scrolled ? '24px' : (isMobile ? '32px' : '40px'),
+            paddingRight: scrolled ? '24px' : (isMobile ? '32px' : '40px'),
+            marginTop: scrolled ? (isMobile ? '10px' : '20px') : '0',
+            borderRadius: scrolled ? '9999px' : '0px',
+            backgroundColor: scrolled ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.3)',
+            backdropFilter: scrolled ? 'blur(20px)' : 'blur(8px)',
+            borderBottomWidth: '1px',
+            borderLeftWidth: scrolled ? '1px' : '0px',
+            borderRightWidth: scrolled ? '1px' : '0px',
+            borderTopWidth: scrolled ? '1px' : '0px',
+            borderColor: scrolled ? 'rgba(0, 229, 255, 0.4)' : 'rgba(255, 255, 255, 0.05)',
+            boxShadow: scrolled ? '0 10px 40px -10px rgba(0,0,0,0.7)' : '0 0 0 rgba(0,0,0,0)'
+          }}
+          transition={{
+            duration: 0.6,
+            ease: [0.23, 1, 0.32, 1]
+          }}
+          className="pointer-events-auto flex justify-between items-center"
         >
           {/* Logo */}
           <Link 
             to="/"
-            className="text-white font-display text-xl font-bold tracking-tight cursor-pointer select-none mr-0 md:mr-12 hover:opacity-80 transition-opacity z-[101]"
+            className="text-white font-display text-lg md:text-xl font-bold tracking-tight cursor-pointer select-none mr-0 md:mr-12 hover:opacity-80 transition-opacity z-[101]"
             onClick={() => setMobileMenuOpen(false)}
           >
             LUDOVICO COLASANTI
           </Link>
 
           {/* Links (Desktop) */}
-          <div className={`hidden md:flex gap-8 items-center`}>
+          <div className="hidden md:flex gap-8 items-center">
             {menuItems.map((item) => (
                item === 'Lavori' ? (
                  <Link 
@@ -94,18 +120,17 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
             ))}
           </div>
           
-          {/* CTA (Desktop) */}
-          <div className="hidden md:block ml-12">
+            <div className="hidden md:block ml-12">
               <a 
                 href={isHome ? "#contatti" : "/#contatti"} 
                 onClick={(e) => handleNavClick(e, 'Contatti')}
-                className={`relative px-5 py-2 overflow-hidden rounded-full group bg-white/10 hover:bg-white transition-colors duration-300 border border-[#00E5FF]`}
+                className="relative px-5 py-2 overflow-hidden rounded-full group bg-white/10 hover:bg-white transition-colors duration-300 border border-[#00E5FF] flex items-center justify-center"
               >
-                  <span className="relative z-10 text-[10px] font-sans font-bold uppercase tracking-wider text-white group-hover:text-black transition-colors duration-300">
+                  <span className="relative z-10 text-[10px] font-sans font-bold uppercase tracking-wider text-white group-hover:text-black transition-colors duration-300 leading-none">
                       Parliamo
                   </span>
               </a>
-          </div>
+            </div>
 
           {/* Mobile Toggle */}
           <button 
@@ -128,7 +153,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
               />
             </div>
           </button>
-        </div>
+        </motion.div>
       </nav>
 
       {/* Mobile Menu Overlay */}

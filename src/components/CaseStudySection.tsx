@@ -30,7 +30,7 @@ function Counter({ value, duration = 2, delay = 0 }: { value: number, duration?:
 // ============================================================
 // FLIP BUTTON (Hero Style)
 // ============================================================
-function FlipButton({ text, onClick, primary = false, noBorder = false }: { text: string, onClick?: () => void, primary?: boolean, noBorder?: boolean }) {
+export function FlipButton({ text, onClick, primary = false, noBorder = false }: { text: string, onClick?: () => void, primary?: boolean, noBorder?: boolean }) {
   return (
     <motion.button 
       initial="initial"

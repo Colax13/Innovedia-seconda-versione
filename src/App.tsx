@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import RevelationSection from './components/RevelationSection';
 import BrandImpactSection from './components/BrandImpactSection';
 import ChiSono from './components/ChiSono';
 import ServicesSection from './components/ServicesSection';
@@ -47,6 +48,7 @@ function HomePage() {
       <Navbar show={heroPhase === 3} />
       <Hero onPhaseChange={setHeroPhase} skipAnimation={heroPhase === 3} />
       <BrandImpactSection />
+      <RevelationSection />
       <ChiSono />
       <ServicesSection />
       <ParallaxSection />

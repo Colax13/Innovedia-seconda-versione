@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'motion/react';
+import { FlipButton } from './CaseStudySection';
 
 // ============================================================
 // PARTICLE CANVAS
@@ -254,9 +255,6 @@ interface ScrambleWordsProps {
   highlightWords?: string[];
 }
 
-// ============================================================
-// SCRAMBLE WORDS RENDERER
-// ============================================================
 function ScrambleWords({ words, scrambleAmount, direction, highlightWords }: ScrambleWordsProps) {
   return (
     <>
@@ -347,9 +345,6 @@ interface ProblemCardProps {
   delay: number;
 }
 
-// ============================================================
-// PROBLEM CARD
-// ============================================================
 function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: false, amount: 0.15 });
@@ -390,7 +385,6 @@ function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
     }
   }, [isInView, entered, delay, scrollDirection]);
 
-  // Animation variants based on scroll direction
   const variants = {
     initial: { opacity: 0, x: -200, rotate: -5, scale: 1.1, filter: 'blur(8px)' },
     animateDown: {
@@ -436,7 +430,7 @@ function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
         <motion.div
           animate={entered && scrollDirection === 'down' ? { x: [0, -4, 3, -2, 1, 0], skewX: [0, -3, 2, -1, 0.5, 0] } : { x: 0, skewX: 0 }}
           transition={{ duration: 0.36, ease: 'linear', delay: 0.05 }}
-          className="relative flex items-center gap-4 md:gap-10 py-4 md:py-6 px-4 md:px-8 rounded-[10px] overflow-hidden border border-pixar-cyan/[0.12] group hover:border-pixar-cyan/[0.25] hover:shadow-[0_0_35px_rgba(0,229,255,0.06),inset_0_0_35px_rgba(0,229,255,0.04)] transition-all duration-400"
+          className="relative flex items-center gap-4 md:gap-10 py-4 md:py-6 px-4 md:px-8 rounded-[10px] overflow-hidden border border-[#00E5FF]/[0.12] group hover:border-[#00E5FF]/[0.25] hover:shadow-[0_0_35px_rgba(0,229,255,0.06),inset_0_0_35px_rgba(0,229,255,0.04)] transition-all duration-400"
           style={{ background: 'linear-gradient(135deg, rgba(0, 229, 255, 0.05), transparent 60%)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
         >
           <motion.div
@@ -453,7 +447,7 @@ function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
             className="absolute inset-0 pointer-events-none"
             style={{ background: 'linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.12), transparent)' }}
           />
-          <span className="font-tech text-[10px] md:text-[13px] text-pixar-cyan tracking-wider opacity-60 min-w-[2rem]">{num}</span>
+          <span className="font-tech text-[10px] md:text-[13px] text-[#00E5FF] tracking-wider opacity-60 min-w-[2rem]">{num}</span>
           <span className="font-display text-[32px] md:text-[clamp(32px,6vw,72px)] font-extrabold tracking-wider uppercase text-white leading-none">{text}</span>
           <span className="ml-auto font-tech text-[9px] tracking-widest uppercase text-white/15 hidden md:block">{tag}</span>
         </motion.div>
@@ -462,64 +456,6 @@ function ProblemCard({ num, text, tag, delay }: ProblemCardProps) {
   );
 }
 
-// ============================================================
-// FLIP BUTTON (Hero Style)
-// ============================================================
-function FlipButton({ text, onClick, primary = false, noBorder = false }: { text: string, onClick?: () => void, primary?: boolean, noBorder?: boolean }) {
-  return (
-    <motion.button 
-      initial="initial"
-      whileHover="hover"
-      whileTap={{ scale: 0.98 }}
-      variants={{
-        initial: { backgroundColor: "rgba(255, 255, 255, 0.05)", borderColor: noBorder ? "transparent" : (primary ? "#00E5FF" : "rgba(255, 255, 255, 0.2)") },
-        hover: { backgroundColor: "#ffffff", borderColor: "#ffffff" }
-      }}
-      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-      onClick={onClick}
-      className={`group relative h-10 px-7 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer ${noBorder ? '' : 'border'} shadow-[0_0_20px_rgba(0, 229, 255, 0.15)] w-full sm:w-auto`}
-    >
-      <div className="relative z-10 flex h-full items-center justify-center">
-        {text.split("").map((char, i) => (
-          <span key={i} className="relative inline-block overflow-hidden">
-            <motion.span
-              variants={{
-                initial: { y: 0, rotateX: 0, color: "#ffffff" },
-                hover: { y: "-100%", rotateX: 90, color: "#000000" }
-              }}
-              transition={{ 
-                delay: i * 0.015, 
-                duration: 0.5, 
-                ease: [0.23, 1, 0.32, 1] 
-              }}
-              className="inline-block"
-            >
-              {char === " " ? "\u00A0" : char}
-            </motion.span>
-            <motion.span
-              variants={{
-                initial: { y: "100%", rotateX: -90, color: "#000000" },
-                hover: { y: 0, rotateX: 0, color: "#000000" }
-              }}
-              transition={{ 
-                delay: i * 0.015, 
-                duration: 0.5, 
-                ease: [0.23, 1, 0.32, 1] 
-              }}
-              className="absolute inset-0 inline-block"
-            >
-              {char === " " ? "\u00A0" : char}
-            </motion.span>
-          </span>
-        ))}
-      </div>
-    </motion.button>
-  );
-}
-
-// ============================================================
-// SOLUTION BADGE
-// ============================================================
 function SolutionBadge({ visible }: { visible: boolean }) {
   const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('down');
   const lastScrollY = useRef(0);
@@ -560,7 +496,7 @@ function SolutionBadge({ visible }: { visible: boolean }) {
         ma non ti preoccupare
       </motion.p>
       <div
-        className="inline-flex items-center gap-4 py-5 px-12 rounded-full border border-pixar-cyan/[0.25] relative overflow-hidden"
+        className="inline-flex items-center gap-4 py-5 px-12 rounded-full border border-[#00E5FF]/[0.25] relative overflow-hidden"
         style={{ background: 'linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(161,0,255,0.05))', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
       >
         <motion.div
@@ -576,41 +512,36 @@ function SolutionBadge({ visible }: { visible: boolean }) {
         <motion.div
           animate={{ boxShadow: ['0 0 12px #00E5FF, 0 0 30px rgba(0, 229, 255, 0.4)', '0 0 25px #00E5FF, 0 0 55px rgba(0, 229, 255, 0.6)', '0 0 12px #00E5FF, 0 0 30px rgba(0, 229, 255, 0.4)'] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-2 h-2 rounded-full bg-pixar-cyan"
+          className="w-2 h-2 rounded-full bg-[#00E5FF]"
         />
         <span className="font-display text-[clamp(16px,2.5vw,28px)] font-bold tracking-widest uppercase text-white">
-          La soluzione <span className="text-pixar-cyan" style={{ textShadow: '0 0 30px rgba(0, 180, 216, 0.5)' }}>esiste</span>
+          La soluzione <span className="text-[#00E5FF]" style={{ textShadow: '0 0 30px rgba(0, 180, 216, 0.5)' }}>esiste</span>
         </span>
       </div>
-      {/* CTA Section */}
+      
+      {/* CTA Section - Replicated from CaseStudySection */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: isUp ? 0.3 : 1, delay: isUp ? 0 : 1.5 }}
-        className="mt-6 md:mt-12 flex flex-col items-center gap-8"
+        className="mt-12 md:mt-24 flex flex-col items-center"
       >
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <FlipButton 
-            text="Richiedi un'analisi gratuita" 
-            primary
-            onClick={() => {
-              const el = document.getElementById('contatti');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-          />
-        </div>
-
-        <p className="font-tech text-[10px] tracking-[0.3em] uppercase text-white/40 animate-pulse">
-          oppure scopri il mio metodo ↓
+        <p className="font-tech text-[10px] tracking-widest text-white/30 uppercase mb-4">
+          Vuoi risultati simili?
         </p>
+        <FlipButton 
+          text="Richiedi un'analisi gratuita" 
+          primary
+          onClick={() => {
+            const el = document.getElementById('contatti');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+        />
       </motion.div>
     </motion.div>
   );
 }
 
-// ============================================================
-// MAIN EXPORT
-// ============================================================
 export default function BrandImpactSection() {
   const finalRef = useRef<HTMLParagraphElement>(null);
   const bracketsRef = useRef<HTMLDivElement>(null);
@@ -618,7 +549,7 @@ export default function BrandImpactSection() {
   const bracketsInView = useInView(bracketsRef, { once: false, amount: 0.2 });
 
   return (
-    <>
+    <div id="impact-section" className="relative">
       <ParticleField />
       <Scanline />
       <TextScramble />
@@ -626,12 +557,12 @@ export default function BrandImpactSection() {
       {/* Scroll space for text scramble A → B */}
       <section id="scramble-zone" className="relative h-[80vh] md:h-[100vh]">
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.05]">
-          <div className="absolute left-0 right-0 h-px bg-pixar-cyan" style={{ top: '25%' }} />
-          <div className="absolute left-0 right-0 h-px bg-pixar-cyan" style={{ top: '50%' }} />
-          <div className="absolute left-0 right-0 h-px bg-pixar-cyan" style={{ top: '75%' }} />
-          <div className="absolute top-0 bottom-0 w-px bg-pixar-cyan" style={{ left: '20%' }} />
-          <div className="absolute top-0 bottom-0 w-px bg-pixar-cyan" style={{ left: '50%' }} />
-          <div className="absolute top-0 bottom-0 w-px bg-pixar-cyan" style={{ left: '80%' }} />
+          <div className="absolute left-0 right-0 h-px bg-[#00E5FF]" style={{ top: '25%' }} />
+          <div className="absolute left-0 right-0 h-px bg-[#00E5FF]" style={{ top: '50%' }} />
+          <div className="absolute left-0 right-0 h-px bg-[#00E5FF]" style={{ top: '75%' }} />
+          <div className="absolute top-0 bottom-0 w-px bg-[#00E5FF]" style={{ left: '20%' }} />
+          <div className="absolute top-0 bottom-0 w-px bg-[#00E5FF]" style={{ left: '50%' }} />
+          <div className="absolute top-0 bottom-0 w-px bg-[#00E5FF]" style={{ left: '80%' }} />
         </div>
       </section>
 
@@ -641,7 +572,7 @@ export default function BrandImpactSection() {
       {/* Problems */}
       <section id="problems-section" className="relative min-h-[60vh] md:min-h-screen flex flex-col justify-center px-8 md:px-[clamp(2rem,8vw,10rem)] py-4 md:py-12 overflow-hidden">
         <div className="flex items-center gap-8 mb-4 md:mb-16">
-          <span className="font-tech text-[10px] tracking-[0.4em] uppercase text-pixar-cyan/70 whitespace-nowrap">Il problema</span>
+          <span className="font-tech text-[10px] tracking-[0.4em] uppercase text-[#00E5FF]/70 whitespace-nowrap">Il problema</span>
           <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(0, 229, 255, 0.25), transparent)' }} />
         </div>
 
@@ -663,10 +594,10 @@ export default function BrandImpactSection() {
           transition={{ duration: 1.5, delay: 0.3 }}
           className="absolute inset-0 pointer-events-none"
         >
-          <div className="absolute top-[12%] left-[6%] w-[60px] h-[60px] border border-pixar-cyan border-r-0 border-b-0" />
-          <div className="absolute top-[12%] right-[6%] w-[60px] h-[60px] border border-pixar-cyan border-l-0 border-b-0" />
-          <div className="absolute bottom-[12%] left-[6%] w-[60px] h-[60px] border border-pixar-cyan border-r-0 border-t-0" />
-          <div className="absolute bottom-[12%] right-[6%] w-[60px] h-[60px] border border-pixar-cyan border-l-0 border-t-0" />
+          <div className="absolute top-[12%] left-[6%] w-[60px] h-[60px] border border-[#00E5FF] border-r-0 border-b-0" />
+          <div className="absolute top-[12%] right-[6%] w-[60px] h-[60px] border border-[#00E5FF] border-l-0 border-b-0" />
+          <div className="absolute bottom-[12%] left-[6%] w-[60px] h-[60px] border border-[#00E5FF] border-r-0 border-t-0" />
+          <div className="absolute bottom-[12%] right-[6%] w-[60px] h-[60px] border border-[#00E5FF] border-l-0 border-t-0" />
         </motion.div>
 
         <motion.p
@@ -676,7 +607,7 @@ export default function BrandImpactSection() {
           transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="font-sans text-[clamp(18px,3vw,36px)] font-light leading-relaxed text-white/60 max-w-[750px] mt-6 md:mt-12"
         >
-          Se non sei <span className="text-pixar-cyan" style={{ textShadow: '0 0 25px rgba(0, 229, 255, 0.5)' }}>credibile</span> online,<br />
+          Se non sei <span className="text-[#00E5FF]" style={{ textShadow: '0 0 25px rgba(0, 229, 255, 0.5)' }}>credibile</span> online,<br />
           perdi <strong className="font-semibold text-white">fiducia</strong> prima ancora<br />
           di parlare con il cliente.
         </motion.p>
@@ -685,6 +616,6 @@ export default function BrandImpactSection() {
       </section>
 
       <div className="h-[4vh]" />
-    </>
+    </div>
   );
 }

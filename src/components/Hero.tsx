@@ -31,8 +31,10 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   const [phase, setPhase] = useState(skipAnimation ? 3 : 0);
   const [loaded, setLoaded] = useState(0);
   const [scrollOpacity, setScrollOpacity] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const dotPlaceholderRef = useRef<HTMLSpanElement>(null);
+  const mobileDotPlaceholderRef = useRef<HTMLSpanElement>(null);
   const targetPos = useRef<{x: number, y: number, r: number} | null>(null);
   const trail = useRef<{x: number, y: number, r: number}[]>([]);
   const particles = useRef<{x: number, y: number, vx: number, vy: number, size: number, op: number, life: number}[]>([]);
@@ -64,6 +66,13 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       onPhaseChange(3);
     }
   }, [skipAnimation, onPhaseChange]);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -110,6 +119,8 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    const isMobile = window.innerWidth < 768;
 
     let animationFrameId: number;
     let W = canvas.width = window.innerWidth;
@@ -254,9 +265,9 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       const ENTRY_START = 0;
       const ENTRY_DUR = 1800;
       const SUCK_START = 1800; 
-      const SUCK_DUR = 1500;
-      const BOUNCE_START = 3400; 
-      const FALL_DUR = 250;
+      const SUCK_DUR = 1000;
+      const BOUNCE_START = 2800; 
+      const FALL_DUR = 300;
       const PARABOLA_DUR = 1400;
 
       const pEntry = clamp((loopState.current.elapsed - ENTRY_START) / ENTRY_DUR, 0, 1);
@@ -265,46 +276,43 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       const pParabola = clamp((loopState.current.elapsed - BOUNCE_START - FALL_DUR) / PARABOLA_DUR, 0, 1);
 
       const scrollY = window.scrollY;
-      if (scrollY < 50) disintegrated.current = false; // Reset when back at top
+      if (scrollY < 50) disintegrated.current = false; 
       
       const getStickyY = (baseY: number, r: number) => {
         if (pParabola < 1) return baseY;
-        const targetY = baseY + scrollY * 1.5; // Move down faster than scroll
-        const limit = H - r - 5; 
-        if (targetY >= limit) {
-          // Update global impact point for the next section
+        const targetY = baseY; 
+        const limit = r + 2; // Locked at Top
+        if (targetY <= limit) {
           if (typeof window !== 'undefined') {
             (window as any).lastSphereX = targetPos.current?.x || CX();
           }
           if (!disintegrated.current) {
             disintegrated.current = true;
-            // Initial burst
             for (let i = 0; i < 40; i++) {
               particles.current.push({
                 x: (targetPos.current?.x || CX()) + (Math.random() - 0.5) * 20,
                 y: limit,
                 vx: (Math.random() - 0.5) * 12,
-                vy: (Math.random() - 1) * 10,
+                vy: (Math.random() + 0.5) * -10, // Burst Upwards
                 size: 1.5 + Math.random() * 3,
                 op: 1,
                 life: 1 + Math.random() * 0.5
               });
             }
           }
-          // Continuous "leak" while at the limit - directed downwards
           if (Math.random() > 0.6) {
             particles.current.push({
               x: (targetPos.current?.x || CX()) + (Math.random() - 0.5) * 40,
               y: limit,
               vx: (Math.random() - 0.5) * 6,
-              vy: 4 + Math.random() * 12, // Faster falling down
+              vy: -(4 + Math.random() * 12), // Leak Upwards
               size: 1 + Math.random() * 2.5,
               op: 0.9,
               life: 0.8 + Math.random() * 0.4
             });
           }
         }
-        return Math.min(targetY, limit);
+        return Math.max(targetY, limit);
       };
 
       let currentPhase = 0;
@@ -381,19 +389,22 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       let morphT = 0; 
       let squash = 1;
 
-      if (pFall > 0) {
-        const floorY = H * 0.85;
+      if (pFall > 0 && !isMobile) {
+        const floorY = H * 0.08; // Moving UP
         if (pParabola <= 0) {
           sphereY = lerp(CY(), floorY, pFall * pFall);
-          squash = 1 + pFall * 0.5;
+          squash = 1 + pFall * 0.4;
         } else {
-          if (!targetPos.current && dotPlaceholderRef.current) {
-            const rect = dotPlaceholderRef.current.getBoundingClientRect();
-            const fontSize = Math.max(80, Math.min(window.innerWidth * 0.13, 180));
+          // Sphere target above "i" of "Soluzioni"
+          const targetElement = mobileDotPlaceholderRef.current; 
+
+          if (targetElement) {
+            const rect = targetElement.getBoundingClientRect();
+            const fontSize = Math.max(60, Math.min(window.innerWidth * 0.1, 140));
             targetPos.current = {
               x: rect.left + rect.width / 2,
               y: rect.top + rect.height / 2,
-              r: fontSize * 0.08
+              r: fontSize * 0.08 + 2
             };
           }
           const { x: targetX, y: targetY, r: targetR } = targetPos.current || { x: CX(), y: CY(), r: 10 };
@@ -419,39 +430,41 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         }
       }
 
-      const finalSphereY = getStickyY(sphereY, sphereR);
+      const finalSphereY = isMobile ? -1000 : getStickyY(sphereY, sphereR);
 
-      trail.current.forEach((t, i) => {
-        const op = (i / trail.current.length) * 0.4;
-        const stickyTY = getStickyY(t.y, t.r);
-        drawDot(t.x, stickyTY, t.r * 0.9, op, true);
-      });
+      if (!isMobile) {
+        trail.current.forEach((t, i) => {
+          const op = (i / trail.current.length) * 0.4;
+          const stickyTY = getStickyY(t.y, t.r);
+          drawDot(t.x, stickyTY, t.r * 0.9, op, true);
+        });
 
-      if (sphereR > 1) {
-        drawSphere(sphereX, finalSphereY, sphereR, sphereGlow, morphT, squash);
-      }
-
-      // Draw particles
-      particles.current.forEach((p, i) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.2; // gravity
-        p.life -= 0.02;
-        p.op = clamp(p.life, 0, 1);
-        
-        ctx.save();
-        ctx.globalAlpha = p.op;
-        ctx.fillStyle = '#00E5FF';
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = ctx.fillStyle as string;
-        // Draw square "pixels"
-        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
-        ctx.restore();
-
-        if (p.life <= 0) {
-          particles.current.splice(i, 1);
+        if (sphereR > 1) {
+          drawSphere(sphereX, finalSphereY, sphereR, sphereGlow, morphT, squash);
         }
-      });
+
+        // Draw particles
+        particles.current.forEach((p, i) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.2; // gravity
+          p.life -= 0.02;
+          p.op = clamp(p.life, 0, 1);
+          
+          ctx.save();
+          ctx.globalAlpha = p.op;
+          ctx.fillStyle = '#00E5FF';
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = ctx.fillStyle as string;
+          // Draw square "pixels"
+          ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+          ctx.restore();
+
+          if (p.life <= 0) {
+            particles.current.splice(i, 1);
+          }
+        });
+      }
 
       animationFrameId = requestAnimationFrame(loop);
     };
@@ -476,210 +489,249 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   };
 
   return (
-    <section id="hero" className="relative h-screen w-full overflow-hidden">
-      {/* Skip Button */}
-      {phase < 3 && (
-        <button 
-          onClick={handleSkip}
-          className="absolute top-8 right-8 z-[110] text-[10px] font-tech uppercase tracking-widest text-white/40 hover:text-white transition-colors px-4 py-2 border border-white/10 rounded-full bg-black/20 backdrop-blur-sm"
-        >
-          Skip Intro
-        </button>
-      )}
-      {/* Background Video */}
-      <AnimatePresence>
-        {phase === 3 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.25 }}
-            transition={{ duration: 2.5, ease: "easeInOut" }}
-            className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
+    <section id="hero" className="relative h-[150vh] w-full">
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        {/* Skip Button */}
+        {phase < 3 && (
+          <button 
+            onClick={handleSkip}
+            className="absolute top-8 right-8 z-[110] text-[10px] font-tech uppercase tracking-widest text-white/40 hover:text-white transition-colors px-4 py-2 border border-white/10 rounded-full bg-black/20 backdrop-blur-sm"
           >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            >
-              <source src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1774396128/Web-Intro-Video-Final-Compressed_q7rkoc.mp4" type="video/mp4" />
-            </video>
-            {/* Subtle overlay to blend with the dark theme */}
-            <div className="absolute inset-0 bg-black/30" />
-          </motion.div>
+            Skip Intro
+          </button>
         )}
-      </AnimatePresence>
-
-      {/* Canvas Background */}
-      <canvas ref={canvasRef} className="absolute inset-0 z-20 pointer-events-none" />
-
-      {/* Hero Content */}
-      <AnimatePresence>
-        {phase >= 2 && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
+        {/* Background Background Image */}
+        <AnimatePresence>
+          {phase === 3 && (
             <motion.div
-              initial={{ opacity: 0, filter: 'blur(10px)' }}
-              animate={phase === 3 ? { opacity: 1, filter: 'blur(0px)' } : { opacity: 0, filter: 'blur(10px)' }}
-              style={{ opacity: scrollOpacity }}
-              transition={{ 
-                duration: 1, 
-                ease: [0.22, 1, 0.36, 1]
-              }}
-              className="font-display font-black text-[clamp(80px,13vw,180px)] tracking-tight leading-none flex items-baseline text-white drop-shadow-[0_0_50px_rgba(0,229,255,0.6)]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 2.5, ease: "easeInOut" }}
+              className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
             >
-          <span>Colasant</span>
-              <span className="relative inline-block">
-                ı
-                <span ref={dotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />
+              {/* Desktop Image */}
+              <picture className="w-full h-full">
+                <source
+                  media="(min-width: 768px)"
+                  srcSet="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779229305/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.png"
+                />
+                <img
+                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779229305/mobile_hero_smqsm2.png"
+                  alt="Hero Background"
+                  className="w-full h-full object-cover object-top md:object-center transform translate-y-8 md:translate-y-0 scale-110 md:scale-100"
+                />
+              </picture>
+              {/* Subtle overlay to blend with the dark theme */}
+              <div className="absolute inset-0 bg-black/10" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+  
+        {/* Canvas Background */}
+        <canvas ref={canvasRef} className="absolute inset-0 z-20 pointer-events-none" />
+  
+        {/* Hero Content */}
+        <AnimatePresence>
+          {phase >= 2 && (
+            <div className="absolute inset-0 z-30 flex flex-col items-start justify-start md:justify-center pt-[22vh] md:pt-0 pl-[8%] md:pl-[6%] lg:pl-[10%] pointer-events-none">
+              <div className="flex flex-col items-start">
+                {/* Keywords + Headline Row */}
+                <div className="flex flex-col items-start">
+                  {/* Top Text / Keywords */}
+                  <div className="flex mb-1 md:mb-5 overflow-hidden">
+                    {"Studio, creo e implemento".split("").map((char, i) => (
+                      <motion.span
+                        key={i}
+                        initial={{ y: "100%", rotateX: -90 }}
+                        animate={phase === 3 ? { y: 0, rotateX: 0 } : { y: "100%", rotateX: -90 }}
+                        style={{ opacity: scrollOpacity }}
+                        transition={{ 
+                          delay: 0.8 + i * 0.02, 
+                          duration: 0.8, 
+                          ease: [0.22, 1, 0.36, 1] 
+                        }}
+                        className="inline-block text-[9px] md:text-[clamp(9px,0.9vw,11px)] font-tech font-bold uppercase tracking-[0.3em] text-[#00E5FF]"
+                      >
+                        {char === " " ? "\u00A0" : char}
+                      </motion.span>
+                    ))}
+                  </div>
+    
+                  <motion.div
+                    initial={{ opacity: 0, filter: 'blur(10px)' }}
+                    animate={phase === 3 ? { opacity: 1, filter: 'blur(0px)' } : { opacity: 0, filter: 'blur(10px)' }}
+                    style={{ opacity: scrollOpacity }}
+                    transition={{ 
+                      duration: 1.2, 
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                    className="font-display font-black text-[clamp(44px,10vw,100px)] md:text-[clamp(42px,7.5vw,100px)] tracking-tight leading-[0.85] flex flex-row items-baseline md:items-start gap-[0.2em] md:gap-[0.3em] text-white drop-shadow-[0_0_40px_rgba(0,229,255,0.3)]"
+                  >
+                    <div className="flex items-baseline uppercase">
+                      <span>Soluzion</span>
+                      <span className="relative inline-block">
+                        ı
+                        {!isMobile && <span ref={mobileDotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />}
+                      </span>
+                    </div>
+                    <div className="flex items-baseline uppercase whitespace-nowrap">
+                      <span>digital</span>
+                      <span className="relative inline-block">
+                        ı
+                        {!isMobile && <span ref={dotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />}
+                      </span>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+  
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={phase === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                style={{ opacity: scrollOpacity }}
+                transition={{ 
+                  delay: 0.6, 
+                  duration: 1,
+                  type: "spring",
+                  stiffness: 50,
+                  damping: 20
+                }}
+                className="text-[clamp(8.5px,2.8vw,11px)] md:text-[clamp(11px,1.2vw,15px)] font-tech font-medium tracking-normal md:tracking-[0.02em] uppercase text-white/70 mt-4 md:mt-6 text-left leading-relaxed md:leading-normal whitespace-normal max-w-[210px] md:max-w-[460px] md:pr-0"
+              >
+                Per le attività che vogliono farsi trovare online.
+              </motion.div>
+  
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={phase === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                style={{ opacity: scrollOpacity }}
+                transition={{ 
+                  delay: 0.6, 
+                  duration: 1,
+                  type: "spring",
+                  stiffness: 50,
+                  damping: 20
+                }}
+                className="flex flex-col sm:flex-row gap-3 md:gap-4 mt-10 md:mt-12 pointer-events-auto items-start"
+              >
+                <motion.button 
+                  initial="initial"
+                  whileHover="hover"
+                  variants={{
+                    initial: { backgroundColor: "rgba(255, 255, 255, 0.12)", borderColor: "#00E5FF" },
+                    hover: { backgroundColor: "#ffffff", borderColor: "#ffffff" }
+                  }}
+                  transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+                  onClick={() => scrollTo('lavori')}
+                  className="hidden md:flex group relative h-12 px-10 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer border shadow-[0_0_20px_rgba(0,229,255,0.2)] w-full sm:w-auto"
+                >
+                  <div className="relative z-10 flex h-full items-center justify-center">
+                    {"I miei lavori".split("").map((char, i) => (
+                      <span key={i} className="relative inline-block overflow-hidden">
+                        <motion.span
+                          variants={{
+                            initial: { y: 0, rotateX: 0, color: "#ffffff" },
+                            hover: { y: "-100%", rotateX: 90, color: "#000000" }
+                          }}
+                          transition={{ 
+                            delay: i * 0.015, 
+                            duration: 0.5, 
+                            ease: [0.23, 1, 0.32, 1] 
+                          }}
+                          className="inline-block"
+                        >
+                          {char === " " ? "\u00A0" : char}
+                        </motion.span>
+                        <motion.span
+                          variants={{
+                            initial: { y: "100%", rotateX: -90, color: "#000000" },
+                            hover: { y: 0, rotateX: 0, color: "#000000" }
+                          }}
+                          transition={{ 
+                            delay: i * 0.015, 
+                            duration: 0.5, 
+                            ease: [0.23, 1, 0.32, 1] 
+                          }}
+                          className="absolute inset-0 inline-block"
+                        >
+                          {char === " " ? "\u00A0" : char}
+                        </motion.span>
+                      </span>
+                    ))}
+                  </div>
+                </motion.button>
+  
+                <motion.button 
+                  initial="initial"
+                  whileHover="hover"
+                  variants={{
+                    initial: { backgroundColor: "transparent", borderColor: "rgba(255, 255, 255, 0.2)" },
+                    hover: { backgroundColor: "rgba(0, 229, 255, 0.2)", borderColor: "#00E5FF" }
+                  }}
+                  transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+                  onClick={() => {
+                    const el = document.getElementById('contatti');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="group relative h-[40px] md:h-12 px-5 md:px-10 border rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer w-[110px] md:w-auto"
+                >
+                  <div className="relative z-10 flex h-full items-center justify-center">
+                    {"Parliamo".split("").map((char, i) => (
+                      <span key={i} className="relative inline-block overflow-hidden">
+                        <motion.span
+                          variants={{
+                            initial: { y: 0, rotateX: 0, color: "rgba(255, 255, 255, 0.8)" },
+                            hover: { y: "-100%", rotateX: 90, color: "#00E5FF" }
+                          }}
+                          transition={{ 
+                            delay: i * 0.015, 
+                            duration: 0.5, 
+                            ease: [0.23, 1, 0.32, 1] 
+                          }}
+                          className="inline-block"
+                        >
+                          {char}
+                        </motion.span>
+                        <motion.span
+                          variants={{
+                            initial: { y: "100%", rotateX: -90, color: "#00E5FF" },
+                            hover: { y: 0, rotateX: 0, color: "#00E5FF" }
+                          }}
+                          transition={{ 
+                            delay: i * 0.015, 
+                            duration: 0.5, 
+                            ease: [0.23, 1, 0.32, 1] 
+                          }}
+                          className="absolute inset-0 inline-block"
+                        >
+                          {char}
+                        </motion.span>
+                      </span>
+                    ))}
+                  </div>
+                </motion.button>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+  
+        {/* Scroll Hint */}
+        <AnimatePresence>
+          {phase === 3 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.8 }}
+              className="absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-20"
+            >
+              <span className="text-[8px] font-semibold tracking-[0.25em] uppercase text-white/20">
+                Scroll
               </span>
+              <div className="w-px h-12 bg-gradient-to-b from-cyan-500/50 to-transparent animate-bounce" />
             </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={phase === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-              style={{ opacity: scrollOpacity }}
-              transition={{ 
-                delay: 0.6, 
-                duration: 1,
-                type: "spring",
-                stiffness: 50,
-                damping: 20
-              }}
-              className="text-[10px] md:text-[clamp(10px,1.1vw,13px)] font-tech font-medium tracking-normal md:tracking-[0.02em] uppercase text-white/50 mt-6 text-center leading-relaxed md:leading-normal whitespace-normal px-6 md:px-4 max-w-[420px] md:max-w-[550px]"
-            >
-              Porto clienti alla tua attività locale. <br /> Sito, social, automazioni in un sistema che lavora per te.
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={phase === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              style={{ opacity: scrollOpacity }}
-              transition={{ 
-                delay: 0.6, // Synchronized with "Trasformo aziende..."
-                duration: 1,
-                type: "spring",
-                stiffness: 50,
-                damping: 20
-              }}
-              className="flex flex-col sm:flex-row gap-3 md:gap-4 mt-10 md:mt-12 pointer-events-auto w-full sm:w-auto px-16 sm:px-0"
-            >
-              <motion.button 
-                initial="initial"
-                whileHover="hover"
-                variants={{
-                  initial: { backgroundColor: "rgba(255, 255, 255, 0.12)", borderColor: "#00E5FF" },
-                  hover: { backgroundColor: "#ffffff", borderColor: "#ffffff" }
-                }}
-                transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                onClick={() => scrollTo('lavori')}
-                className="group relative h-[41px] md:h-12 px-6 md:px-10 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer border shadow-[0_0_20px_rgba(0,229,255,0.2)] w-full sm:w-auto"
-              >
-                <div className="relative z-10 flex h-full items-center justify-center">
-                  {"I miei lavori".split("").map((char, i) => (
-                    <span key={i} className="relative inline-block overflow-hidden">
-                      <motion.span
-                        variants={{
-                          initial: { y: 0, rotateX: 0, color: "#ffffff" },
-                          hover: { y: "-100%", rotateX: 90, color: "#000000" }
-                        }}
-                        transition={{ 
-                          delay: i * 0.015, 
-                          duration: 0.5, 
-                          ease: [0.23, 1, 0.32, 1] 
-                        }}
-                        className="inline-block"
-                      >
-                        {char === " " ? "\u00A0" : char}
-                      </motion.span>
-                      <motion.span
-                        variants={{
-                          initial: { y: "100%", rotateX: -90, color: "#000000" },
-                          hover: { y: 0, rotateX: 0, color: "#000000" }
-                        }}
-                        transition={{ 
-                          delay: i * 0.015, 
-                          duration: 0.5, 
-                          ease: [0.23, 1, 0.32, 1] 
-                        }}
-                        className="absolute inset-0 inline-block"
-                      >
-                        {char === " " ? "\u00A0" : char}
-                      </motion.span>
-                    </span>
-                  ))}
-                </div>
-              </motion.button>
-
-              <motion.button 
-                initial="initial"
-                whileHover="hover"
-                variants={{
-                  initial: { backgroundColor: "transparent", borderColor: "rgba(255, 255, 255, 0.2)" },
-                  hover: { backgroundColor: "rgba(0, 229, 255, 0.2)", borderColor: "#00E5FF" }
-                }}
-                transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                onClick={() => {
-                  const el = document.getElementById('contatti');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="group relative h-[41px] md:h-12 px-6 md:px-10 border rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer w-full sm:w-auto"
-              >
-                <div className="relative z-10 flex h-full items-center justify-center">
-                  {"Parliamo".split("").map((char, i) => (
-                    <span key={i} className="relative inline-block overflow-hidden">
-                      <motion.span
-                        variants={{
-                          initial: { y: 0, rotateX: 0, color: "rgba(255, 255, 255, 0.6)" },
-                          hover: { y: "-100%", rotateX: 90, color: "#00E5FF" }
-                        }}
-                        transition={{ 
-                          delay: i * 0.015, 
-                          duration: 0.5, 
-                          ease: [0.23, 1, 0.32, 1] 
-                        }}
-                        className="inline-block"
-                      >
-                        {char}
-                      </motion.span>
-                      <motion.span
-                        variants={{
-                          initial: { y: "100%", rotateX: -90, color: "#00E5FF" },
-                          hover: { y: 0, rotateX: 0, color: "#00E5FF" }
-                        }}
-                        transition={{ 
-                          delay: i * 0.015, 
-                          duration: 0.5, 
-                          ease: [0.23, 1, 0.32, 1] 
-                        }}
-                        className="absolute inset-0 inline-block"
-                      >
-                        {char}
-                      </motion.span>
-                    </span>
-                  ))}
-                </div>
-              </motion.button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Scroll Hint */}
-      <AnimatePresence>
-        {phase === 3 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.8 }}
-            className="absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-20"
-          >
-            <span className="text-[8px] font-semibold tracking-[0.25em] uppercase text-white/20">
-              Scroll
-            </span>
-            <div className="w-px h-12 bg-gradient-to-b from-cyan-500/50 to-transparent animate-bounce" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Loading State */}
       {loaded < SRCS.length && (
