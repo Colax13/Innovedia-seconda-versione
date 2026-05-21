@@ -563,7 +563,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                           duration: 0.8, 
                           ease: [0.22, 1, 0.36, 1] 
                         }}
-                        className="inline-block text-[11px] md:text-[clamp(9px,0.9vw,11px)] font-tech font-bold uppercase tracking-[0.3em] text-[#00E5FF] cursor-default select-none pointer-events-auto"
+                        className="inline-block text-[9px] md:text-[clamp(9px,0.9vw,11px)] font-tech font-bold uppercase tracking-[0.3em] text-[#00E5FF] cursor-default select-none pointer-events-auto"
                       >
                         {char === " " ? "\u00A0" : char}
                       </motion.span>
@@ -572,7 +572,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
      
                   <motion.div
                     style={{ opacity: scrollOpacity }}
-                    className="font-display font-black text-[clamp(48px,12vw,100px)] md:text-[clamp(42px,7.5vw,100px)] tracking-tight leading-[0.95] md:leading-[0.85] flex flex-col md:flex-row items-start md:items-baseline gap-1 md:gap-[0.3em] text-white pointer-events-auto"
+                    className="font-display font-black text-[clamp(52px,13vw,100px)] md:text-[clamp(42px,7.5vw,100px)] tracking-tight leading-[0.85] md:leading-[0.85] flex flex-col md:flex-row items-start md:items-baseline gap-0 md:gap-[0.3em] text-white pointer-events-auto"
                   >
                     <div className="flex items-baseline uppercase pointer-events-auto">
                       {"Soluzion".split("").map((char, i) => (
@@ -665,7 +665,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   stiffness: 50,
                   damping: 20
                 }}
-                className="text-[12px] md:text-[clamp(11px,1.2vw,15px)] font-tech font-semibold tracking-wide md:tracking-[0.02em] uppercase text-white/70 mt-6 md:mt-6 text-left leading-[1.6] md:leading-normal whitespace-normal max-w-[260px] md:max-w-[460px]"
+                className="text-[11px] md:text-[clamp(11px,1.2vw,15px)] font-tech font-medium tracking-wide md:tracking-[0.02em] uppercase text-white/70 mt-5 md:mt-6 text-left leading-[1.4] md:leading-normal whitespace-normal max-w-[240px] md:max-w-[460px]"
               >
                 Per le attività che vogliono farsi trovare online.
               </motion.div>
