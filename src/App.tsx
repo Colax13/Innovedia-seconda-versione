@@ -2,8 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import RevelationSection from './components/RevelationSection';
-import BrandImpactSection from './components/BrandImpactSection';
+import QualcosaSuDiMe from './components/QualcosaSuDiMe';
 import ChiSono from './components/ChiSono';
 import ServicesSection from './components/ServicesSection';
 import ParallaxSection from './components/ParallaxSection';
@@ -47,8 +46,7 @@ function HomePage() {
       <UnifiedBackground />
       <Navbar show={heroPhase === 3} />
       <Hero onPhaseChange={setHeroPhase} skipAnimation={heroPhase === 3} />
-      <BrandImpactSection />
-      <RevelationSection />
+      <QualcosaSuDiMe />
       <ChiSono />
       <ServicesSection />
       <ParallaxSection />

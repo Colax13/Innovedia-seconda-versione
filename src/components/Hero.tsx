@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 
 const SRCS = [
   'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839205/Buoni_e-commerce_u3fsgi.jpg',
@@ -32,6 +32,12 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   const [loaded, setLoaded] = useState(0);
   const [scrollOpacity, setScrollOpacity] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
+
+  const { scrollY } = useScroll();
+  const heroContentY = useTransform(scrollY, [0, 500], [0, -100]);
+  const heroContentScale = useTransform(scrollY, [0, 500], [1, 0.92]);
+  const heroContentOpacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const heroContentBlur = useTransform(scrollY, [0, 400], ["blur(0px)", "blur(10px)"]);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const dotPlaceholderRef = useRef<HTMLSpanElement>(null);
   const mobileDotPlaceholderRef = useRef<HTMLSpanElement>(null);
@@ -489,7 +495,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   };
 
   return (
-    <section id="hero" className="relative h-[150vh] w-full">
+    <section id="hero" className="relative h-[160vh] w-full">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* Skip Button */}
         {phase < 3 && (
@@ -521,8 +527,8 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   className="w-full h-full object-cover object-top md:object-center transform translate-y-8 md:translate-y-0 scale-110 md:scale-100"
                 />
               </picture>
-              {/* Subtle overlay to blend with the dark theme */}
-              <div className="absolute inset-0 bg-black/10" />
+              {/* Subtle overlay to enhance contrast for text against the interactive background */}
+              <div className="absolute inset-0 bg-transparent mix-blend-multiply opacity-50" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -533,53 +539,116 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         {/* Hero Content */}
         <AnimatePresence>
           {phase >= 2 && (
-            <div className="absolute inset-0 z-30 flex flex-col items-start justify-start md:justify-center pt-[22vh] md:pt-0 pl-[8%] md:pl-[6%] lg:pl-[10%] pointer-events-none">
-              <div className="flex flex-col items-start">
+            <motion.div 
+              style={{ y: heroContentY, scale: heroContentScale, opacity: heroContentOpacity, filter: heroContentBlur }}
+              className="absolute inset-0 z-30 flex flex-col items-start justify-start md:justify-center pt-[18vh] sm:pt-[22vh] md:pt-0 pl-[8%] md:pl-[6%] lg:pl-[10%] pointer-events-none"
+            >
+              <div className="flex flex-col items-start w-full md:w-auto">
                 {/* Keywords + Headline Row */}
                 <div className="flex flex-col items-start">
                   {/* Top Text / Keywords */}
-                  <div className="flex mb-1 md:mb-5 overflow-hidden">
+                  <div className="flex mb-3 md:mb-5 overflow-hidden pointer-events-auto">
                     {"Studio, creo e implemento".split("").map((char, i) => (
                       <motion.span
                         key={i}
                         initial={{ y: "100%", rotateX: -90 }}
                         animate={phase === 3 ? { y: 0, rotateX: 0 } : { y: "100%", rotateX: -90 }}
                         style={{ opacity: scrollOpacity }}
-                        transition={{ 
+                        transition={phase === 3 ? {
+                          type: "spring",
+                          stiffness: 450,
+                          damping: 10
+                        } : { 
                           delay: 0.8 + i * 0.02, 
                           duration: 0.8, 
                           ease: [0.22, 1, 0.36, 1] 
                         }}
-                        className="inline-block text-[9px] md:text-[clamp(9px,0.9vw,11px)] font-tech font-bold uppercase tracking-[0.3em] text-[#00E5FF]"
+                        className="inline-block text-[11px] md:text-[clamp(9px,0.9vw,11px)] font-tech font-bold uppercase tracking-[0.3em] text-[#00E5FF] cursor-default select-none pointer-events-auto"
                       >
                         {char === " " ? "\u00A0" : char}
                       </motion.span>
                     ))}
                   </div>
-    
+     
                   <motion.div
-                    initial={{ opacity: 0, filter: 'blur(10px)' }}
-                    animate={phase === 3 ? { opacity: 1, filter: 'blur(0px)' } : { opacity: 0, filter: 'blur(10px)' }}
                     style={{ opacity: scrollOpacity }}
-                    transition={{ 
-                      duration: 1.2, 
-                      ease: [0.22, 1, 0.36, 1]
-                    }}
-                    className="font-display font-black text-[clamp(44px,10vw,100px)] md:text-[clamp(42px,7.5vw,100px)] tracking-tight leading-[0.85] flex flex-row items-baseline md:items-start gap-[0.2em] md:gap-[0.3em] text-white drop-shadow-[0_0_40px_rgba(0,229,255,0.3)]"
+                    className="font-display font-black text-[clamp(48px,12vw,100px)] md:text-[clamp(42px,7.5vw,100px)] tracking-tight leading-[0.95] md:leading-[0.85] flex flex-col md:flex-row items-start md:items-baseline gap-1 md:gap-[0.3em] text-white pointer-events-auto"
                   >
-                    <div className="flex items-baseline uppercase">
-                      <span>Soluzion</span>
-                      <span className="relative inline-block">
+                    <div className="flex items-baseline uppercase pointer-events-auto">
+                      {"Soluzion".split("").map((char, i) => (
+                        <motion.span
+                          key={i}
+                          initial={{ opacity: 0, y: 40, rotateX: -60 }}
+                          animate={phase === 3 ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: -60 }}
+                          transition={phase === 3 ? {
+                            type: "spring",
+                            stiffness: 450,
+                            damping: 10
+                          } : {
+                            delay: 0.1 + i * 0.04,
+                            duration: 0.8,
+                            ease: [0.215, 0.610, 0.355, 1.000],
+                          }}
+                          className="inline-block origin-bottom cursor-default select-none pointer-events-auto"
+                        >
+                          {char}
+                        </motion.span>
+                      ))}
+                      <motion.span
+                        initial={{ opacity: 0, y: 40, rotateX: -60 }}
+                        animate={phase === 3 ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: -60 }}
+                        transition={phase === 3 ? {
+                          type: "spring",
+                          stiffness: 450,
+                          damping: 10
+                        } : {
+                          delay: 0.1 + 8 * 0.04,
+                          duration: 0.8,
+                          ease: [0.215, 0.610, 0.355, 1.000],
+                        }}
+                        className="relative inline-block origin-bottom cursor-default select-none pointer-events-auto"
+                      >
                         ı
                         {!isMobile && <span ref={mobileDotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />}
-                      </span>
+                      </motion.span>
                     </div>
-                    <div className="flex items-baseline uppercase whitespace-nowrap">
-                      <span>digital</span>
-                      <span className="relative inline-block">
+                    <div className="flex items-baseline uppercase whitespace-nowrap pointer-events-auto">
+                      {"digital".split("").map((char, i) => (
+                        <motion.span
+                          key={i}
+                          initial={{ opacity: 0, y: 40, rotateX: -60 }}
+                          animate={phase === 3 ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: -60 }}
+                          transition={phase === 3 ? {
+                            type: "spring",
+                            stiffness: 450,
+                            damping: 10
+                          } : {
+                            delay: 0.3 + i * 0.04, // Stagger offset for the second word
+                            duration: 0.8,
+                            ease: [0.215, 0.610, 0.355, 1.000],
+                          }}
+                          className="inline-block origin-bottom cursor-default select-none pointer-events-auto"
+                        >
+                          {char}
+                        </motion.span>
+                      ))}
+                      <motion.span
+                        initial={{ opacity: 0, y: 40, rotateX: -60 }}
+                        animate={phase === 3 ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: -60 }}
+                        transition={phase === 3 ? {
+                          type: "spring",
+                          stiffness: 450,
+                          damping: 10
+                        } : {
+                          delay: 0.3 + 7 * 0.04,
+                          duration: 0.8,
+                          ease: [0.215, 0.610, 0.355, 1.000],
+                        }}
+                        className="relative inline-block origin-bottom cursor-default select-none pointer-events-auto"
+                      >
                         ı
                         {!isMobile && <span ref={dotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />}
-                      </span>
+                      </motion.span>
                     </div>
                   </motion.div>
                 </div>
@@ -596,7 +665,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   stiffness: 50,
                   damping: 20
                 }}
-                className="text-[clamp(8.5px,2.8vw,11px)] md:text-[clamp(11px,1.2vw,15px)] font-tech font-medium tracking-normal md:tracking-[0.02em] uppercase text-white/70 mt-4 md:mt-6 text-left leading-relaxed md:leading-normal whitespace-normal max-w-[210px] md:max-w-[460px] md:pr-0"
+                className="text-[12px] md:text-[clamp(11px,1.2vw,15px)] font-tech font-semibold tracking-wide md:tracking-[0.02em] uppercase text-white/70 mt-6 md:mt-6 text-left leading-[1.6] md:leading-normal whitespace-normal max-w-[260px] md:max-w-[460px]"
               >
                 Per le attività che vogliono farsi trovare online.
               </motion.div>
@@ -612,7 +681,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   stiffness: 50,
                   damping: 20
                 }}
-                className="flex flex-col sm:flex-row gap-3 md:gap-4 mt-10 md:mt-12 pointer-events-auto items-start"
+                className="flex flex-row gap-3 md:gap-4 mt-8 md:mt-12 pointer-events-auto items-center md:items-start"
               >
                 <motion.button 
                   initial="initial"
@@ -711,7 +780,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   </div>
                 </motion.button>
               </motion.div>
-            </div>
+            </motion.div>
           )}
         </AnimatePresence>
   
