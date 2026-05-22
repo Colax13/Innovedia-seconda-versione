@@ -12,14 +12,34 @@ const SRCS = [
   'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839203/collegamento_ritual_hair_spa_do4mec.jpg',
 ];
 
-const CARD_W = 220;
-const CARD_H = 138;
+const CARD_W = 154; // reduced by 30% from 220
+const CARD_H = 96;  // reduced by 30% from 138
 const RING_R = 280;
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 4);
 const easeInOut = (t: number) => t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), hi);
+
+const GLITCH_CHARS = '01#%@&?*+_=-[]{}';
+const scrambleString = (str: string, p: number): string => {
+  if (p >= 1) return str;
+  let res = '';
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    if (char === ' ' || char === '\n') {
+      res += char;
+      continue;
+    }
+    const charProgress = i / str.length;
+    if (p > charProgress) {
+      res += char;
+    } else {
+      res += GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+    }
+  }
+  return res;
+};
 
 interface HeroProps {
   onPhaseChange: (phase: number) => void;
@@ -32,23 +52,69 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   const [loaded, setLoaded] = useState(0);
   const [scrollOpacity, setScrollOpacity] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollY } = useScroll();
-  const heroContentY = useTransform(scrollY, [0, 500], [0, -100]);
-  const heroContentScale = useTransform(scrollY, [0, 500], [1, 0.92]);
-  const heroContentOpacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  
+  // Custom scroll mapping for hero fade-out (moves up out of frame)
+  const heroContentY = useTransform(scrollY, [0, 800], [0, -300]);
+  const heroContentScale = useTransform(scrollY, [0, 800], [1, 0.90]);
+  const heroContentOpacity = useTransform(scrollYProgress, [0, 0.05, 0.8, 1], [1, 0.1, 0.05, 0]);
   const heroContentBlur = useTransform(scrollY, [0, 400], ["blur(0px)", "blur(10px)"]);
+  const bgImageOpacity = useTransform(scrollYProgress, [0.7, 0.9], [1, 0]);
+
+  const [isPostHeroActive, setIsPostHeroActive] = useState(false);
+  const postHeroFinished = useRef(false);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      // We no longer lock the scroll. We just check if the hero is active based on scroll and elapsed time
+      if (window.scrollY > 30 && loopState.current.elapsed > 3500) {
+        if (!sequenceTriggered.current) {
+          sequenceTriggered.current = true;
+          setIsPostHeroActive(true);
+        }
+      } else if (window.scrollY <= 30 && sequenceTriggered.current) {
+        sequenceTriggered.current = false;
+        setIsPostHeroActive(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const dotPlaceholderRef = useRef<HTMLSpanElement>(null);
   const mobileDotPlaceholderRef = useRef<HTMLSpanElement>(null);
   const targetPos = useRef<{x: number, y: number, r: number} | null>(null);
-  const trail = useRef<{x: number, y: number, r: number}[]>([]);
+  const trail = useRef<{x: number, y: number, r: number, op?: number, age?: number}[]>([]);
   const particles = useRef<{x: number, y: number, vx: number, vy: number, size: number, op: number, life: number}[]>([]);
   const disintegrated = useRef(false);
+  
+  // Custom scroll refs
+  const targetSp = useRef(0);
+  const phrase1Ref = useRef<HTMLDivElement>(null);
+  const phrase2Ref = useRef<HTMLDivElement>(null);
+  const phrase3Ref = useRef<HTMLDivElement>(null);
+  const punch1Ref = useRef<HTMLDivElement>(null);
+  const punch2Ref = useRef<HTMLDivElement>(null);
+  const sequenceTriggered = useRef(false);
+  const animTime = useRef(0);
+  const splash1Triggered = useRef(false);
+  const splash2Triggered = useRef(false);
+  const waves = useRef([
+    { active: false, x: 0, y: 0, width: 0, opacity: 1, age: 0 },
+    { active: false, x: 0, y: 0, width: 0, opacity: 1, age: 0 }
+  ]);
+
   const loopState = useRef({
     elapsed: skipAnimation ? 10000 : 0,
     lastT: 0,
-    lastPhase: 0
+    lastPhase: 0,
+    smoothStep: skipAnimation ? 5 : 0,
+    lastSmoothSp: skipAnimation ? 1.0 : 0
   });
   const stars = useRef(Array.from({ length: 150 }).map(() => ({
     x: Math.random() * 2 - 1,
@@ -57,12 +123,12 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
     size: 0.5 + Math.random() * 1.5
   })));
   const randomOffsets = useRef(SRCS.map(() => ({
-    x: (Math.random() - 0.5) * 4,
-    y: (Math.random() - 0.5) * 4,
+    x: 4 + Math.random() * 2, // entering from the side (right)
+    y: (Math.random() - 0.5) * 2, 
     z: 3 + Math.random() * 6,
-    rx: Math.random() * 720,
-    ry: Math.random() * 720,
-    rz: Math.random() * 360,
+    rx: Math.random() * 180 - 90,
+    ry: Math.random() * 180 - 90,
+    rz: Math.random() * 90 - 45,
     scale: 0.1 + Math.random() * 0.2
   })));
 
@@ -144,10 +210,13 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       loopState.current.elapsed = 10000;
     }
 
-    const drawCard = (img: HTMLImageElement, x: number, y: number, rot: number, scaleX: number, scaleY: number, op: number) => {
+    const drawCard = (img: HTMLImageElement, x: number, y: number, rot: number, scaleX: number, scaleY: number, op: number, blur: number = 0) => {
       if (op <= 0) return;
       ctx.save();
       ctx.globalAlpha = op;
+      if (blur > 0.1) {
+        ctx.filter = `blur(${blur}px)`;
+      }
       ctx.translate(x, y);
       ctx.rotate(rot * Math.PI / 180);
       ctx.scale(scaleX, scaleY);
@@ -222,43 +291,63 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       ctx.restore();
     };
 
-    const drawSphere = (x: number, y: number, r: number, glow: number, morphT: number = 0, squash: number = 1) => {
+    const drawSphere = (x: number, y: number, r: number, glow: number, morphT: number = 0, squash: number = 1, dirAngle: number = -Math.PI / 2, opacity: number = 1, stretchX: number = 1) => {
       if (r <= 0) return;
       ctx.save();
-      if (squash !== 1) {
-        ctx.translate(x, y);
-        ctx.scale(1 / Math.sqrt(squash), squash);
-        ctx.translate(-x, -y);
+      ctx.globalAlpha = opacity;
+      ctx.translate(x, y);
+      
+      if (squash !== 1 || stretchX !== 1) {
+        // Rotate so squash applies along the correct axis
+        ctx.rotate(dirAngle);
+        ctx.scale((1 / Math.sqrt(squash)) * stretchX, squash);
+        ctx.rotate(-dirAngle);
       }
+      
+      ctx.rotate(dirAngle);
+      
+      // Now the "front" of movement is facing RIGHT (angle 0)
       if (morphT < 0.8) {
         for (let i = 2; i >= 0; i--) {
-          const gr = ctx.createRadialGradient(x, y, r * 0.2, x, y, r * (1.2 + i * 0.4));
+          const gr = ctx.createRadialGradient(0, 0, r * 0.2, 0, 0, r * (1.2 + i * 0.4));
           gr.addColorStop(0, `rgba(0, 229, 255, ${glow * 0.3 / (i + 1) * (1 - morphT)})`);
           gr.addColorStop(1, 'transparent');
           ctx.fillStyle = gr;
           ctx.beginPath(); 
-          ctx.ellipse(x, y, Math.max(1, r * (1.2 + i * 0.4)), Math.max(1, r * (1.2 + i * 0.4)), 0, 0, Math.PI * 2); 
+          ctx.ellipse(0, 0, Math.max(1, r * (1.2 + i * 0.4)), Math.max(1, r * (1.2 + i * 0.4)), 0, 0, Math.PI * 2); 
           ctx.fill();
         }
       }
       if (morphT < 1) {
-        const sg = ctx.createRadialGradient(x - r * 0.15, y - r * 0.15, r * 0.05, x, y, r);
+        // The highlight is shifted to the right (r * 0.15, 0)
+        const sg = ctx.createRadialGradient(r * 0.2, 0, r * 0.05, 0, 0, r);
         sg.addColorStop(0, `rgba(180, 245, 255, ${1 - morphT})`);
         sg.addColorStop(0.35, `rgba(0, 229, 255, ${0.98 * (1 - morphT)})`);
         sg.addColorStop(0.7, `rgba(0, 150, 255, ${0.95 * (1 - morphT)})`);
         sg.addColorStop(1, `rgba(2, 8, 20, ${0.98 * (1 - morphT)})`);
         ctx.fillStyle = sg;
         ctx.beginPath(); 
-        ctx.arc(x, y, Math.max(1, r), 0, Math.PI * 2); 
+        ctx.arc(0, 0, Math.max(1, r), 0, Math.PI * 2); 
         ctx.fill();
       }
-      if (morphT > 0) {
-        drawDot(x, y, r, clamp(morphT * 2, 0, 1));
-      }
+      
       ctx.restore();
+      
+      // Fixed dot in center ignores rotation
+      if (morphT > 0) {
+        drawDot(x, y, r, clamp(morphT * 2, 0, 1) * opacity);
+      }
     };
 
-    let lastPhase = 0;
+    const evaluateBezier = (p0: {x:number, y:number}, p1: {x:number, y:number}, p2: {x:number, y:number}, p3: {x:number, y:number}, t: number) => {
+      const u = 1 - t;
+      const x = u*u*u*p0.x + 3*u*u*t*p1.x + 3*u*t*t*p2.x + t*t*t*p3.x;
+      const y = u*u*u*p0.y + 3*u*u*t*p1.y + 3*u*t*t*p2.y + t*t*t*p3.y;
+      
+      const dx = 3*u*u*(p1.x - p0.x) + 6*u*t*(p2.x - p1.x) + 3*t*t*(p3.x - p2.x);
+      const dy = 3*u*u*(p1.y - p0.y) + 6*u*t*(p2.y - p1.y) + 3*t*t*(p3.y - p2.y);
+      return { x, y, vx: dx, vy: dy };
+    };
 
     const loop = (ts: number) => {
       if (!loopState.current.lastT) loopState.current.lastT = ts;
@@ -270,68 +359,56 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
       const ENTRY_START = 0;
       const ENTRY_DUR = 1800;
-      const SUCK_START = 1800; 
-      const SUCK_DUR = 1000;
-      const BOUNCE_START = 2800; 
-      const FALL_DUR = 300;
-      const PARABOLA_DUR = 1400;
+      
+      const GROUP_START = 2000; 
+      const GROUP_DUR = 800;
+
+      const EXIT_START = 2800;
+      const EXIT_DUR = 800;
+
+      const BOUNCE_START = 3400; 
+      const PARABOLA_DUR = 1700;
 
       const pEntry = clamp((loopState.current.elapsed - ENTRY_START) / ENTRY_DUR, 0, 1);
-      const pSuck = clamp((loopState.current.elapsed - SUCK_START) / SUCK_DUR, 0, 1);
-      const pFall = clamp((loopState.current.elapsed - BOUNCE_START) / FALL_DUR, 0, 1);
-      const pParabola = clamp((loopState.current.elapsed - BOUNCE_START - FALL_DUR) / PARABOLA_DUR, 0, 1);
+      const pGroup = clamp((loopState.current.elapsed - GROUP_START) / GROUP_DUR, 0, 1);
+      const pExit = clamp((loopState.current.elapsed - EXIT_START) / EXIT_DUR, 0, 1);
+      const pParabola = clamp((loopState.current.elapsed - BOUNCE_START) / PARABOLA_DUR, 0, 1);
 
       const scrollY = window.scrollY;
-      if (scrollY < 50) disintegrated.current = false; 
+      let targetStep = 0;
+      if (scrollY < H * 0.15) {
+          targetStep = 0;
+      } else if (scrollY < H * 0.6) {
+          targetStep = 1;
+      } else if (scrollY < H * 1.05) {
+          targetStep = 2;
+      } else if (scrollY < H * 1.5) {
+          targetStep = 3;
+      } else if (scrollY < H * 1.95) {
+          targetStep = 4;
+      } else {
+          targetStep = 5;
+      }
+
+      loopState.current.smoothStep = lerp(loopState.current.smoothStep, targetStep, 0.12);
+      let smoothSp = loopState.current.smoothStep / 5;
       
-      const getStickyY = (baseY: number, r: number) => {
-        if (pParabola < 1) return baseY;
-        const targetY = baseY; 
-        const limit = r + 2; // Locked at Top
-        if (targetY <= limit) {
-          if (typeof window !== 'undefined') {
-            (window as any).lastSphereX = targetPos.current?.x || CX();
-          }
-          if (!disintegrated.current) {
-            disintegrated.current = true;
-            for (let i = 0; i < 40; i++) {
-              particles.current.push({
-                x: (targetPos.current?.x || CX()) + (Math.random() - 0.5) * 20,
-                y: limit,
-                vx: (Math.random() - 0.5) * 12,
-                vy: (Math.random() + 0.5) * -10, // Burst Upwards
-                size: 1.5 + Math.random() * 3,
-                op: 1,
-                life: 1 + Math.random() * 0.5
-              });
-            }
-          }
-          if (Math.random() > 0.6) {
-            particles.current.push({
-              x: (targetPos.current?.x || CX()) + (Math.random() - 0.5) * 40,
-              y: limit,
-              vx: (Math.random() - 0.5) * 6,
-              vy: -(4 + Math.random() * 12), // Leak Upwards
-              size: 1 + Math.random() * 2.5,
-              op: 0.9,
-              life: 0.8 + Math.random() * 0.4
-            });
-          }
-        }
-        return Math.max(targetY, limit);
-      };
+      // If reversible, sequence trigger shouldn't force animTime.
+      // Wait, let's just make the secondary animation entirely tied to scrollY, so it's fully reversible.
+      // E.g., user said "It gets blocked. It's not reversible"
+      // If we use smoothSp (which goes 0 to 1 based on scroll), we can control S directly.
+
+      if (scrollY < 50 && pParabola < 1) disintegrated.current = false; 
 
       let currentPhase = 0;
       if (pParabola >= 1) currentPhase = 3;
-      else if (pFall > 0) currentPhase = 2;
-      else if (pSuck > 0.1) currentPhase = 1;
+      else if (pGroup > 0.1) currentPhase = 1;
       
       if (currentPhase !== loopState.current.lastPhase) {
         loopState.current.lastPhase = currentPhase;
         onPhaseChange(currentPhase);
       }
 
-      // Internal UI phase for text and video (starts at 60% of parabola)
       const uiPhase = (pParabola > 0.6) ? 3 : currentPhase;
       if (uiPhase !== phase) {
         setPhase(uiPhase);
@@ -355,98 +432,414 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
       imagesRef.current.forEach((img, i) => {
         const off = randomOffsets.current[i];
-        const delay = i * 35;
-        const localEntry = clamp((loopState.current.elapsed - delay) / 2200, 0, 1);
-        const localSuck = clamp((loopState.current.elapsed - SUCK_START - delay * 0.3) / 1200, 0, 1);
-        const et = easeInOut(localEntry);
-        const st = Math.pow(localSuck, 3); 
+        
+        // Staggered local progression
+        const delay = i * 40;
+        const localEntry = clamp((loopState.current.elapsed - delay) / 1600, 0, 1);
+        const et = easeOut(localEntry);
+        
+        const localGroup = clamp((loopState.current.elapsed - GROUP_START - delay * 0.2) / GROUP_DUR, 0, 1);
+        const gt = Math.pow(localGroup, 1.5); // Ease In Out
+        
+        const localExit = clamp((loopState.current.elapsed - EXIT_START - i * 30) / EXIT_DUR, 0, 1);
+        const ext = Math.pow(localExit, 3); // Accelerate upwards
+
         const currentZ = lerp(off.z, 0, et);
         const perspective = 1 / (currentZ + 1);
-        const startX = CX() + off.x * W * 1.4;
-        const startY = CY() + off.y * H * 1.4;
-        const orbitRadius = RING_R * (1.1 - et * 0.1) * (1 - st);
-        const orbitSpeed = 0.0003 * loopState.current.elapsed + st * 0.004;
+        
+        // Enter from side
+        const startX = CX() + W * 1.2; 
+        const startY = CY(); // entering from side rather than bottom
+        
+        // Orbit positioning
+        const orbitRadius = RING_R * (1.1 - et * 0.1);
+        const orbitSpeed = 0.0003 * loopState.current.elapsed;
         const orbitAng = (2 * Math.PI / SRCS.length) * i + orbitSpeed;
+        
         const targetX = CX() + Math.cos(orbitAng) * orbitRadius;
         const targetY = CY() + Math.sin(orbitAng) * orbitRadius;
-        const x = lerp(startX, targetX, et);
-        const y = lerp(startY, targetY, et);
+
+        // Group Center Target: align in the center, bring lightly together
+        // A staggered horizontal overlapping spread at the center
+        const spread = Math.min(W * 0.2, 200); // 200px spread total
+        const groupTargetX = CX() + (i - (SRCS.length - 1) / 2) * (spread / SRCS.length); 
+        const groupTargetY = CY();
+
+        // 1. Enter to Orbit
+        let x = lerp(startX, targetX, et);
+        let y = lerp(startY, targetY, et);
+
+        // 2. Orbit to Group Center
+        x = lerp(x, groupTargetX, gt);
+        y = lerp(y, groupTargetY, gt);
+
+        // 3. Exit upwards
+        y -= ext * H * 1.5; 
+
         const px = CX() + (x - CX()) * perspective;
         const py = CY() + (y - CY()) * perspective;
-        const rotX = lerp(off.rx, 0, et) + loopState.current.elapsed * 0.015;
-        const rotY = lerp(off.ry, 0, et) + loopState.current.elapsed * 0.02;
-        const rotZ = lerp(off.rz, orbitAng * 180 / Math.PI, et) + st * 720;
-        const scaleBase = lerp(off.scale, 1, et) * perspective * (1 - st);
-        const scaleX = Math.cos(rotY * Math.PI / 180) * scaleBase;
-        const scaleY = Math.cos(rotX * Math.PI / 180) * scaleBase;
-        const op = clamp(localEntry * 4, 0, 1) * (1 - st);
-        drawCard(img, px, py, rotZ, scaleX, scaleY, op);
+
+        // Rotation logic: spin initially, level out for group
+        const rotX = lerp(off.rx, Math.sin(orbitAng) * 20, et) * (1 - gt);
+        const rotY = lerp(off.ry, Math.cos(orbitAng) * 20, et) * (1 - gt);
+        
+        // Card Z rotation aligns flat
+        const rotZ = lerp(orbitAng * 180 / Math.PI, 0, gt);
+
+        // Scale: shrink the cards in group phase
+        const scaleBase = lerp(off.scale, 1, et) * perspective;
+        const groupScale = lerp(1, 0.45, gt); // Shrink factor
+        const finalScale = scaleBase * groupScale;
+
+        const scaleX = Math.cos(rotY * Math.PI / 180) * finalScale;
+        const scaleY = Math.cos(rotX * Math.PI / 180) * finalScale;
+        
+        // Opacity
+        let op = clamp(localEntry * 4, 0, 1);
+        op = op * clamp(1 - ext, 0, 1); // Fade out during exit occasionally? Let's just fly out
+
+        // Blur for exit
+        const blur = ext * 25; // 0 to 25px blur
+
+        drawCard(img, px, py, rotZ, scaleX, scaleY, op, blur);
       });
+
+      let p0 = targetPos.current;
+      if (!p0) {
+        const el = mobileDotPlaceholderRef.current || dotPlaceholderRef.current;
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          p0 = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, r: 12 };
+        } else {
+          p0 = { x: CX(), y: H * 0.45, r: 12 };
+        }
+      }
 
       let sphereX = CX();
       let sphereY = CY();
       let sphereR = 0;
-      if (loopState.current.elapsed < SUCK_START) {
-        sphereR = easeInOut(pEntry) * 60;
-      } else {
-        sphereR = 60 + easeInOut(pSuck) * 30;
-      }
-      let sphereGlow = clamp(pEntry * 1.5, 0, 1) * (1 - pFall * 0.5);
+      let sphereGlow = 0;
+      let dirAngle = -Math.PI / 2;
       let morphT = 0; 
       let squash = 1;
+      let sphereOp = 1;
+      let stretchX = 1;
 
-      if (pFall > 0 && !isMobile) {
-        const floorY = H * 0.08; // Moving UP
-        if (pParabola <= 0) {
-          sphereY = lerp(CY(), floorY, pFall * pFall);
-          squash = 1 + pFall * 0.4;
+      if (pParabola < 1) {
+        if (loopState.current.elapsed < GROUP_START) {
+          sphereR = easeInOut(pEntry) * 60;
         } else {
-          // Sphere target above "i" of "Soluzioni"
-          const targetElement = mobileDotPlaceholderRef.current; 
+          sphereR = 60 + easeInOut(pGroup) * 30;
+        }
+        sphereGlow = clamp(pEntry * 1.5, 0, 1) * (1 - pParabola * 0.5);
 
-          if (targetElement) {
-            const rect = targetElement.getBoundingClientRect();
-            const fontSize = Math.max(60, Math.min(window.innerWidth * 0.1, 140));
-            targetPos.current = {
-              x: rect.left + rect.width / 2,
-              y: rect.top + rect.height / 2,
-              r: fontSize * 0.08 + 2
+        if (pParabola > 0 && !isMobile) {
+            const targetElement = mobileDotPlaceholderRef.current || dotPlaceholderRef.current; 
+            if (targetElement) {
+              const rect = targetElement.getBoundingClientRect();
+              const fontSize = Math.max(60, Math.min(window.innerWidth * 0.1, 140));
+              targetPos.current = {
+                x: rect.left + rect.width / 2,
+                y: rect.top + rect.height / 2,
+                r: fontSize * 0.08 + 2
+              };
+              p0 = targetPos.current;
+            }
+            const { x: targetX, y: targetY, r: targetR } = p0;
+            const et = easeOut(pParabola); 
+            sphereX = lerp(CX(), targetX, et);
+            const baseLine = lerp(CY(), targetY, et);
+            // Draw a moderate arc. Adjust H * 0.15 to look good.
+            const arc = Math.sin(pParabola * Math.PI) * (H * 0.15); 
+            sphereY = baseLine - arc;
+            sphereR = lerp(90, targetR, et);
+            morphT = 0;
+            squash = 1;
+        }
+      } else {
+        // --- NEW POST-HERO ANIMATION (SCROLL-BASED & REVERSIBLE) ---
+        // Hide dot placeholders when scrolling heavily
+        if (scrollY > H * 0.1) {
+            if (mobileDotPlaceholderRef.current) mobileDotPlaceholderRef.current.style.opacity = '0';
+            if (dotPlaceholderRef.current) dotPlaceholderRef.current.style.opacity = '0';
+        } else {
+            if (mobileDotPlaceholderRef.current) mobileDotPlaceholderRef.current.style.opacity = '1';
+            if (dotPlaceholderRef.current) dotPlaceholderRef.current.style.opacity = '1';
+        }
+
+        let floorY = H * 0.45;
+        let R = Math.min(W * 0.015, 12);
+        
+        sphereGlow = 1;
+        
+        const S = smoothSp;
+
+        // Cascade targets mapped exactly to progress steps
+        const S_HITS = [0.20, 0.40, 0.60, 0.80];
+        const easeIn = (t: number) => t * t;
+        // Calculate progressive staircase positions
+        const getBoxX = (index: number) => {
+            if (isMobile) return W * (0.1 + index * 0.1) + 40;
+            return W * (0.15 + index * 0.1) + 80; // Rough center-left alignment on card
+        };
+
+        const targets = [
+            { x: p0.x, y: p0.y }, // Start
+            { x: getBoxX(0), y: H * 0.80 }, 
+            { x: getBoxX(1), y: H * 0.80 }, 
+            { x: getBoxX(2), y: H * 0.80 }, 
+            { x: getBoxX(3), y: H * 0.80 }  
+        ];
+
+        if (S < S_HITS[0]) {
+            // Drop 1 (Stationary for the first 70% of Step 1, then drops)
+            if (S < 0.14) {
+                sphereX = targets[0].x;
+                sphereY = targets[0].y;
+                sphereR = p0.r;
+                sphereOp = 1;
+                dirAngle = 0;
+                squash = 1;
+            } else {
+                let p = clamp((S - 0.14) / 0.06, 0, 1);
+                sphereR = p0.r;
+                sphereOp = 1;
+                sphereX = lerp(targets[0].x, targets[1].x, p);
+                sphereY = lerp(targets[0].y, targets[1].y, easeIn(p));
+                dirAngle = 0;
+                squash = 1; 
+            }
+        } else {
+            // Keep identical initial ball size and style
+            sphereR = p0.r;
+            morphT = 0;
+            sphereOp = 1;
+            
+            // Dynamic arc and text spacing calculation
+            const PARABOLA = H * 0.15;
+            const TEXT_OFFSET = H * 0.2; // Texts drift up by this much when the next one enters
+
+            if (S < S_HITS[1]) {
+                // Bounce T1 -> T2
+                let p = (S - S_HITS[0]) / (S_HITS[1] - S_HITS[0]);
+                sphereX = lerp(targets[1].x, targets[2].x, p);
+                // Previous text is moving up, so ball starts higher:
+                let startY = targets[1].y - TEXT_OFFSET * p;
+                let endY = targets[2].y;
+                sphereY = lerp(startY, endY, p) - Math.sin(p * Math.PI) * PARABOLA;
+                squash = 1;
+                dirAngle = Math.atan2(endY - startY, targets[2].x - targets[1].x);
+            } else if (S < S_HITS[2]) {
+                // Bounce T2 -> T3
+                let p = (S - S_HITS[1]) / (S_HITS[2] - S_HITS[1]);
+                sphereX = lerp(targets[2].x, targets[3].x, p);
+                let startY = targets[2].y - TEXT_OFFSET * p;
+                let endY = targets[3].y;
+                sphereY = lerp(startY, endY, p) - Math.sin(p * Math.PI) * PARABOLA;
+                squash = 1;
+                dirAngle = Math.atan2(endY - startY, targets[3].x - targets[2].x);
+            } else if (S < S_HITS[3]) {
+                // Bounce T3 -> T4
+                let p = (S - S_HITS[2]) / (S_HITS[3] - S_HITS[2]);
+                sphereX = lerp(targets[3].x, targets[4].x, p);
+                let startY = targets[3].y - TEXT_OFFSET * p;
+                let endY = targets[4].y;
+                sphereY = lerp(startY, endY, p) - Math.sin(p * Math.PI) * PARABOLA;
+                squash = 1;
+                dirAngle = Math.atan2(endY - startY, targets[4].x - targets[3].x);
+            } else if (S < 0.95) {
+                // Explosion / scale out
+                let p = (S - S_HITS[3]) / (0.95 - S_HITS[3]);
+                sphereX = targets[4].x;
+                sphereY = targets[4].y - (S - S_HITS[3]) * H; // Track the text moving up
+                squash = 1;
+                stretchX = 1;
+                sphereR = p0.r;
+                sphereOp = 1 - p;
+                dirAngle = 0;
+            } else {
+                sphereOp = 0;
+                sphereX = targets[4].x;
+                sphereY = targets[4].y - (S - S_HITS[3]) * H;
+                sphereR = 0;
+            }
+
+            // Particles on hit
+            let hit = false;
+            let lastS = loopState.current.lastSmoothSp ?? 0;
+            if (lastS < 0.20 && S >= 0.20) hit = true;
+            if (lastS < 0.40 && S >= 0.40) hit = true;
+            if (lastS < 0.60 && S >= 0.60) hit = true;
+            if (lastS < 0.80 && S >= 0.80) hit = true;
+            loopState.current.lastSmoothSp = S;
+            
+            if (hit) {
+                let px = sphereX;
+                let py = sphereY;
+                for(let i=0; i< (S >= 0.80 ? 40 : 15); i++) {
+                    particles.current.push({
+                        x: px, y: py,
+                        vx: (Math.random() - 0.5) * (S >= 0.80 ? 30 : 15),
+                        vy: (Math.random() - 0.5) * (S >= 0.80 ? 30 : 15) - 2,
+                        size: 1 + Math.random() * (S >= 0.80 ? 4 : 2),
+                        op: 1, life: 1 + Math.random() * 0.5
+                    });
+                }
+            }
+        }
+
+        const safeStyle = (ref: React.RefObject<HTMLElement | null>, props: any) => {
+            if (ref.current) Object.assign(ref.current.style, props);
+        };
+        
+         // Dynamic rising text layout precisely aligned to user's requested heights
+        const updatePhrase = (ref: React.RefObject<HTMLDivElement | null>, s_hit: number, extraOffset: number = 0, isFirst: boolean = false) => {
+            if (!ref.current) return;
+            const startS = isFirst ? 0 : s_hit - 0.06;
+            let currentX = 0;
+            let currentY = 1.2 * H;
+            let op = 0;
+            let p_scramble = 0;
+            if (S >= startS) {
+                if (S < s_hit) {
+                    const p = (S - startS) / (s_hit - startS);
+                    if (isFirst) {
+                        currentX = lerp(W * 0.5, 0, easeOut(p));
+                        currentY = 0.8 * H;
+                        op = p;
+                        p_scramble = p;
+                    } else {
+                        currentX = 0;
+                        currentY = lerp(1.1 * H, 0.8 * H, p);
+                        op = p;
+                        p_scramble = p;
+                    }
+                } else {
+                    const dS = S - s_hit;
+                    currentY = 0.8 * H - dS * H;
+                    currentX = 0;
+                    op = 1;
+                    p_scramble = 1;
+                    if (currentY < -0.05 * H) {
+                        op = clamp((currentY + 0.15 * H) / (0.1 * H), 0, 1);
+                    }
+                    if (S > 0.99) {
+                        op = clamp(1, 0, 1);
+                    }
+                }
+            } else {
+                p_scramble = 0;
+                if (isFirst) {
+                    currentX = W * 0.5;
+                    currentY = 0.8 * H;
+                }
+            }
+            currentY += extraOffset;
+            
+            // Programmatically scramble text nodes recursively
+            const scrambleTextNodes = (el: HTMLElement, progress: number) => {
+                el.childNodes.forEach(child => {
+                    if (child.nodeType === Node.TEXT_NODE) {
+                        if (!(child as any).__originalText) {
+                            (child as any).__originalText = child.textContent || '';
+                        }
+                        const orig = (child as any).__originalText;
+                        child.textContent = scrambleString(orig, progress);
+                    } else if (child.nodeType === Node.ELEMENT_NODE) {
+                        scrambleTextNodes(child as HTMLElement, progress);
+                    }
+                });
             };
-          }
-          const { x: targetX, y: targetY, r: targetR } = targetPos.current || { x: CX(), y: CY(), r: 10 };
-          const et = easeOut(pParabola); 
-          sphereX = lerp(CX(), targetX, et);
-          const baseLine = lerp(floorY, targetY, et);
-          const arc = Math.sin(pParabola * Math.PI) * (H * 0.35); 
-          sphereY = baseLine - arc;
-          sphereR = lerp(90, targetR, et);
-          morphT = clamp((pParabola - 0.3) * 2, 0, 1);
-          if (pParabola < 0.15) {
-            const s = pParabola / 0.15;
-            squash = lerp(0.5, 1.2, s);
-          } else {
-            const s = (pParabola - 0.15) / 0.85;
-            const vel = Math.cos(s * Math.PI * 0.5);
-            squash = 1 + vel * 0.1;
-          }
-        }
-        if (pParabola < 1) {
-          trail.current.push({x: sphereX, y: sphereY, r: sphereR});
-          if (trail.current.length > 25) trail.current.shift();
-        }
+            scrambleTextNodes(ref.current, p_scramble);
+            
+            safeStyle(ref, {
+                transform: `translateX(${currentX}px) translateY(${currentY}px)`,
+                opacity: op.toString(),
+                filter: 'blur(0px)'
+            });
+        };
+
+        updatePhrase(phrase1Ref, S_HITS[0], 0, true);
+        updatePhrase(phrase2Ref, S_HITS[1]);
+        updatePhrase(phrase3Ref, S_HITS[2]);
+        updatePhrase(punch1Ref, S_HITS[3]);
+        updatePhrase(punch2Ref, S_HITS[3], isMobile ? 40 : 60);
       }
 
-      const finalSphereY = isMobile ? -1000 : getStickyY(sphereY, sphereR);
-
       if (!isMobile) {
-        trail.current.forEach((t, i) => {
-          const op = (i / trail.current.length) * 0.4;
-          const stickyTY = getStickyY(t.y, t.r);
-          drawDot(t.x, stickyTY, t.r * 0.9, op, true);
+        // Age the trail
+        trail.current.forEach(t => {
+            t.age = (t.age || 0) + dt;
+        });
+        trail.current = trail.current.filter(t => t.age! < 1000); // 1000ms lifetime
+
+        // Continuous trail recording with small delta check to prevent buildup when idle
+        if (trail.current.length > 0) {
+            const dx = trail.current[trail.current.length-1].x - sphereX;
+            const dy = trail.current[trail.current.length-1].y - sphereY;
+            const dist = Math.hypot(dx, dy);
+            if (dist > 150) {
+                // Clear trail if teleported
+                trail.current = [];
+            }
+        }
+
+        if (trail.current.length === 0 || Math.hypot(trail.current[trail.current.length-1].x - sphereX, trail.current[trail.current.length-1].y - sphereY) > 5) {
+          trail.current.push({x: sphereX, y: sphereY, r: sphereR, op: sphereOp, age: 0});
+        }
+
+        // Draw Waves
+        waves.current.forEach((w) => {
+          if (w.active) {
+            w.age += 0.016;
+            w.width = Math.sin(Math.min(w.age * 2.5, Math.PI)) * (W * 0.35);
+            w.opacity = clamp(1 - (w.age / 1.5), 0, 1);
+            if (w.age > 1.5) w.active = false;
+
+            if (w.width > 0 && w.opacity > 0) {
+              ctx.save();
+              ctx.globalAlpha = w.opacity;
+              const grad = ctx.createLinearGradient(w.x - w.width, w.y, w.x + w.width, w.y);
+              grad.addColorStop(0, 'transparent');
+              grad.addColorStop(0.5, '#00E5FF');
+              grad.addColorStop(1, 'transparent');
+              ctx.fillStyle = grad;
+              ctx.fillRect(w.x - w.width, w.y - 2, w.width * 2, 4);
+              ctx.shadowBlur = 20;
+              ctx.shadowColor = '#00E5FF';
+              ctx.fillRect(w.x - w.width, w.y - 1, w.width * 2, 2);
+              ctx.restore();
+            }
+          }
         });
 
-        if (sphereR > 1) {
-          drawSphere(sphereX, finalSphereY, sphereR, sphereGlow, morphT, squash);
+        // Draw continuous trail strip
+        ctx.save();
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#00E5FF';
+        for (let i = 1; i < trail.current.length; i++) {
+            const p1 = trail.current[i - 1];
+            const p2 = trail.current[i];
+            let ageOp = 1 - ((p2.age || 0) / 1000);
+            if (ageOp < 0) ageOp = 0;
+            const trailOp = ageOp * 0.6 * (p2.op ?? 1);
+            if (trailOp > 0) {
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.strokeStyle = `rgba(0, 229, 255, ${trailOp})`;
+                ctx.lineWidth = Math.max(0.1, p2.r * 1.5 * ageOp);
+                ctx.stroke();
+            }
+        }
+        ctx.restore();
+
+        if (sphereR > 1 && sphereOp > 0) {
+          // Add spinning effect that accumulates over distance
+          const spinAngle = pParabola >= 1 ? (smoothSp * Math.PI * 8) % (Math.PI * 2) : 0;
+          drawSphere(sphereX, sphereY, sphereR, sphereGlow, morphT, squash, dirAngle + spinAngle, sphereOp, stretchX);
         }
 
         // Draw particles
@@ -454,7 +847,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
           p.x += p.vx;
           p.y += p.vy;
           p.vy += 0.2; // gravity
-          p.life -= 0.02;
+          p.life -= 0.015;
           p.op = clamp(p.life, 0, 1);
           
           ctx.save();
@@ -462,14 +855,10 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
           ctx.fillStyle = '#00E5FF';
           ctx.shadowBlur = 10;
           ctx.shadowColor = ctx.fillStyle as string;
-          // Draw square "pixels"
           ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
           ctx.restore();
-
-          if (p.life <= 0) {
-            particles.current.splice(i, 1);
-          }
         });
+        particles.current = particles.current.filter(p => p.life > 0);
       }
 
       animationFrameId = requestAnimationFrame(loop);
@@ -495,28 +884,21 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   };
 
   return (
-    <section id="hero" className="relative h-[160vh] w-full">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Skip Button */}
-        {phase < 3 && (
-          <button 
-            onClick={handleSkip}
-            className="absolute top-8 right-8 z-[110] text-[10px] font-tech uppercase tracking-widest text-white/40 hover:text-white transition-colors px-4 py-2 border border-white/10 rounded-full bg-black/20 backdrop-blur-sm"
+    <section ref={sectionRef} id="hero" className="relative h-[270vh] w-full">
+      {/* Background Image Container */}
+      <AnimatePresence>
+        {phase === 3 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2.5, ease: "easeInOut" }}
+            className="fixed inset-0 z-0 pointer-events-none overflow-hidden"
           >
-            Skip Intro
-          </button>
-        )}
-        {/* Background Background Image */}
-        <AnimatePresence>
-          {phase === 3 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 2.5, ease: "easeInOut" }}
-              className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
+            <motion.div 
+              className="w-full h-full" 
+              style={{ opacity: heroContentOpacity }}
             >
-              {/* Desktop Image */}
-              <picture className="w-full h-full">
+              <picture className="w-full h-full block">
                 <source
                   media="(min-width: 768px)"
                   srcSet="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779229305/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.png"
@@ -527,14 +909,49 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   className="w-full h-full object-cover object-top md:object-center transform translate-y-8 md:translate-y-0 scale-110 md:scale-100"
                 />
               </picture>
-              {/* Subtle overlay to enhance contrast for text against the interactive background */}
               <div className="absolute inset-0 bg-transparent mix-blend-multiply opacity-50" />
             </motion.div>
-          )}
-        </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        {/* Skip Button */}
+        {phase < 3 && (
+          <button 
+            onClick={handleSkip}
+            className="absolute top-8 right-8 z-[110] text-[10px] font-tech uppercase tracking-widest text-white/40 hover:text-white transition-colors px-4 py-2 border border-white/10 rounded-full bg-black/20 backdrop-blur-sm"
+          >
+            Skip Intro
+          </button>
+        )}
   
         {/* Canvas Background */}
         <canvas ref={canvasRef} className="absolute inset-0 z-20 pointer-events-none" />
+
+        {/* Scroll Phrases */}
+        <div className="absolute inset-0 z-40 pointer-events-none font-tech uppercase w-full">
+            <div ref={phrase1Ref} className="absolute text-left left-4 md:left-[10vw] lg:left-[15vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
+                <span className="text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest leading-relaxed block">
+                    DA INVISIBILE A <span className="text-[#00E5FF]">PRIMO SU GOOGLE</span>
+                </span>
+            </div>
+            <div ref={phrase2Ref} className="absolute text-left left-8 md:left-[20vw] lg:left-[25vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
+                <span className="text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest leading-relaxed block">
+                    DA ZERO A <span className="text-[#00E5FF]">400 NUOVI CLIENTI</span>
+                </span>
+            </div>
+            <div ref={phrase3Ref} className="absolute text-left left-12 md:left-[30vw] lg:left-[35vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
+                <span className="text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest leading-relaxed block">
+                    DA ZERO A <span className="text-[#00E5FF]">E-COMMERCE ONLINE</span>
+                </span>
+            </div>
+            <div ref={punch1Ref} className="absolute text-left left-16 md:left-[40vw] lg:left-[45vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
+                <span className="text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest leading-[1.4] block">
+                    <span className="text-[#00E5FF]">+30% DI FATTURATO</span> IN SEI MESI
+                </span>
+            </div>
+            <div ref={punch2Ref} className="hidden"></div>
+        </div>
   
         {/* Hero Content */}
         <AnimatePresence>

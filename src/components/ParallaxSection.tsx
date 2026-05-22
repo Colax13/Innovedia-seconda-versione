@@ -121,7 +121,7 @@ const ParallaxSection: React.FC = () => {
       const isFirstFrame = Math.abs(targetScroll - currentScroll) < 0.001;
       
       if (isFirstFrame || Math.abs(targetScroll - currentScroll) > 0.05) {
-        const scrollOffset = currentScroll * 0.25;
+        const scrollOffset = currentScroll * 0.35;
         const totalCardWidth = 340 + 32; // width + gap
 
         rowRefs.current.forEach((row, i) => {

@@ -46,7 +46,7 @@ export default function UnifiedBackground() {
           background: "radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, transparent 70%)",
           filter: "blur(100px)",
           animation: "blob1 20s infinite alternate",
-          transform: `translate(${mouse.x * 20}px, ${mouse.y * 15}px)`,
+          transform: `translate(${mouse.x * 40}px, ${mouse.y * 30}px)`,
           transition: "transform 0.5s ease-out",
         }} />
 
@@ -60,7 +60,7 @@ export default function UnifiedBackground() {
           background: "radial-gradient(circle, rgba(0, 229, 255, 0.12) 0%, transparent 70%)",
           filter: "blur(120px)",
           animation: "blob2 25s infinite alternate",
-          transform: `translate(${mouse.x * -15}px, ${mouse.y * -20}px)`,
+          transform: `translate(${mouse.x * -30}px, ${mouse.y * -40}px)`,
           transition: "transform 0.5s ease-out",
         }} />
         
@@ -74,7 +74,7 @@ export default function UnifiedBackground() {
           background: "radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 70%)",
           filter: "blur(140px)",
           animation: "blob3 22s infinite alternate",
-          transform: `translate(${mouse.x * 10}px, ${mouse.y * 10}px)`,
+          transform: `translate(${mouse.x * 20}px, ${mouse.y * 20}px)`,
           transition: "transform 0.5s ease-out",
         }} />
 

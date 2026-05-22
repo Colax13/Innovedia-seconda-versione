@@ -54,13 +54,20 @@ export default function QualcosaSuDiMe() {
   const titleX = useTransform(titleEnterProgress, [0, 1], [100, 0]);
   const titleOpacity = useTransform(titleEnterProgress, [0, 1], [0, 1]);
 
+  // Per l'entrata dell'intera sezione
+  const { scrollYProgress: sectionProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 80%", "start 30%"]
+  });
+  const sectionOpacity = useTransform(sectionProgress, [0, 1], [0, 1]);
+
   return (
     <section 
       ref={sectionRef} 
       id="qualcosa-su-di-me" 
-      className="relative pt-32 pb-24 md:pt-[30vh] md:pb-32 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent z-10 mt-12 md:mt-24"
+      className="relative pt-32 pb-24 md:pt-[30vh] md:pb-32 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent z-40 -mt-[10vh] lg:-mt-[15vh]"
     >
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-start relative">
+      <motion.div style={{ opacity: sectionOpacity }} className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-start relative">
         
         {/* IMAGES LEFT - STICKY */}
         <div className="w-full lg:w-[45%] lg:sticky lg:top-[calc(50vh-250px)] h-[400px] md:h-[500px] z-20 flex-shrink-0">
@@ -162,7 +169,7 @@ export default function QualcosaSuDiMe() {
           </div>
         </div>
 
-      </div>
+      </motion.div>
     </section>
   );
 }
