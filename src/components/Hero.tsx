@@ -216,6 +216,8 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       ctx.globalAlpha = op;
       if (blur > 0.1) {
         ctx.filter = `blur(${blur}px)`;
+      } else {
+        ctx.filter = 'none';
       }
       ctx.translate(x, y);
       ctx.rotate(rot * Math.PI / 180);
@@ -360,13 +362,13 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       const ENTRY_START = 0;
       const ENTRY_DUR = 1800;
       
-      const GROUP_START = 2000; 
-      const GROUP_DUR = 800;
+      const GROUP_START = 2200; 
+      const GROUP_DUR = 1000;
 
-      const EXIT_START = 2800;
+      const EXIT_START = 3600;
       const EXIT_DUR = 800;
 
-      const BOUNCE_START = 3400; 
+      const BOUNCE_START = 4200; 
       const PARABOLA_DUR = 1700;
 
       const pEntry = clamp((loopState.current.elapsed - ENTRY_START) / ENTRY_DUR, 0, 1);
@@ -434,42 +436,38 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         const off = randomOffsets.current[i];
         
         // Staggered local progression
-        const delay = i * 40;
-        const localEntry = clamp((loopState.current.elapsed - delay) / 1600, 0, 1);
+        const delay = i * 150; // generous stagger for staggered entry
+        const localEntry = clamp((loopState.current.elapsed - delay) / 1400, 0, 1);
         const et = easeOut(localEntry);
         
-        const localGroup = clamp((loopState.current.elapsed - GROUP_START - delay * 0.2) / GROUP_DUR, 0, 1);
-        const gt = Math.pow(localGroup, 1.5); // Ease In Out
+        const localGroup = clamp((loopState.current.elapsed - GROUP_START - delay * 0.1) / GROUP_DUR, 0, 1);
+        const gt = Math.pow(localGroup, 2); // Gather tighter in the group phase
         
-        const localExit = clamp((loopState.current.elapsed - EXIT_START - i * 30) / EXIT_DUR, 0, 1);
+        const localExit = clamp((loopState.current.elapsed - EXIT_START - i * 40) / EXIT_DUR, 0, 1);
         const ext = Math.pow(localExit, 3); // Accelerate upwards
 
         const currentZ = lerp(off.z, 0, et);
         const perspective = 1 / (currentZ + 1);
         
-        // Enter from side
+        // Enter from right side exactly horizontally
         const startX = CX() + W * 1.2; 
-        const startY = CY(); // entering from side rather than bottom
-        
-        // Orbit positioning
-        const orbitRadius = RING_R * (1.1 - et * 0.1);
-        const orbitSpeed = 0.0003 * loopState.current.elapsed;
-        const orbitAng = (2 * Math.PI / SRCS.length) * i + orbitSpeed;
-        
-        const targetX = CX() + Math.cos(orbitAng) * orbitRadius;
-        const targetY = CY() + Math.sin(orbitAng) * orbitRadius;
+        const startY = CY(); 
+
+        // Target: Initial relaxed spread
+        const initialSpread = Math.min(W * 0.4, 400);
+        const initialTargetX = CX() + (i - (SRCS.length - 1) / 2) * (initialSpread / SRCS.length); 
+        const initialTargetY = CY();
+
+        // 1. Enter from side
+        let x = lerp(startX, initialTargetX, et);
+        let y = lerp(startY, initialTargetY, et);
 
         // Group Center Target: align in the center, bring lightly together
-        // A staggered horizontal overlapping spread at the center
-        const spread = Math.min(W * 0.2, 200); // 200px spread total
-        const groupTargetX = CX() + (i - (SRCS.length - 1) / 2) * (spread / SRCS.length); 
+        const gatherSpread = Math.min(W * 0.25, 200); 
+        const groupTargetX = CX() + (i - (SRCS.length - 1) / 2) * (gatherSpread / SRCS.length); 
         const groupTargetY = CY();
 
-        // 1. Enter to Orbit
-        let x = lerp(startX, targetX, et);
-        let y = lerp(startY, targetY, et);
-
-        // 2. Orbit to Group Center
+        // 2. Gather closer
         x = lerp(x, groupTargetX, gt);
         y = lerp(y, groupTargetY, gt);
 
@@ -479,29 +477,26 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         const px = CX() + (x - CX()) * perspective;
         const py = CY() + (y - CY()) * perspective;
 
-        // Rotation logic: spin initially, level out for group
-        const rotX = lerp(off.rx, Math.sin(orbitAng) * 20, et) * (1 - gt);
-        const rotY = lerp(off.ry, Math.cos(orbitAng) * 20, et) * (1 - gt);
-        
-        // Card Z rotation aligns flat
-        const rotZ = lerp(orbitAng * 180 / Math.PI, 0, gt);
+        // Rotation logic: just a slight random tilt on entry, converging to 0 tilt on gather
+        const tiltX = lerp(off.rx * 0.2, 0, et); // Gentle tilt based on random
+        const tiltY = lerp(off.ry * 0.2, 0, et); 
+        const tiltZ = lerp(off.rz * 0.1, 0, gt); // Card Z rotation flattens completely at group
 
         // Scale: shrink the cards in group phase
         const scaleBase = lerp(off.scale, 1, et) * perspective;
-        const groupScale = lerp(1, 0.45, gt); // Shrink factor
+        const groupScale = lerp(1, 0.45, gt); // Shrink slightly
         const finalScale = scaleBase * groupScale;
 
-        const scaleX = Math.cos(rotY * Math.PI / 180) * finalScale;
-        const scaleY = Math.cos(rotX * Math.PI / 180) * finalScale;
+        const scaleX = Math.cos(tiltY * Math.PI / 180) * finalScale;
+        const scaleY = Math.cos(tiltX * Math.PI / 180) * finalScale;
         
         // Opacity
         let op = clamp(localEntry * 4, 0, 1);
-        op = op * clamp(1 - ext, 0, 1); // Fade out during exit occasionally? Let's just fly out
+        
+        // Blur
+        const blur = ext * 35; 
 
-        // Blur for exit
-        const blur = ext * 25; // 0 to 25px blur
-
-        drawCard(img, px, py, rotZ, scaleX, scaleY, op, blur);
+        drawCard(img, px, py, tiltZ, scaleX, scaleY, op, blur);
       });
 
       let p0 = targetPos.current;
@@ -623,7 +618,6 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 // Bounce T1 -> T2
                 let p = (S - S_HITS[0]) / (S_HITS[1] - S_HITS[0]);
                 sphereX = lerp(targets[1].x, targets[2].x, p);
-                // Previous text is moving up, so ball starts higher:
                 let startY = targets[1].y - TEXT_OFFSET * p;
                 let endY = targets[2].y;
                 sphereY = lerp(startY, endY, p) - Math.sin(p * Math.PI) * PARABOLA;
@@ -648,20 +642,20 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 squash = 1;
                 dirAngle = Math.atan2(endY - startY, targets[4].x - targets[3].x);
             } else if (S < 0.95) {
-                // Explosion / scale out
+                // Explosion / scale out on desktop, just slide up on mobile
                 let p = (S - S_HITS[3]) / (0.95 - S_HITS[3]);
                 sphereX = targets[4].x;
                 sphereY = targets[4].y - (S - S_HITS[3]) * H; // Track the text moving up
                 squash = 1;
                 stretchX = 1;
                 sphereR = p0.r;
-                sphereOp = 1 - p;
+                sphereOp = isMobile ? 1 : 1 - p;
                 dirAngle = 0;
             } else {
-                sphereOp = 0;
+                sphereOp = isMobile ? 1 : 0;
                 sphereX = targets[4].x;
                 sphereY = targets[4].y - (S - S_HITS[3]) * H;
-                sphereR = 0;
+                sphereR = isMobile ? p0.r : 0;
             }
 
             // Particles on hit
@@ -673,7 +667,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
             if (lastS < 0.80 && S >= 0.80) hit = true;
             loopState.current.lastSmoothSp = S;
             
-            if (hit) {
+            if (hit && !isMobile) {
                 let px = sphereX;
                 let py = sphereY;
                 for(let i=0; i< (S >= 0.80 ? 40 : 15); i++) {
@@ -915,11 +909,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         )}
       </AnimatePresence>
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Skip Button */}
+        {/* Skip/Replay Button */}
         {phase < 3 && (
           <button 
             onClick={handleSkip}
-            className="absolute top-8 right-8 z-[110] text-[10px] font-tech uppercase tracking-widest text-white/40 hover:text-white transition-colors px-4 py-2 border border-white/10 rounded-full bg-black/20 backdrop-blur-sm"
+            className="absolute top-8 right-8 z-[110] text-[10px] font-tech uppercase tracking-widest text-white/40 hover:text-white transition-colors px-4 py-2 border border-white/10 rounded-full bg-black/20 backdrop-blur-sm pointer-events-auto"
           >
             Skip Intro
           </button>
@@ -931,24 +925,36 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         {/* Scroll Phrases */}
         <div className="absolute inset-0 z-40 pointer-events-none font-tech uppercase w-full">
             <div ref={phrase1Ref} className="absolute text-left left-4 md:left-[10vw] lg:left-[15vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
-                <span className="text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest leading-relaxed block">
-                    DA INVISIBILE A <span className="text-[#00E5FF]">PRIMO SU GOOGLE</span>
+                <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl font-bold tracking-widest leading-relaxed block">
+                    <span className="text-[#00E5FF]">TI HANNO CHIESTO 10.000€</span> PER ANDARE ONLINE.
                 </span>
             </div>
-            <div ref={phrase2Ref} className="absolute text-left left-8 md:left-[20vw] lg:left-[25vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
-                <span className="text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest leading-relaxed block">
-                    DA ZERO A <span className="text-[#00E5FF]">400 NUOVI CLIENTI</span>
+            <div ref={phrase2Ref} className="absolute text-left left-4 md:left-[20vw] lg:left-[25vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
+                <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl font-bold tracking-widest leading-relaxed block">
+                    HAI PROVATO I VIDEO <span className="text-[#00E5FF]">MA NON È CAMBIATO NIENTE.</span>
                 </span>
             </div>
-            <div ref={phrase3Ref} className="absolute text-left left-12 md:left-[30vw] lg:left-[35vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
-                <span className="text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest leading-relaxed block">
-                    DA ZERO A <span className="text-[#00E5FF]">E-COMMERCE ONLINE</span>
+            <div ref={phrase3Ref} className="absolute text-left left-4 md:left-[30vw] lg:left-[35vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
+                <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl font-bold tracking-widest leading-relaxed block">
+                    <span className="text-[#00E5FF]">I CLIENTI NON SAI COME</span> E DA DOVE ARRIVANO
                 </span>
             </div>
-            <div ref={punch1Ref} className="absolute text-left left-16 md:left-[40vw] lg:left-[45vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
-                <span className="text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-widest leading-[1.4] block">
-                    <span className="text-[#00E5FF]">+30% DI FATTURATO</span> IN SEI MESI
-                </span>
+            <div ref={punch1Ref} className="absolute text-left left-4 md:left-[40vw] lg:left-[45vw] w-auto max-w-[85vw] sm:max-w-[70vw]" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
+                <img 
+                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779493812/meme_sito_scontornato_nzl2uz.png"
+                  alt="Meme"
+                  className="absolute -top-20 sm:-top-28 -right-4 sm:-right-8 w-20 sm:w-28 object-contain rotate-[20deg] opacity-90 -z-10"
+                  style={{ maskImage: 'linear-gradient(to bottom, black 30%, transparent 85%)', WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 85%)' }}
+                  referrerPolicy="no-referrer"
+                />
+                <div className="relative w-full h-full p-4 sm:p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-[#00E5FF]/20 text-white z-10">
+                  <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl font-bold tracking-widest leading-[1.4] block relative z-10">
+                      E IO LO SO BENE... <span className="text-[#00E5FF]">È CAPITATO ANCHE A ME!</span>
+                  </span>
+                  <span className="text-[9px] sm:text-[11px] md:text-[13px] mt-3 md:mt-4 block font-normal text-white/50 italic tracking-widest text-right relative z-10">
+                      E adesso capirai il perché
+                  </span>
+                </div>
             </div>
             <div ref={punch2Ref} className="hidden"></div>
         </div>
@@ -1029,7 +1035,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                         {!isMobile && <span ref={mobileDotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />}
                       </motion.span>
                     </div>
-                    <div className="flex items-baseline uppercase whitespace-nowrap pointer-events-auto">
+                    <div className="relative flex items-baseline uppercase whitespace-nowrap pointer-events-auto">
                       {"digital".split("").map((char, i) => (
                         <motion.span
                           key={i}
@@ -1066,6 +1072,32 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                         ı
                         {!isMobile && <span ref={dotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />}
                       </motion.span>
+                      
+                      {/* Scribble Strikethrough & Gratis */}
+                      <motion.div 
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        animate={phase === 3 ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
+                        transition={phase === 3 ? { delay: 0.6, duration: 0.5, ease: "easeOut" } : { duration: 0 }}
+                        className="absolute top-1/2 left-[-2%] w-[104%] h-[4px] md:h-[12px] bg-[#00E5FF] origin-left rounded-full z-10 mix-blend-screen"
+                        style={{ transform: "rotate(-5deg) translateY(-50%)" }}
+                      />
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.5, rotate: -15 }}
+                        animate={phase === 3 ? { opacity: 1, scale: 1, rotate: -8 } : { opacity: 0, scale: 0.5, rotate: -15 }}
+                        transition={phase === 3 ? { delay: 0.9, duration: 0.5, type: "spring", stiffness: 300, damping: 15 } : { duration: 0 }}
+                        className="absolute top-1/2 -translate-y-1/2 -right-[4.2em] md:translate-y-0 md:-top-[1.4em] md:-right-[0.2em] text-[0.3em] md:text-[0.35em] font-black text-[#00E5FF] drop-shadow-[0_0_20px_rgba(0,229,255,0.8)] z-20"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
+                      >
+                        GRATIS
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={phase === 3 ? { opacity: 1 } : { opacity: 0 }}
+                          transition={phase === 3 ? { delay: 1.8, duration: 0.8 } : { duration: 0 }}
+                          className="absolute -bottom-[1.2em] right-0 text-[0.4em] font-tech font-medium tracking-wide text-white/70 uppercase"
+                        >
+                          (forse)
+                        </motion.div>
+                      </motion.div>
                     </div>
                   </motion.div>
                 </div>
@@ -1084,7 +1116,15 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 }}
                 className="text-[11px] md:text-[clamp(11px,1.2vw,15px)] font-tech font-medium tracking-wide md:tracking-[0.02em] uppercase text-white/70 mt-5 md:mt-6 text-left leading-[1.4] md:leading-normal whitespace-normal max-w-[240px] md:max-w-[460px]"
               >
-                Per le attività che vogliono farsi trovare online.
+                Ti faccio guadagnare prima<br className="md:hidden" /> di farti investire.
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={phase === 3 ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ delay: 1.5, duration: 1 }}
+                  className="mt-2 text-[9px] md:text-[11px] font-sans text-white/40 italic normal-case"
+                >
+                  (Aspetta! Non è una fregatura!<br className="md:hidden" /> Fammi spiegare meglio)
+                </motion.div>
               </motion.div>
   
               <motion.div
@@ -1176,7 +1216,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                           }}
                           className="inline-block"
                         >
-                          {char}
+                          {char === " " ? "\u00A0" : char}
                         </motion.span>
                         <motion.span
                           variants={{
@@ -1190,7 +1230,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                           }}
                           className="absolute inset-0 inline-block"
                         >
-                          {char}
+                          {char === " " ? "\u00A0" : char}
                         </motion.span>
                       </span>
                     ))}

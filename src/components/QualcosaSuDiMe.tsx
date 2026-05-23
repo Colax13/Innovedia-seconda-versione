@@ -61,63 +61,66 @@ export default function QualcosaSuDiMe() {
   });
   const sectionOpacity = useTransform(sectionProgress, [0, 1], [0, 1]);
 
+  const ImagesBlock = () => (
+    <motion.div 
+      style={{ x: photosX, opacity: photosOpacity }}
+      className="w-full h-full relative"
+    >
+      {/* Secondary photo (Bottom Left) */}
+      <div 
+        className="absolute bottom-[0%] left-[0%] w-[55%] md:w-[60%] aspect-[4/5] z-10 -rotate-3 hover:z-40"
+      >
+         <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-[#1A1A1C] p-1.5 transition-transform duration-500 hover:rotate-0">
+             <div className="w-full h-full rounded-lg overflow-hidden relative">
+                <img 
+                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774028261/Senza_titolo-1_yamovm.png" 
+                  alt="Ludovico" 
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
+                />
+             </div>
+         </div>
+      </div>
+
+      {/* Main photo (Top Center/Right) */}
+      <div 
+        className="absolute top-[0%] right-[0%] w-[65%] md:w-[70%] aspect-[3/4] z-30 rotate-2 hover:z-40"
+      >
+         <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] bg-[#1A1A1C] p-2 transition-transform duration-500 hover:rotate-0">
+             <div className="w-full h-full rounded-lg overflow-hidden relative">
+                <img 
+                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779236620/io_che_parlo_rcrvap.png" 
+                  alt="Ludovico Portrait" 
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
+                />
+             </div>
+         </div>
+      </div>
+    </motion.div>
+  );
+
   return (
     <section 
       ref={sectionRef} 
       id="qualcosa-su-di-me" 
-      className="relative pt-32 pb-24 md:pt-[30vh] md:pb-32 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent z-40 -mt-[10vh] lg:-mt-[15vh]"
+      className="relative pt-32 pb-24 md:pt-[30vh] md:pb-32 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent z-40 -mt-[10vh] lg:-mt-[15vh] snap-start"
     >
       <motion.div style={{ opacity: sectionOpacity }} className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-start relative">
         
-        {/* IMAGES LEFT - STICKY */}
-        <div className="w-full lg:w-[45%] lg:sticky lg:top-[calc(50vh-250px)] h-[400px] md:h-[500px] z-20 flex-shrink-0">
-          <motion.div 
-            style={{ x: photosX, opacity: photosOpacity }}
-            className="w-full h-full relative"
-          >
-            {/* Secondary photo (Bottom Left) */}
-            <div 
-              className="absolute bottom-[0%] left-[0%] w-[55%] md:w-[60%] aspect-[4/5] z-10 -rotate-3 hover:z-40"
-            >
-               <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-[#1A1A1C] p-1.5 transition-transform duration-500 hover:rotate-0">
-                   <div className="w-full h-full rounded-lg overflow-hidden relative">
-                      <img 
-                        src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774028261/Senza_titolo-1_yamovm.png" 
-                        alt="Ludovico" 
-                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
-                      />
-                   </div>
-               </div>
-            </div>
-
-            {/* Main photo (Top Center/Right) */}
-            <div 
-              className="absolute top-[0%] right-[0%] w-[65%] md:w-[70%] aspect-[3/4] z-30 rotate-2 hover:z-40"
-            >
-               <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] bg-[#1A1A1C] p-2 transition-transform duration-500 hover:rotate-0">
-                   <div className="w-full h-full rounded-lg overflow-hidden relative">
-                      <img 
-                        src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779236620/io_che_parlo_rcrvap.png" 
-                        alt="Ludovico Portrait" 
-                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
-                      />
-                   </div>
-               </div>
-            </div>
-          </motion.div>
+        {/* IMAGES LEFT - STICKY (DESKTOP) */}
+        <div className="hidden lg:block lg:w-[45%] lg:sticky lg:top-[calc(50vh-250px)] h-[400px] md:h-[500px] z-20 flex-shrink-0">
+          <ImagesBlock />
         </div>
-
 
         {/* TEXT CONTENT RIGHT */}
         <div className="flex-1 w-full lg:w-[55%] z-20 flex flex-col gap-12 md:gap-16">
           
-          <div className="mb-8 md:mb-6 overflow-hidden">
+          <div className="mb-0 md:mb-6 overflow-hidden">
             <motion.div
               style={{ x: titleX, opacity: titleOpacity }}
             >
               <div className="flex items-center gap-6 mb-4">
                 <span className="font-tech text-[10px] md:text-xs font-semibold tracking-[0.3em] uppercase text-[#00E5FF] whitespace-nowrap">
-                  Mi hanno detto di stare online
+                  Anche a me hanno detto di stare online
                 </span>
                 <div
                   className="w-16 h-px"
@@ -132,6 +135,11 @@ export default function QualcosaSuDiMe() {
                 </span>
               </h2>
             </motion.div>
+          </div>
+
+          {/* IMAGES MIDDLE (MOBILE ONLY) */}
+          <div className="block lg:hidden w-full h-[400px] z-20 flex-shrink-0">
+            <ImagesBlock />
           </div>
 
           <div className="space-y-16 md:space-y-24">

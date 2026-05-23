@@ -183,7 +183,7 @@ export default function ChiSono() {
               transition={!isMobile ? { duration: 0.8, delay: 0.1 } : undefined}
               className={`font-display text-[clamp(24px,4.5vw,48px)] font-bold uppercase tracking-wide leading-[1.05] mb-0 md:mb-[0.15em] text-white ${isMobile ? '' : 'opacity-25'}`}
             >
-              Non ti serve un sito.
+              So che può sembrarti strano
             </motion.p>
             <motion.p
               style={{ 
@@ -196,7 +196,7 @@ export default function ChiSono() {
               transition={!isMobile ? { duration: 0.8, delay: 0.1 } : undefined}
               className="font-display text-[clamp(24px,4.5vw,48px)] font-bold uppercase tracking-wide leading-[1.05] text-pixar-cyan"
             >
-              Ti serve un sistema.
+              Ma è capitato prima a me che a te!
             </motion.p>
           </div>
 
@@ -208,9 +208,8 @@ export default function ChiSono() {
             transition={{ duration: 1, delay: 0.3 }}
             className="font-sans text-[clamp(14px,1.5vw,17px)] font-light leading-relaxed text-white/50 max-w-[480px] mb-6 md:mb-10"
           >
-            Ogni progetto segue lo stesso percorso.
-            Tre fasi, un unico obiettivo:{' '}
-            <strong className="font-medium text-white/80">farti vendere online.</strong>
+            Ed è proprio da lì che parte il mio lavoro: aiutare imprenditori e professionisti a costruire una comunicazione più chiara, più vera e più utile, che non serva solo a essere presenti online, ma a 
+            <strong className="font-medium text-white/80"> far capire meglio chi sono e perché dovrebbero essere scelti.</strong>
           </motion.p>
 
           {/* Badge */}
