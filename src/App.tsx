@@ -23,6 +23,10 @@ function HomePage() {
   });
 
   React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  React.useEffect(() => {
     if (heroPhase < 3) {
       document.body.style.overflow = 'hidden';
       // Ensure we are at the top of the page when loading

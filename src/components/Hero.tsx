@@ -140,6 +140,12 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   }, [skipAnimation, onPhaseChange]);
 
   useEffect(() => {
+    return () => {
+      document.documentElement.classList.remove('no-snap');
+    };
+  }, []);
+
+  useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -378,18 +384,36 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
       const scrollY = window.scrollY;
       let targetStep = 0;
-      if (scrollY < H * 0.15) {
-          targetStep = 0;
-      } else if (scrollY < H * 0.6) {
-          targetStep = 1;
-      } else if (scrollY < H * 1.05) {
-          targetStep = 2;
-      } else if (scrollY < H * 1.5) {
-          targetStep = 3;
-      } else if (scrollY < H * 1.95) {
-          targetStep = 4;
+      if (isMobile) {
+          if (scrollY < H * 0.5) targetStep = 0;
+          else if (scrollY < H * 1.5) targetStep = 1;
+          else if (scrollY < H * 2.5) targetStep = 2;
+          else if (scrollY < H * 3.5) targetStep = 3;
+          else if (scrollY < H * 4.5) targetStep = 4;
+          else targetStep = 5;
+
+          // Unlock scrolling on mobile when the last phrase enters (targetStep >= 4, which is scrollY >= H * 3.5)
+          if (scrollY >= H * 3.5) {
+              document.documentElement.classList.add('no-snap');
+          } else {
+              document.documentElement.classList.remove('no-snap');
+          }
       } else {
-          targetStep = 5;
+          // Always normal scrolling on desktop
+          document.documentElement.classList.add('no-snap');
+          if (scrollY < H * 0.15) {
+              targetStep = 0;
+          } else if (scrollY < H * 0.6) {
+              targetStep = 1;
+          } else if (scrollY < H * 1.05) {
+              targetStep = 2;
+          } else if (scrollY < H * 1.5) {
+              targetStep = 3;
+          } else if (scrollY < H * 1.95) {
+              targetStep = 4;
+          } else {
+              targetStep = 5;
+          }
       }
 
       loopState.current.smoothStep = lerp(loopState.current.smoothStep, targetStep, 0.12);
@@ -878,7 +902,17 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   };
 
   return (
-    <section ref={sectionRef} id="hero" className="relative h-[270vh] w-full">
+    <section ref={sectionRef} id="hero" className={`relative w-full ${isMobile ? 'h-[600dvh] snap-start' : 'h-[270vh]'}`}>
+      {isMobile && (
+        <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none flex flex-col">
+          <div className="h-[100dvh] w-full snap-start shrink-0" />
+          <div className="h-[100dvh] w-full snap-start shrink-0" />
+          <div className="h-[100dvh] w-full snap-start shrink-0" />
+          <div className="h-[100dvh] w-full snap-start shrink-0" />
+          <div className="h-[100dvh] w-full snap-start shrink-0" />
+          <div className="h-[100dvh] w-full snap-start shrink-0" />
+        </div>
+      )}
       {/* Background Image Container */}
       <AnimatePresence>
         {phase === 3 && (

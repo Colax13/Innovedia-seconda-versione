@@ -68,7 +68,7 @@ export default function QualcosaSuDiMe() {
     >
       {/* Secondary photo (Bottom Left) */}
       <div 
-        className="absolute bottom-[0%] left-[0%] w-[55%] md:w-[60%] aspect-[4/5] z-10 -rotate-3 hover:z-40"
+        className="absolute bottom-[14%] lg:bottom-[0%] left-[0%] w-[55%] md:w-[60%] aspect-[4/5] z-10 -rotate-3 hover:z-40"
       >
          <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-[#1A1A1C] p-1.5 transition-transform duration-500 hover:rotate-0">
              <div className="w-full h-full rounded-lg overflow-hidden relative">
@@ -83,7 +83,7 @@ export default function QualcosaSuDiMe() {
 
       {/* Main photo (Top Center/Right) */}
       <div 
-        className="absolute top-[0%] right-[0%] w-[65%] md:w-[70%] aspect-[3/4] z-30 rotate-2 hover:z-40"
+        className="absolute top-[8%] lg:top-[0%] right-[0%] w-[65%] md:w-[70%] aspect-[3/4] z-30 rotate-2 hover:z-40"
       >
          <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] bg-[#1A1A1C] p-2 transition-transform duration-500 hover:rotate-0">
              <div className="w-full h-full rounded-lg overflow-hidden relative">
