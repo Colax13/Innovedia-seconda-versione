@@ -118,20 +118,19 @@ export default function QualcosaSuDiMe() {
             <motion.div
               style={{ x: titleX, opacity: titleOpacity }}
             >
-              <div className="flex items-center gap-6 mb-4">
-                <span className="font-tech text-[10px] md:text-xs font-semibold tracking-[0.3em] uppercase text-[#00E5FF] whitespace-nowrap">
-                  Anche a me hanno detto di stare online
+              <div className="flex items-center gap-3 md:gap-6 mb-4">
+                <span className="font-tech text-xs sm:text-sm font-semibold tracking-[0.05em] md:tracking-[0.2em] uppercase text-white/50 whitespace-nowrap">
+                  IL TUO PROBLEMA NON È TROVARE CLIENTI.
                 </span>
                 <div
-                  className="w-16 h-px"
-                  style={{ background: '#00E5FF', opacity: 0.5 }}
+                  className="flex-1 min-w-[2rem] max-w-[4rem] md:max-w-[6rem] h-px bg-[#00E5FF]/50 hidden min-[375px]:block"
                 />
               </div>
 
-              <h2 className="font-display text-[clamp(40px,5vw,60px)] font-bold uppercase tracking-tight leading-[1] text-white">
-                Ma nessuno mi ha<br />
+              <h2 className="font-display text-[clamp(40px,5vw,60px)] font-bold uppercase tracking-tight leading-[1.1] text-white">
+                È SAPERE COSA FARNE<br />
                 <span className="text-[#00E5FF]">
-                  detto come.
+                  QUANDO ARRIVANO.
                 </span>
               </h2>
             </motion.div>
@@ -145,33 +144,57 @@ export default function QualcosaSuDiMe() {
           <div className="space-y-16 md:space-y-24">
             
             <ScrollParagraph num={1}>
-              <p>
-                Lavoro da più di cinque anni nel marketing digitale, e per molto tempo la cosa più difficile non è stata capire come comunicare per gli altri.
+              <h3 className="text-white font-bold text-[clamp(20px,2vw,28px)] mb-6 uppercase leading-tight tracking-wide">
+                TUTTI TI DICONO CHE TI SERVE "COMUNICARE".<br />
+                <span className="text-[#00E5FF]">MA NON TI DICONO IL RESTO.</span>
+              </h3>
+              <p className="mb-4">
+                Ho lavorato 5 anni nel marketing, in agenzia e a fianco di grandi aziende. Ho visto cosa funziona e cosa no, <strong className="text-white font-semibold">per imprenditori grandi e piccoli.</strong>
               </p>
-              <p className="mt-4 text-white font-semibold text-[clamp(18px,1.5vw,20px)] leading-tight">
-                È stato capire come farlo per me.
+              <p className="mb-4">
+                E da quell'esperienza ero convinto di una cosa: <strong className="text-white font-semibold">se trovi la chiave di comunicazione giusta, <span className="text-[#00E5FF]">i risultati arrivano.</span></strong>
+              </p>
+              <p>
+                Così mi sono messo in proprio per dimostrarlo.
               </p>
             </ScrollParagraph>
 
             <ScrollParagraph num={2}>
+              <h3 className="text-white font-bold text-[clamp(20px,2vw,28px)] mb-6 uppercase leading-tight tracking-wide">
+                COL MIO PRIMO CLIENTE, L'HO PROVATO.<br />
+                <span className="text-[#00E5FF]">E FUNZIONAVA DI BRUTTO.</span>
+              </h3>
+              <p className="mb-4">
+                Quando mi ha chiamato RD Salon mi ha chiesto una cosa sola.
+              </p>
+              <p className="mb-4 text-[#00E5FF] font-semibold text-[clamp(18px,1.5vw,22px)]">
+                Clienti nuovi.
+              </p>
               <p>
-                E questa per me è stata una <strong className="text-white font-semibold">lezione importante</strong>. Perché se ho fatto fatica io, che nel digitale ci vivo ogni giorno, immagina quanto può essere complicato per chi nel frattempo deve anche mandare avanti un’attività, seguire i clienti e trovare il tempo per capire come raccontarsi online nel modo giusto.
+                Così abbiamo costruito insieme una strategia social e dopo i primi successi abbiamo finanziato il sito web. <strong className="text-white font-semibold">In 6 mesi abbiamo raggiunto 409 clienti. Grazie a tutti!</strong> Un risultato al di sopra delle aspettative.
               </p>
             </ScrollParagraph>
 
             <ScrollParagraph num={3}>
-              <p>
-                Per anni ho visto imprenditori seguire il manuale alla lettera: fare il sito, pubblicare contenuti, cercare di essere presenti online. E più vedevo che provavano a fare tutto bene, più mi accorgevo che non bastava. 
+              <h3 className="text-white font-bold text-[clamp(20px,2vw,28px)] mb-6 uppercase leading-tight tracking-wide text-[#00E5FF]">
+                MA NIENTE FUNZIONA PER SEMPRE.
+              </h3>
+              <p className="mb-4">
+                I clienti arrivavano, questo sì. <strong className="text-[#00E5FF] font-semibold">Ma non eravamo pronti a gestirli.</strong> Non sapevamo chi tornava e chi spariva, non c'era modo di ricontattarli e gestire il salone era diventato un casino.
               </p>
-              <p className="mt-6 text-[#00E5FF] font-semibold text-[clamp(18px,1.5vw,22px)] leading-snug">
-                Sotto mancava quasi sempre la cosa più importante: una direzione chiara.
+              <p className="mb-4">
+                Mancava tutto quello che viene dopo la comunicazione.
+              </p>
+              <p className="font-semibold text-white">
+                Ed è da lì che ho finalmente capito i problemi di un imprenditore.
               </p>
             </ScrollParagraph>
 
             <ScrollParagraph num={4}>
-              <p>
-                Oggi è proprio da lì che parte il mio lavoro: <strong className="text-white font-semibold">aiutare imprenditori e professionisti a costruire una comunicazione più chiara, più vera e più utile</strong>, che non serva solo a essere presenti online, ma a far capire meglio chi sono e perché dovrebbero essere scelti.
-              </p>
+              <h3 className="text-white font-bold text-[clamp(24px,2.5vw,36px)] mb-4 uppercase leading-tight tracking-wide">
+                COSÌ HO SVILUPPATO IL<br className="hidden md:block" /> METODO DI LAVORO PERFETTO<br />
+                <span className="text-[#00E5FF]">PER UNA PICCOLA MEDIA IMPRESA.</span>
+              </h3>
             </ScrollParagraph>
 
           </div>
