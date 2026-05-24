@@ -98,8 +98,10 @@ const ParallaxSection: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
+  const prefersReducedMotion = typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible || prefersReducedMotion) return;
 
     let rafId: number;
     let currentScroll = window.scrollY;

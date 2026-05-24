@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 
 const SRCS = [
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839205/Buoni_e-commerce_u3fsgi.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769514522/GfSERVICE_SITE_q76eod.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773848189/Logo_su_panino_tpz4ke.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773085193/Screenshot_8_u2ex4b.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1769513413/Hair_Spa_sofu9v.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773089052/Screenshot_8_exvaml.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839517/social_qm63bp.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839203/collegamento_ritual_hair_spa_do4mec.jpg',
+  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773839205/Buoni_e-commerce_u3fsgi.jpg',
+  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1769514522/GfSERVICE_SITE_q76eod.jpg',
+  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773848189/Logo_su_panino_tpz4ke.jpg',
+  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773085193/Screenshot_8_u2ex4b.jpg',
+  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1769513413/Hair_Spa_sofu9v.jpg',
+  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773089052/Screenshot_8_exvaml.jpg',
+  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773839517/social_qm63bp.jpg',
+  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773839203/collegamento_ritual_hair_spa_do4mec.jpg',
 ];
 
 const CARD_W = 154; // reduced by 30% from 220
@@ -23,7 +23,7 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), h
 
 const GLITCH_CHARS = '01#%@&?*+_=-[]{}';
 const scrambleString = (str: string, p: number): string => {
-  if (p >= 1) return str;
+  if (p >= 1 || (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return str;
   let res = '';
   for (let i = 0; i < str.length; i++) {
     const char = str[i];
@@ -48,10 +48,11 @@ interface HeroProps {
 
 export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [phase, setPhase] = useState(skipAnimation ? 3 : 0);
+  const prefersReducedMotionInit = typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+  const isMobileInit = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+  const [phase, setPhase] = useState((skipAnimation || prefersReducedMotionInit || isMobileInit) ? 3 : 0);
   const [loaded, setLoaded] = useState(0);
-  const [scrollOpacity, setScrollOpacity] = useState(1);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(isMobileInit);
   const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollY } = useScroll();
@@ -60,13 +61,18 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   // Custom scroll mapping for hero fade-out (moves up out of frame)
   const heroContentY = useTransform(scrollY, [0, 800], [0, -300]);
   const heroContentScale = useTransform(scrollY, [0, 800], [1, 0.90]);
-  const heroContentOpacity = useTransform(scrollYProgress, [0, 0.05, 0.8, 1], [1, 0.1, 0.05, 0]);
-  const heroContentBlur = useTransform(scrollY, [0, 400], ["blur(0px)", "blur(10px)"]);
+  const heroContentOpacityDesktop = useTransform(scrollYProgress, [0, 0.05, 0.8, 1], [1, 0.1, 0.05, 0]);
+  const heroContentOpacityMobile = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.5, 0]);
+  const heroContentBlurDesktop = useTransform(scrollY, [0, 400], ["blur(0px)", "blur(10px)"]);
   const bgImageOpacity = useTransform(scrollYProgress, [0.7, 0.9], [1, 0]);
 
   const [isPostHeroActive, setIsPostHeroActive] = useState(false);
   const postHeroFinished = useRef(false);
   
+  const mobilePhrasesRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: mobilePhrasesProgress } = useScroll({ target: mobilePhrasesRef, offset: ["start end", "end start"] });
+  const heroBgOpacityMobile = useTransform(mobilePhrasesProgress, [0.5, 1], [1, 0.1]);
+
   useEffect(() => {
     const handleScroll = () => {
       // We no longer lock the scroll. We just check if the hero is active based on scroll and elapsed time
@@ -110,11 +116,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   ]);
 
   const loopState = useRef({
-    elapsed: skipAnimation ? 10000 : 0,
+    elapsed: (skipAnimation || prefersReducedMotionInit) ? 10000 : 0,
     lastT: 0,
     lastPhase: 0,
-    smoothStep: skipAnimation ? 5 : 0,
-    lastSmoothSp: skipAnimation ? 1.0 : 0
+    smoothStep: (skipAnimation || prefersReducedMotionInit) ? 5 : 0,
+    lastSmoothSp: (skipAnimation || prefersReducedMotionInit) ? 1.0 : 0
   });
   const stars = useRef(Array.from({ length: 150 }).map(() => ({
     x: Math.random() * 2 - 1,
@@ -133,11 +139,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   })));
 
   useEffect(() => {
-    if (skipAnimation) {
+    if (skipAnimation || prefersReducedMotionInit || isMobileInit) {
       setPhase(3);
       onPhaseChange(3);
     }
-  }, [skipAnimation, onPhaseChange]);
+  }, [skipAnimation, onPhaseChange, prefersReducedMotionInit, isMobileInit]);
 
   useEffect(() => {
     return () => {
@@ -146,24 +152,23 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   }, []);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => {
+      const mob = window.innerWidth < 768;
+      setIsMobile(mob);
+      if (mob) {
+        setPhase(3);
+        onPhaseChange(3);
+      }
+    };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [onPhaseChange]);
+
+
 
   useEffect(() => {
-    const handleScroll = () => {
-      const vh = window.innerHeight || 1;
-      const opacity = Math.max(0, 1 - window.scrollY / (vh * 0.5));
-      setScrollOpacity(isNaN(opacity) ? 0 : opacity);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (skipAnimation) {
+    if (skipAnimation || prefersReducedMotionInit || window.innerWidth < 768) {
       setLoaded(SRCS.length);
       return;
     }
@@ -190,6 +195,20 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
     return () => clearTimeout(timer);
   }, [skipAnimation]);
 
+  const prefersReducedMotion = useRef(typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false);
+  const isVisible = useRef(true);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible.current = entry.isIntersecting;
+      },
+      { threshold: 0 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (loaded < SRCS.length && !skipAnimation) return;
 
@@ -198,7 +217,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const isMobile = window.innerWidth < 768;
+    let isMobile = window.innerWidth < 768;
 
     let animationFrameId: number;
     let W = canvas.width = window.innerWidth;
@@ -358,6 +377,13 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
     };
 
     const loop = (ts: number) => {
+      animationFrameId = requestAnimationFrame(loop);
+
+      if (!isVisible.current || prefersReducedMotion.current || window.innerWidth < 768) {
+        loopState.current.lastT = 0;
+        return;
+      }
+
       if (!loopState.current.lastT) loopState.current.lastT = ts;
       const dt = ts - loopState.current.lastT; 
       loopState.current.lastT = ts;
@@ -878,8 +904,6 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         });
         particles.current = particles.current.filter(p => p.life > 0);
       }
-
-      animationFrameId = requestAnimationFrame(loop);
     };
 
     animationFrameId = requestAnimationFrame(loop);
@@ -902,29 +926,20 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   };
 
   return (
-    <section ref={sectionRef} id="hero" className={`relative w-full ${isMobile ? 'h-[600dvh] snap-start' : 'h-[270vh]'}`}>
-      {isMobile && (
-        <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none flex flex-col">
-          <div className="h-[100dvh] w-full snap-start shrink-0" />
-          <div className="h-[100dvh] w-full snap-start shrink-0" />
-          <div className="h-[100dvh] w-full snap-start shrink-0" />
-          <div className="h-[100dvh] w-full snap-start shrink-0" />
-          <div className="h-[100dvh] w-full snap-start shrink-0" />
-          <div className="h-[100dvh] w-full snap-start shrink-0" />
-        </div>
-      )}
+    <>
+    <section ref={sectionRef} id="hero" className={`relative w-full ${isMobile ? 'min-h-[100dvh] snap-start' : 'min-h-[270vh] h-[270vh]'}`}>
       {/* Background Image Container */}
       <AnimatePresence>
         {phase === 3 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 2.5, ease: "easeInOut" }}
+            transition={{ duration: isMobile ? 0.8 : 2.5, ease: "easeInOut" }}
             className="fixed inset-0 z-0 pointer-events-none overflow-hidden"
           >
             <motion.div 
-              className="w-full h-full" 
-              style={{ opacity: heroContentOpacity }}
+              className="w-full h-full relative" 
+              style={{ opacity: isMobile ? heroBgOpacityMobile : heroContentOpacityDesktop }}
             >
               <picture className="w-full h-full block">
                 <source
@@ -957,7 +972,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         <canvas ref={canvasRef} className="absolute inset-0 z-20 pointer-events-none" />
 
         {/* Scroll Phrases */}
-        <div className="absolute inset-0 z-40 pointer-events-none font-tech uppercase w-full">
+        <div className={`absolute inset-0 z-40 pointer-events-none font-tech uppercase w-full ${isMobile ? 'hidden' : ''}`}>
             <div ref={phrase1Ref} className="absolute text-left left-4 md:left-[10vw] lg:left-[15vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
                 <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl font-bold tracking-widest leading-relaxed block">
                     <span className="text-[#00E5FF]">TI HANNO CHIESTO 10.000€</span> PER ANDARE ONLINE.
@@ -965,7 +980,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
             </div>
             <div ref={phrase2Ref} className="absolute text-left left-4 md:left-[20vw] lg:left-[25vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
                 <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl font-bold tracking-widest leading-relaxed block">
-                    HAI PROVATO I VIDEO <span className="text-[#00E5FF]">MA NON È CAMBIATO NIENTE.</span>
+                    HAI PROVATO I VIDEO <span className="text-[#00E5FF]">MA NON HA FUNZIONATO.</span>
                 </span>
             </div>
             <div ref={phrase3Ref} className="absolute text-left left-4 md:left-[30vw] lg:left-[35vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
@@ -974,19 +989,12 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 </span>
             </div>
             <div ref={punch1Ref} className="absolute text-left left-4 md:left-[40vw] lg:left-[45vw] w-auto max-w-[85vw] sm:max-w-[70vw]" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
-                <img 
-                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779493812/meme_sito_scontornato_nzl2uz.png"
-                  alt="Meme"
-                  className="absolute -top-20 sm:-top-28 -right-4 sm:-right-8 w-20 sm:w-28 object-contain rotate-[20deg] opacity-90 -z-10"
-                  style={{ maskImage: 'linear-gradient(to bottom, black 30%, transparent 85%)', WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 85%)' }}
-                  referrerPolicy="no-referrer"
-                />
                 <div className="relative w-full h-full p-4 sm:p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-[#00E5FF]/20 text-white z-10">
                   <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl font-bold tracking-widest leading-[1.4] block relative z-10">
-                      E IO LO SO BENE... <span className="text-[#00E5FF]">È CAPITATO ANCHE A ME!</span>
+                      E HAI DECISO DI <span className="text-[#00E5FF]">INNOVARE LA TUA ATTIVITÀ</span>
                   </span>
                   <span className="text-[9px] sm:text-[11px] md:text-[13px] mt-3 md:mt-4 block font-normal text-white/50 italic tracking-widest text-right relative z-10">
-                      E adesso capirai il perché
+                      e adesso ti spiego come
                   </span>
                 </div>
             </div>
@@ -997,7 +1005,12 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         <AnimatePresence>
           {phase >= 2 && (
             <motion.div 
-              style={{ y: heroContentY, scale: heroContentScale, opacity: heroContentOpacity, filter: heroContentBlur }}
+              style={{ 
+                y: isMobile ? 0 : heroContentY, 
+                scale: isMobile ? 1 : heroContentScale, 
+                opacity: isMobile ? heroContentOpacityMobile : heroContentOpacityDesktop, 
+                filter: isMobile ? "blur(0px)" : heroContentBlurDesktop 
+              }}
               className="absolute inset-0 z-30 flex flex-col items-start justify-start md:justify-center pt-[18vh] sm:pt-[22vh] md:pt-0 pl-[8%] md:pl-[6%] lg:pl-[10%] pointer-events-none"
             >
               <div className="flex flex-col items-start w-full md:w-auto">
@@ -1010,15 +1023,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                         key={i}
                         initial={{ y: "100%", rotateX: -90 }}
                         animate={phase === 3 ? { y: 0, rotateX: 0 } : { y: "100%", rotateX: -90 }}
-                        style={{ opacity: scrollOpacity }}
-                        transition={phase === 3 ? {
+                        transition={{
                           type: "spring",
                           stiffness: 450,
-                          damping: 10
-                        } : { 
-                          delay: 0.8 + i * 0.02, 
-                          duration: 0.8, 
-                          ease: [0.22, 1, 0.36, 1] 
+                          damping: 15,
+                          delay: phase === 3 ? (0.2 + i * 0.02) : 0
                         }}
                         className="inline-block text-[9px] md:text-[clamp(9px,0.9vw,11px)] font-tech font-bold uppercase tracking-[0.3em] text-[#00E5FF] cursor-default select-none pointer-events-auto"
                       >
@@ -1028,7 +1037,6 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   </div>
      
                   <motion.div
-                    style={{ opacity: scrollOpacity }}
                     className="font-display font-black text-[clamp(52px,13vw,100px)] md:text-[clamp(42px,7.5vw,100px)] tracking-tight leading-[0.85] md:leading-[0.85] flex flex-col md:flex-row items-start md:items-baseline gap-0 md:gap-[0.3em] text-white pointer-events-auto"
                   >
                     <div className="flex items-baseline uppercase pointer-events-auto">
@@ -1037,14 +1045,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                           key={i}
                           initial={{ opacity: 0, y: 40, rotateX: -60 }}
                           animate={phase === 3 ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: -60 }}
-                          transition={phase === 3 ? {
+                          transition={{
                             type: "spring",
-                            stiffness: 450,
-                            damping: 10
-                          } : {
-                            delay: 0.1 + i * 0.04,
-                            duration: 0.8,
-                            ease: [0.215, 0.610, 0.355, 1.000],
+                            stiffness: 400,
+                            damping: 15,
+                            delay: phase === 3 ? (0.4 + i * 0.03) : 0
                           }}
                           className="inline-block origin-bottom cursor-default select-none pointer-events-auto"
                         >
@@ -1054,14 +1059,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                       <motion.span
                         initial={{ opacity: 0, y: 40, rotateX: -60 }}
                         animate={phase === 3 ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: -60 }}
-                        transition={phase === 3 ? {
+                        transition={{
                           type: "spring",
-                          stiffness: 450,
-                          damping: 10
-                        } : {
-                          delay: 0.1 + 8 * 0.04,
-                          duration: 0.8,
-                          ease: [0.215, 0.610, 0.355, 1.000],
+                          stiffness: 400,
+                          damping: 15,
+                          delay: phase === 3 ? (0.4 + 8 * 0.03) : 0
                         }}
                         className="relative inline-block origin-bottom cursor-default select-none pointer-events-auto"
                       >
@@ -1075,14 +1077,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                           key={i}
                           initial={{ opacity: 0, y: 40, rotateX: -60 }}
                           animate={phase === 3 ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: -60 }}
-                          transition={phase === 3 ? {
+                          transition={{
                             type: "spring",
-                            stiffness: 450,
-                            damping: 10
-                          } : {
-                            delay: 0.3 + i * 0.04, // Stagger offset for the second word
-                            duration: 0.8,
-                            ease: [0.215, 0.610, 0.355, 1.000],
+                            stiffness: 400,
+                            damping: 15,
+                            delay: phase === 3 ? (0.6 + i * 0.03) : 0
                           }}
                           className="inline-block origin-bottom cursor-default select-none pointer-events-auto"
                         >
@@ -1092,14 +1091,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                       <motion.span
                         initial={{ opacity: 0, y: 40, rotateX: -60 }}
                         animate={phase === 3 ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: -60 }}
-                        transition={phase === 3 ? {
+                        transition={{
                           type: "spring",
-                          stiffness: 450,
-                          damping: 10
-                        } : {
-                          delay: 0.3 + 7 * 0.04,
-                          duration: 0.8,
-                          ease: [0.215, 0.610, 0.355, 1.000],
+                          stiffness: 400,
+                          damping: 15,
+                          delay: phase === 3 ? (0.6 + 7 * 0.03) : 0
                         }}
                         className="relative inline-block origin-bottom cursor-default select-none pointer-events-auto"
                       >
@@ -1107,31 +1103,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                         {!isMobile && <span ref={dotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />}
                       </motion.span>
                       
-                      {/* Scribble Strikethrough & Gratis */}
-                      <motion.div 
-                        initial={{ scaleX: 0, opacity: 0 }}
-                        animate={phase === 3 ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
-                        transition={phase === 3 ? { delay: 0.6, duration: 0.5, ease: "easeOut" } : { duration: 0 }}
-                        className="absolute top-1/2 left-[-2%] w-[104%] h-[4px] md:h-[12px] bg-[#00E5FF] origin-left rounded-full z-10 mix-blend-screen"
-                        style={{ transform: "rotate(-5deg) translateY(-50%)" }}
-                      />
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.5, rotate: -15 }}
-                        animate={phase === 3 ? { opacity: 1, scale: 1, rotate: -8 } : { opacity: 0, scale: 0.5, rotate: -15 }}
-                        transition={phase === 3 ? { delay: 0.9, duration: 0.5, type: "spring", stiffness: 300, damping: 15 } : { duration: 0 }}
-                        className="absolute top-1/2 -translate-y-1/2 -right-[4.2em] md:translate-y-0 md:-top-[1.4em] md:-right-[0.2em] text-[0.3em] md:text-[0.35em] font-black text-[#00E5FF] drop-shadow-[0_0_20px_rgba(0,229,255,0.8)] z-20"
-                        style={{ fontFamily: "'Inter', sans-serif" }}
-                      >
-                        GRATIS
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={phase === 3 ? { opacity: 1 } : { opacity: 0 }}
-                          transition={phase === 3 ? { delay: 1.8, duration: 0.8 } : { duration: 0 }}
-                          className="absolute -bottom-[1.2em] right-0 text-[0.4em] font-tech font-medium tracking-wide text-white/70 uppercase"
-                        >
-                          (forse)
-                        </motion.div>
-                      </motion.div>
+                      {/* Scribble Strikethrough & Gratis REMOVED */}
                     </div>
                   </motion.div>
                 </div>
@@ -1140,7 +1112,6 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={phase === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-                style={{ opacity: scrollOpacity }}
                 transition={{ 
                   delay: 0.6, 
                   duration: 1,
@@ -1150,21 +1121,20 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 }}
                 className="text-[11px] md:text-[clamp(11px,1.2vw,15px)] font-tech font-medium tracking-wide md:tracking-[0.02em] uppercase text-white/70 mt-5 md:mt-6 text-left leading-[1.4] md:leading-normal whitespace-normal max-w-[240px] md:max-w-[460px]"
               >
-                Ti faccio guadagnare prima<br className="md:hidden" /> di farti investire.
+                Per farti guadagnare prima<br className="md:hidden" /> di farti investire.
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={phase === 3 ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ delay: 1.5, duration: 1 }}
                   className="mt-2 text-[9px] md:text-[11px] font-sans text-white/40 italic normal-case"
                 >
-                  (Aspetta! Non è una fregatura!<br className="md:hidden" /> Fammi spiegare meglio)
+                  (So che sembra una fregatura,<br className="md:hidden" /> ma fammi spiegare meglio)
                 </motion.div>
               </motion.div>
   
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={phase === 3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                style={{ opacity: scrollOpacity }}
                 transition={{ 
                   delay: 0.6, 
                   duration: 1,
@@ -1300,5 +1270,74 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         </div>
       )}
     </section>
+    
+    {/* Mobile Only: Phrases Section below Hero */}
+    {isMobile && (
+      <section ref={mobilePhrasesRef} className="relative w-full bg-black py-20 px-4 flex flex-col gap-12 font-tech uppercase overflow-hidden z-20" style={{ minHeight: '120vh' }}>
+        <motion.div
+           style={{
+             opacity: useTransform(mobilePhrasesProgress, [0.02, 0.15], [0, 1]),
+             y: useTransform(mobilePhrasesProgress, [0.02, 0.15], [20, 0]),
+           }}
+           className="relative z-10 w-full text-center mt-[2vh] mb-[-2vh]"
+        >
+           <span className="text-[12px] md:text-[14px] font-medium text-white/50 tracking-widest lowercase italic font-sans">
+             io so che...
+           </span>
+        </motion.div>
+
+        <motion.div 
+          style={{ 
+            opacity: useTransform(mobilePhrasesProgress, [0.1, 0.25], [0, 1]), 
+            x: useTransform(mobilePhrasesProgress, [0.1, 0.25], [-50, 0]),
+          }}
+          className="relative z-10 w-full max-w-[85vw] p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)] mt-[5vh]"
+        >
+          <span className="text-[16px] font-bold tracking-widest leading-relaxed block">
+            <span className="text-[#00E5FF]">TI HANNO CHIESTO 10.000€</span> PER ANDARE ONLINE.
+          </span>
+        </motion.div>
+
+        <motion.div 
+          style={{ 
+            opacity: useTransform(mobilePhrasesProgress, [0.25, 0.4], [0, 1]), 
+            x: useTransform(mobilePhrasesProgress, [0.25, 0.4], [50, 0]),
+          }}
+          className="relative z-10 w-full max-w-[85vw] self-end p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
+        >
+          <span className="text-[16px] font-bold tracking-widest leading-relaxed block text-right">
+             HAI PROVATO I VIDEO <span className="text-[#00E5FF]">MA NON HA FUNZIONATO.</span>
+          </span>
+        </motion.div>
+
+        <motion.div 
+          style={{ 
+            opacity: useTransform(mobilePhrasesProgress, [0.4, 0.55], [0, 1]), 
+            x: useTransform(mobilePhrasesProgress, [0.4, 0.55], [-50, 0]),
+          }}
+          className="relative z-10 w-full max-w-[85vw] p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
+        >
+          <span className="text-[16px] font-bold tracking-widest leading-relaxed block">
+             <span className="text-[#00E5FF]">I CLIENTI NON SAI COME</span> E DA DOVE ARRIVANO
+          </span>
+        </motion.div>
+
+        <motion.div 
+          style={{ 
+            opacity: useTransform(mobilePhrasesProgress, [0.55, 0.7], [0, 1]), 
+            x: useTransform(mobilePhrasesProgress, [0.55, 0.7], [50, 0]),
+          }}
+          className="relative z-10 w-full max-w-[85vw] self-end p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
+        >
+          <span className="text-[16px] font-bold tracking-widest leading-[1.4] block relative z-10 text-right">
+              E HAI DECISO DI <br/><span className="text-[#00E5FF]">INNOVARE LA TUA ATTIVITÀ</span>
+          </span>
+          <span className="text-[11px] mt-4 block font-normal text-white/50 italic tracking-widest text-right relative z-10">
+              e adesso ti spiego come
+          </span>
+        </motion.div>
+      </section>
+    )}
+    </>
   );
 }

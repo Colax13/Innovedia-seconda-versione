@@ -102,7 +102,7 @@ export default function QualcosaSuDiMe() {
     <section 
       ref={sectionRef} 
       id="qualcosa-su-di-me" 
-      className="relative pt-32 pb-24 md:pt-[30vh] md:pb-32 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent z-40 -mt-[10vh] lg:-mt-[15vh] snap-start"
+      className="relative pt-32 pb-24 md:pt-[30vh] md:pb-32 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent z-40 -mt-[10vh] lg:-mt-[15vh] md:snap-start"
     >
       <motion.div style={{ opacity: sectionOpacity }} className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-start relative">
         

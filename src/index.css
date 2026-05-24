@@ -13,8 +13,8 @@
   }
   
   @media (max-width: 767px) {
-    html:not(.no-snap) {
-      scroll-snap-type: y mandatory;
+    html {
+      scroll-snap-type: none;
     }
   }
   
