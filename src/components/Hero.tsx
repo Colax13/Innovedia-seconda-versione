@@ -1271,13 +1271,14 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       )}
     </section>
     
-    {/* Mobile Only: Phrases Section below Hero */}
-    {isMobile && (
-      <section ref={mobilePhrasesRef} className="relative w-full bg-black py-20 px-4 flex flex-col gap-12 font-tech uppercase overflow-hidden z-20" style={{ minHeight: '120vh' }}>
+    {/* Phrases Section below Hero (Mobile Only visually) */}
+    <section ref={mobilePhrasesRef} className={`relative w-full flex-col gap-12 font-tech uppercase overflow-hidden z-20 ${isMobile ? 'flex bg-black py-20 px-4' : 'hidden'}`} style={{ minHeight: isMobile ? '120vh' : 0 }}>
+      {isMobile && (
+        <>
         <motion.div
            style={{
-             opacity: useTransform(mobilePhrasesProgress, [0.02, 0.15], [0, 1]),
-             y: useTransform(mobilePhrasesProgress, [0.02, 0.15], [20, 0]),
+             opacity: useTransform(mobilePhrasesProgress, [0.02, 0.1], [0, 1]),
+             y: useTransform(mobilePhrasesProgress, [0.02, 0.1], [20, 0]),
            }}
            className="relative z-10 w-full text-center mt-[2vh] mb-[-2vh]"
         >
@@ -1288,8 +1289,8 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
         <motion.div 
           style={{ 
-            opacity: useTransform(mobilePhrasesProgress, [0.1, 0.25], [0, 1]), 
-            x: useTransform(mobilePhrasesProgress, [0.1, 0.25], [-50, 0]),
+            opacity: useTransform(mobilePhrasesProgress, [0.05, 0.15], [0, 1]), 
+            x: useTransform(mobilePhrasesProgress, [0.05, 0.15], [-50, 0]),
           }}
           className="relative z-10 w-full max-w-[85vw] p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)] mt-[5vh]"
         >
@@ -1300,8 +1301,8 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
         <motion.div 
           style={{ 
-            opacity: useTransform(mobilePhrasesProgress, [0.25, 0.4], [0, 1]), 
-            x: useTransform(mobilePhrasesProgress, [0.25, 0.4], [50, 0]),
+            opacity: useTransform(mobilePhrasesProgress, [0.15, 0.25], [0, 1]), 
+            x: useTransform(mobilePhrasesProgress, [0.15, 0.25], [50, 0]),
           }}
           className="relative z-10 w-full max-w-[85vw] self-end p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
         >
@@ -1312,8 +1313,8 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
         <motion.div 
           style={{ 
-            opacity: useTransform(mobilePhrasesProgress, [0.4, 0.55], [0, 1]), 
-            x: useTransform(mobilePhrasesProgress, [0.4, 0.55], [-50, 0]),
+            opacity: useTransform(mobilePhrasesProgress, [0.25, 0.35], [0, 1]), 
+            x: useTransform(mobilePhrasesProgress, [0.25, 0.35], [-50, 0]),
           }}
           className="relative z-10 w-full max-w-[85vw] p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
         >
@@ -1324,8 +1325,8 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
         <motion.div 
           style={{ 
-            opacity: useTransform(mobilePhrasesProgress, [0.55, 0.7], [0, 1]), 
-            x: useTransform(mobilePhrasesProgress, [0.55, 0.7], [50, 0]),
+            opacity: useTransform(mobilePhrasesProgress, [0.35, 0.45], [0, 1]), 
+            x: useTransform(mobilePhrasesProgress, [0.35, 0.45], [50, 0]),
           }}
           className="relative z-10 w-full max-w-[85vw] self-end p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
         >
@@ -1336,8 +1337,9 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
               e adesso ti spiego come
           </span>
         </motion.div>
-      </section>
-    )}
+        </>
+      )}
+    </section>
     </>
   );
 }
