@@ -93,7 +93,6 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   }, []);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const dotPlaceholderRef = useRef<HTMLSpanElement>(null);
-  const mobileDotPlaceholderRef = useRef<HTMLSpanElement>(null);
   const targetPos = useRef<{x: number, y: number, r: number} | null>(null);
   const trail = useRef<{x: number, y: number, r: number, op?: number, age?: number}[]>([]);
   const particles = useRef<{x: number, y: number, vx: number, vy: number, size: number, op: number, life: number}[]>([]);
@@ -398,7 +397,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
       const GROUP_DUR = 1000;
 
       const EXIT_START = 3600;
-      const EXIT_DUR = 800;
+      const EXIT_DUR = 600;
 
       const BOUNCE_START = 4200; 
       const PARABOLA_DUR = 1700;
@@ -461,7 +460,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         onPhaseChange(currentPhase);
       }
 
-      const uiPhase = (pParabola > 0.6) ? 3 : currentPhase;
+      const uiPhase = (pExit > 0.1) ? 3 : currentPhase;
       if (uiPhase !== phase) {
         setPhase(uiPhase);
       }
@@ -493,65 +492,61 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         const localGroup = clamp((loopState.current.elapsed - GROUP_START - delay * 0.1) / GROUP_DUR, 0, 1);
         const gt = Math.pow(localGroup, 2); // Gather tighter in the group phase
         
-        const localExit = clamp((loopState.current.elapsed - EXIT_START - i * 40) / EXIT_DUR, 0, 1);
+        const localExit = clamp((loopState.current.elapsed - EXIT_START) / EXIT_DUR, 0, 1);
         const ext = Math.pow(localExit, 3); // Accelerate upwards
 
         const currentZ = lerp(off.z, 0, et);
         const perspective = 1 / (currentZ + 1);
         
-        // Enter from right side exactly horizontally
+        // Enter from right side
         const startX = CX() + W * 1.2; 
-        const startY = CY(); 
-
-        // Target: Initial relaxed spread
-        const initialSpread = Math.min(W * 0.4, 400);
-        const initialTargetX = CX() + (i - (SRCS.length - 1) / 2) * (initialSpread / SRCS.length); 
-        const initialTargetY = CY();
-
-        // 1. Enter from side
-        let x = lerp(startX, initialTargetX, et);
-        let y = lerp(startY, initialTargetY, et);
-
-        // Group Center Target: align in the center, bring lightly together
-        const gatherSpread = Math.min(W * 0.25, 200); 
-        const groupTargetX = CX() + (i - (SRCS.length - 1) / 2) * (gatherSpread / SRCS.length); 
-        const groupTargetY = CY();
-
-        // 2. Gather closer
-        x = lerp(x, groupTargetX, gt);
-        y = lerp(y, groupTargetY, gt);
-
-        // 3. Exit upwards
-        y -= ext * H * 1.5; 
+        const startY = CY() + off.y * H * 0.3; // enter with some vertical offset
+        
+        // Continuous rotation angle based on elapsed time
+        const baseAngle = (i / SRCS.length) * Math.PI * 2;
+        const spinSpeed = 0.0015;
+        const angle = baseAngle + loopState.current.elapsed * spinSpeed;
+        
+        // Orbit radius: ring initially, then pull to 0 during exit (absorption)
+        const ringRadius = Math.min(W * 0.35, 280);
+        const radius = lerp(ringRadius, 0, Math.pow(ext, 2));
+        
+        // Orbital target coordinates
+        const targetX = CX() + Math.cos(angle) * radius;
+        const targetY = CY() + Math.sin(angle) * radius;
+        
+        // Interpolate position from start to orbit
+        const x = lerp(startX, targetX, et);
+        const y = lerp(startY, targetY, et);
 
         const px = CX() + (x - CX()) * perspective;
         const py = CY() + (y - CY()) * perspective;
 
         // Rotation logic: just a slight random tilt on entry, converging to 0 tilt on gather
-        const tiltX = lerp(off.rx * 0.2, 0, et); // Gentle tilt based on random
+        const tiltX = lerp(off.rx * 0.2, 0, et);
         const tiltY = lerp(off.ry * 0.2, 0, et); 
-        const tiltZ = lerp(off.rz * 0.1, 0, gt); // Card Z rotation flattens completely at group
-
-        // Scale: shrink the cards in group phase
+        const tiltZ = lerp(off.rz * 0.1, 0, gt) + angle * (180 / Math.PI) * 0.1; // Gentle orbit tilt
+        
+        // Scale: normalize, then shrink during absorption
         const scaleBase = lerp(off.scale, 1, et) * perspective;
-        const groupScale = lerp(1, 0.45, gt); // Shrink slightly
-        const finalScale = scaleBase * groupScale;
+        const exitScale = lerp(1, 0, Math.pow(ext, 2));
+        const finalScale = scaleBase * exitScale;
 
         const scaleX = Math.cos(tiltY * Math.PI / 180) * finalScale;
         const scaleY = Math.cos(tiltX * Math.PI / 180) * finalScale;
         
         // Opacity
-        let op = clamp(localEntry * 4, 0, 1);
+        const op = clamp(localEntry * 4, 0, 1) * (1 - Math.pow(ext, 3));
         
         // Blur
-        const blur = ext * 35; 
+        const blur = ext * 15; 
 
         drawCard(img, px, py, tiltZ, scaleX, scaleY, op, blur);
       });
 
       let p0 = targetPos.current;
       if (!p0) {
-        const el = mobileDotPlaceholderRef.current || dotPlaceholderRef.current;
+        const el = dotPlaceholderRef.current;
         if (el) {
           const rect = el.getBoundingClientRect();
           p0 = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, r: 12 };
@@ -578,18 +573,24 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         }
         sphereGlow = clamp(pEntry * 1.5, 0, 1) * (1 - pParabola * 0.5);
 
-        if (pParabola > 0 && !isMobile) {
-            const targetElement = mobileDotPlaceholderRef.current || dotPlaceholderRef.current; 
-            if (targetElement) {
-              const rect = targetElement.getBoundingClientRect();
-              const fontSize = Math.max(60, Math.min(window.innerWidth * 0.1, 140));
-              targetPos.current = {
-                x: rect.left + rect.width / 2,
-                y: rect.top + rect.height / 2,
-                r: fontSize * 0.08 + 2
-              };
+        if (pParabola > 0) {
+            if (!isMobile) {
+              const targetElement = dotPlaceholderRef.current; 
+              if (targetElement) {
+                const rect = targetElement.getBoundingClientRect();
+                const fontSize = Math.max(60, Math.min(window.innerWidth * 0.1, 140));
+                targetPos.current = {
+                  x: rect.left + rect.width / 2,
+                  y: rect.top + rect.height / 2,
+                  r: fontSize * 0.08 + 2
+                };
+                p0 = targetPos.current;
+              }
+            } else if (!p0 || p0.y !== H * 0.45) {
+              targetPos.current = { x: CX(), y: H * 0.45, r: 12 };
               p0 = targetPos.current;
             }
+            
             const { x: targetX, y: targetY, r: targetR } = p0;
             const et = easeOut(pParabola); 
             sphereX = lerp(CX(), targetX, et);
@@ -603,12 +604,25 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         }
       } else {
         // --- NEW POST-HERO ANIMATION (SCROLL-BASED & REVERSIBLE) ---
+        // Continuously update target point when not scrolling to track the 'i' during its animation
+        if (scrollY < 50 && !isMobile) {
+            const targetElement = dotPlaceholderRef.current; 
+            if (targetElement) {
+              const rect = targetElement.getBoundingClientRect();
+              const fontSize = Math.max(60, Math.min(window.innerWidth * 0.1, 140));
+              targetPos.current = {
+                x: rect.left + rect.width / 2,
+                y: rect.top + rect.height / 2,
+                r: fontSize * 0.08 + 2
+              };
+              p0 = targetPos.current;
+            }
+        }
+        
         // Hide dot placeholders when scrolling heavily
         if (scrollY > H * 0.1) {
-            if (mobileDotPlaceholderRef.current) mobileDotPlaceholderRef.current.style.opacity = '0';
             if (dotPlaceholderRef.current) dotPlaceholderRef.current.style.opacity = '0';
         } else {
-            if (mobileDotPlaceholderRef.current) mobileDotPlaceholderRef.current.style.opacity = '1';
             if (dotPlaceholderRef.current) dotPlaceholderRef.current.style.opacity = '1';
         }
 
@@ -969,7 +983,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         )}
   
         {/* Canvas Background */}
-        <canvas ref={canvasRef} className="absolute inset-0 z-20 pointer-events-none" />
+        <canvas ref={canvasRef} className="absolute inset-0 z-50 pointer-events-none" />
 
         {/* Scroll Phrases */}
         <div className={`absolute inset-0 z-40 pointer-events-none font-tech uppercase w-full ${isMobile ? 'hidden' : ''}`}>
@@ -1068,7 +1082,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                         className="relative inline-block origin-bottom cursor-default select-none pointer-events-auto"
                       >
                         ı
-                        {!isMobile && <span ref={mobileDotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />}
+                        <span ref={dotPlaceholderRef} className="absolute top-[-0.35em] left-1/2 -translate-x-1/2 w-1 h-1" />
                       </motion.span>
                     </div>
                     <div className="relative flex items-baseline uppercase whitespace-nowrap pointer-events-auto">
@@ -1100,7 +1114,6 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                         className="relative inline-block origin-bottom cursor-default select-none pointer-events-auto"
                       >
                         ı
-                        {!isMobile && <span ref={dotPlaceholderRef} className="absolute top-[-0.15em] left-1/2 -translate-x-1/2 w-1 h-1" />}
                       </motion.span>
                       
                       {/* Scribble Strikethrough & Gratis REMOVED */}
