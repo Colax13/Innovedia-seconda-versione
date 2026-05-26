@@ -3,17 +3,29 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Share2, Globe, ShoppingCart, Users, Zap } from 'lucide-react';
 
 const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
-  const cardTargetY = isMobile ? 600 : 800; 
-  const cardHalf = isMobile ? 100 : 110;
+  const cardTargetY = isMobile ? 1150 : 800; 
+  const cardHalf = isMobile ? 90 : 110;
+
+  const mobileOffset = isMobile ? -0.05 : 0;
 
   // Timings manually tuned for slower entry on specific cards
-  const t_props = [
-    { start: 0.16, duration: 0.08 }, // 0: SISTEMA R1
-    { start: 0.29, duration: 0.08 }, // 1: CONTROLLO
-    { start: 0.42, duration: 0.16 }, // 2: ACQUISIZIONE
-    { start: 0.60, duration: 0.16 }, // 3: ESECUZIONE
-    { start: 0.78, duration: 0.08 }  // 4: SCALABILITÀ
+  const desk_t_props = [
+    { start: 0.15, duration: 0.12 }, 
+    { start: 0.30, duration: 0.12 }, 
+    { start: 0.45, duration: 0.12 }, 
+    { start: 0.60, duration: 0.12 }, 
+    { start: 0.75, duration: 0.12 }  
   ];
+
+  const mob_t_props = [
+    { start: 0.15, duration: 0.12 },
+    { start: 0.30, duration: 0.12 }, 
+    { start: 0.45, duration: 0.12 }, 
+    { start: 0.60, duration: 0.12 }, 
+    { start: 0.75, duration: 0.12 }  
+  ];
+
+  const t_props = isMobile ? mob_t_props : desk_t_props;
 
   const t_slide_start = t_props[index].start;
   const t_slide_end = t_slide_start + t_props[index].duration;
@@ -35,7 +47,6 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
   // They just physically slide into view from below.
   const opacity = 1;
   const scale = 1;
-  const glow = 1;
   const textOpacity = 1;
   const textY = 0;
 
@@ -59,21 +70,17 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
     <motion.div
       style={{ top: cardTargetY - cardHalf, y, opacity, scale, zIndex: 30 + index }}
       className={`absolute left-1/2 flex flex-col items-center justify-center p-8 rounded-2xl border border-white/10 bg-[#050B14] shadow-[0_40px_100px_-15px_rgba(0,0,0,0.8)]
-      ${isMobile ? "w-[500px] h-[250px] -ml-[250px]" : "w-[500px] h-[220px] -ml-[250px]"}`}
+      ${isMobile ? "w-[280px] h-[150px] -ml-[140px] px-4" : "w-[500px] h-[220px] -ml-[250px]"}`}
     >
-      <motion.div
-        style={{ opacity: glow }}
-        className="absolute inset-0 rounded-2xl border-2 border-[#00E5FF] shadow-[0_0_30px_rgba(0,229,255,0.2)] pointer-events-none"
-      />
       <motion.h3 
         style={{ opacity: textOpacity, y: textY }}
-        className="text-[#00E5FF] font-bold text-4xl md:text-3xl tracking-widest uppercase mb-4"
+        className={`text-[#00E5FF] font-bold tracking-widest uppercase mb-4 ${isMobile ? 'text-2xl' : 'text-3xl'}`}
       >
         {titles[index]}
       </motion.h3>
       <motion.p
         style={{ opacity: textOpacity, y: textY }}
-        className="text-white/80 text-xl md:text-base text-center leading-relaxed max-w-[90%]"
+        className={`text-white/80 text-center leading-relaxed max-w-[90%] ${isMobile ? 'text-sm' : 'text-base'}`}
       >
         {descriptions[index]}
       </motion.p>
@@ -84,7 +91,7 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
 export default function MarketingSystemSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -109,14 +116,19 @@ export default function MarketingSystemSection() {
   const p3 = "Ti manca solo un pezzo.";
   const p4 = "Ti manca un sistema.";
 
-  const op1 = useTransform(introProgress, [0.05, 0.08], [0, 1]);
-  const introY1 = useTransform(introProgress, [0.05, 0.08], [30, 0]);
-  const op2 = useTransform(introProgress, [0.14, 0.17], [0, 1]);
-  const introY2 = useTransform(introProgress, [0.14, 0.17], [30, 0]);
-  const op3 = useTransform(introProgress, [0.20, 0.23], [0, 1]);
-  const introY3 = useTransform(introProgress, [0.20, 0.23], [30, 0]);
-  const op4 = useTransform(introProgress, [0.26, 0.29], [0, 1]);
-  const introY4 = useTransform(introProgress, [0.26, 0.29], [30, 0]);
+  const t_intro1 = isMobile ? [0.005, 0.010] : [0.05, 0.08];
+  const t_intro2 = isMobile ? [0.013, 0.018] : [0.14, 0.17];
+  const t_intro3 = isMobile ? [0.021, 0.026] : [0.20, 0.23];
+  const t_intro4 = isMobile ? [0.029, 0.034] : [0.26, 0.29];
+
+  const op1 = useTransform(introProgress, t_intro1, [0, 1]);
+  const introY1 = useTransform(introProgress, t_intro1, [30, 0]);
+  const op2 = useTransform(introProgress, t_intro2, [0, 1]);
+  const introY2 = useTransform(introProgress, t_intro2, [30, 0]);
+  const op3 = useTransform(introProgress, t_intro3, [0, 1]);
+  const introY3 = useTransform(introProgress, t_intro3, [30, 0]);
+  const op4 = useTransform(introProgress, t_intro4, [0, 1]);
+  const introY4 = useTransform(introProgress, t_intro4, [30, 0]);
 
   // Horizontal spread distance for the initial line layout
   const SPACING = isMobile ? 120 : 240; 
@@ -124,26 +136,28 @@ export default function MarketingSystemSection() {
   const R2 = isMobile ? 90 : 70;  
 
   // Move the animation triggers based on isMobile
-  const startMerge = 0.02;
-  const endMerge = 0.15;
+  const startMerge = isMobile ? 0.04 : 0.02;
+  const endMerge = isMobile ? 0.20 : 0.15;
   
-  const drawStart = 0.02;
-  const drawEnd = 0.15;
+  const drawStart = isMobile ? 0.04 : 0.02;
+  const drawEnd = isMobile ? 0.20 : 0.15;
 
   const yDeskOffset = 800; // amount to move world up
-  const yMobOffset = 600; 
+  const yMobOffset = 1150; 
   const worldYDesktop = useTransform(scrollYProgress, [0, 0.10, 0.22, 1], [0, 0, -yDeskOffset, -yDeskOffset]);
-  const worldYMobile = useTransform(scrollYProgress, [0, 0.10, 0.22, 1], [0, 0, -yMobOffset, -yMobOffset]);
+  const worldYMobile = useTransform(scrollYProgress, [0, 0.22, 0.35, 1], [0, 0, -yMobOffset, -yMobOffset]);
   const worldY = isMobile ? worldYMobile : worldYDesktop;
 
-  const illuminateStart = 0.08;
-  const illuminateEnd = 0.10;
+  const illuminateStart = isMobile ? 0.18 : 0.08;
+  const illuminateEnd = isMobile ? 0.20 : 0.10;
 
   const lineHeightDesktop = useTransform(scrollYProgress, [0.10, 0.22], [0, 800 - 110 - 85]); 
-  const lineHeightMobile = useTransform(scrollYProgress, [0.10, 0.22], [0, 600 - 100 - 85]); 
+  const lineHeightMobile = useTransform(scrollYProgress, [0.22, 0.35], [0, 1150 - 90 - 85]); 
   const lineHeight = isMobile ? lineHeightMobile : lineHeightDesktop;
   
-  const lineOpacity = useTransform(scrollYProgress, [0.10, 0.13], [0, 1]);
+  const lineOpacityDesktop = useTransform(scrollYProgress, [0.10, 0.13], [0, 1]);
+  const lineOpacityMobile = useTransform(scrollYProgress, [0.22, 0.25], [0, 1]);
+  const lineOpacity = isMobile ? lineOpacityMobile : lineOpacityDesktop;
 
   // 1. Social (Far Left start -> Top Left pentagon)
   const x0 = useTransform(scrollYProgress, [startMerge, endMerge], [-SPACING * 2, -R2 * 0.95]);
@@ -222,13 +236,13 @@ export default function MarketingSystemSection() {
       </div>
 
       {/* 3. STICKY CANVAS */}
-      <div ref={containerRef} className="relative w-full h-[800vh]">
+      <div ref={containerRef} className={`relative w-full h-[450vh]`}>
         <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden">
           
           {/* Canvas */}
           <motion.div 
             style={{ y: worldY }}
-            className="relative w-full flex justify-center scale-[0.60] sm:scale-75 md:scale-100"
+            className={`relative w-full flex justify-center ${isMobile ? "scale-[0.95]" : "scale-[0.60] sm:scale-75 md:scale-100"}`}
           >
             <div className="relative w-0 h-0 flex items-center justify-center">
 
