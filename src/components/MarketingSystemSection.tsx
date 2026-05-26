@@ -272,7 +272,7 @@ export default function MarketingSystemSection() {
             IL SISTEMA R1
           </h2>
           <p className="font-sans text-white/70 max-w-2xl text-sm md:text-base leading-relaxed">
-            In 5 anni di lavoro ho sviluppato il <strong className="text-[#00E5FF] font-semibold">Sistema Revenue First</strong> che parte da una regola semplice: <strong className="text-white font-semibold border-b border-[#00E5FF]/40 pb-0.5">prima genero liquidità</strong> nella tua attività, poi costruiamo tutto il resto
+            In 5 anni di lavoro ho sviluppato il <strong className="text-[#00E5FF] font-semibold">Sistema Revenue First</strong> che parte da una regola semplice: <br /> <strong className="text-white font-semibold border-b border-[#00E5FF]/40 pb-0.5">prima genero liquidità</strong> nella tua attività, poi costruiamo tutto il resto
           </p>
         </div>
       </div>

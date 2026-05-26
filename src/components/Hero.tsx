@@ -71,19 +71,19 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   
   const mobilePhrasesRef = useRef<HTMLElement>(null);
   const { scrollYProgress: mobilePhrasesProgress } = useScroll({ target: mobilePhrasesRef, offset: ["start end", "end start"] });
-  const heroBgOpacityMobile = useTransform(mobilePhrasesProgress, [0.5, 1], [1, 0.1]);
+  const heroBgOpacityMobile = useTransform(mobilePhrasesProgress, [0, 0.05], [1, 0.1]);
 
   // Hoisted useTransforms for mobile phrases
-  const mPhrase1Opacity = useTransform(mobilePhrasesProgress, [0.02, 0.1], [0, 1]);
+  const mPhrase1Opacity = useTransform(mobilePhrasesProgress, [0.02, 0.1, 0.12, 1], [0, 1, 0.25, 0.25]);
   const mPhrase1Y = useTransform(mobilePhrasesProgress, [0.02, 0.1], [20, 0]);
   
-  const mPhrase2Opacity = useTransform(mobilePhrasesProgress, [0.05, 0.15], [0, 1]);
+  const mPhrase2Opacity = useTransform(mobilePhrasesProgress, [0.05, 0.15, 0.22, 1], [0, 1, 0.25, 0.25]);
   const mPhrase2X = useTransform(mobilePhrasesProgress, [0.05, 0.15], [-50, 0]);
   
-  const mPhrase3Opacity = useTransform(mobilePhrasesProgress, [0.15, 0.25], [0, 1]);
+  const mPhrase3Opacity = useTransform(mobilePhrasesProgress, [0.15, 0.25, 0.32, 1], [0, 1, 0.25, 0.25]);
   const mPhrase3X = useTransform(mobilePhrasesProgress, [0.15, 0.25], [50, 0]);
   
-  const mPhrase4Opacity = useTransform(mobilePhrasesProgress, [0.25, 0.35], [0, 1]);
+  const mPhrase4Opacity = useTransform(mobilePhrasesProgress, [0.25, 0.35, 0.42, 1], [0, 1, 0.25, 0.25]);
   const mPhrase4X = useTransform(mobilePhrasesProgress, [0.25, 0.35], [-50, 0]);
   
   const mPhrase5Opacity = useTransform(mobilePhrasesProgress, [0.35, 0.45], [0, 1]);
@@ -767,7 +767,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         };
         
          // Dynamic rising text layout precisely aligned to user's requested heights
-        const updatePhrase = (ref: React.RefObject<HTMLDivElement | null>, s_hit: number, extraOffset: number = 0, isFirst: boolean = false) => {
+        const updatePhrase = (ref: React.RefObject<HTMLDivElement | null>, s_hit: number, s_next: number | null = null, extraOffset: number = 0, isFirst: boolean = false) => {
             if (!ref.current) return;
             const startS = isFirst ? 0 : s_hit - 0.06;
             let currentX = 0;
@@ -793,12 +793,24 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                     currentY = 0.8 * H - dS * H;
                     currentX = 0;
                     op = 1;
+                    
+                    // Fade out slightly when the next text is entering
+                    if (s_next !== null) {
+                        const fadeStartS = s_next - 0.06;
+                        if (S >= fadeStartS) {
+                            const pFade = clamp((S - fadeStartS) / 0.06, 0, 1);
+                            op = lerp(1, 0.25, easeOut(pFade));
+                        }
+                    }
+
                     p_scramble = 1;
                     if (currentY < -0.05 * H) {
-                        op = clamp((currentY + 0.15 * H) / (0.1 * H), 0, 1);
+                        // Keep fading out completely if it scrolls off top
+                        const exitOp = clamp((currentY + 0.15 * H) / (0.1 * H), 0, 1);
+                        op = Math.min(op, exitOp);
                     }
                     if (S > 0.99) {
-                        op = clamp(1, 0, 1);
+                        op = Math.min(op, clamp(1, 0, 1));
                     }
                 }
             } else {
@@ -833,11 +845,11 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
             });
         };
 
-        updatePhrase(phrase1Ref, S_HITS[0], 0, true);
-        updatePhrase(phrase2Ref, S_HITS[1]);
-        updatePhrase(phrase3Ref, S_HITS[2]);
-        updatePhrase(punch1Ref, S_HITS[3]);
-        updatePhrase(punch2Ref, S_HITS[3], isMobile ? 40 : 60);
+        updatePhrase(phrase1Ref, S_HITS[0], S_HITS[1], 0, true);
+        updatePhrase(phrase2Ref, S_HITS[1], S_HITS[2]);
+        updatePhrase(phrase3Ref, S_HITS[2], S_HITS[3]);
+        updatePhrase(punch1Ref, S_HITS[3], null);
+        updatePhrase(punch2Ref, S_HITS[3], null, isMobile ? 40 : 60);
       }
 
       if (!isMobile) {
@@ -891,14 +903,14 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
         ctx.save();
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
-        ctx.shadowBlur = 15;
+        ctx.shadowBlur = 8;
         ctx.shadowColor = '#00E5FF';
         for (let i = 1; i < trail.current.length; i++) {
             const p1 = trail.current[i - 1];
             const p2 = trail.current[i];
             let ageOp = 1 - ((p2.age || 0) / 1000);
             if (ageOp < 0) ageOp = 0;
-            const trailOp = ageOp * 0.6 * (p2.op ?? 1);
+            const trailOp = ageOp * 0.2 * (p2.op ?? 1);
             if (trailOp > 0) {
                 ctx.beginPath();
                 ctx.moveTo(p1.x, p1.y);
