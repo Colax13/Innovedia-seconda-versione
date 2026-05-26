@@ -974,10 +974,10 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
               <picture className="w-full h-full block">
                 <source
                   media="(min-width: 768px)"
-                  srcSet="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779229305/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.png"
+                  srcSet="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_1920/v1779229305/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.png"
                 />
                 <img
-                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779229305/mobile_hero_smqsm2.png"
+                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_800/v1779229305/mobile_hero_smqsm2.png"
                   alt="Hero Background"
                   className="w-full h-full object-cover object-[center_35%] md:object-center transform translate-y-[15vh] translate-x-[40px] scale-90 md:translate-x-0 md:translate-y-0 md:scale-100"
                 />

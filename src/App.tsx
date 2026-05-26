@@ -10,8 +10,8 @@ import CaseStudySection from './components/CaseStudySection';
 import ProjectSection from './components/ProjectSection';
 import MarketingSystemSection from './components/MarketingSystemSection';
 import UnifiedBackground from './components/UnifiedBackground';
-import { ProjectPage } from './components/project/ProjectPage';
-import LavoriPage from './components/LavoriPage';
+const ProjectPage = React.lazy(() => import('./components/project/ProjectPage').then(m => ({ default: m.ProjectPage })));
+const LavoriPage = React.lazy(() => import('./components/LavoriPage'));
 import FinalCTA from './components/FinalCTA';
 import CustomCursor from './components/CustomCursor';
 
@@ -75,11 +75,18 @@ function App() {
   return (
     <div className="lg:cursor-none min-h-screen">
       <CustomCursor />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/lavori" element={<LavoriPage />} />
-        <Route path="/progetto/:id" element={<ProjectPage />} />
-      </Routes>
+      <React.Suspense fallback={
+        <div className="min-h-screen bg-[#050B14] flex flex-col items-center justify-center font-tech text-[#00E5FF] uppercase tracking-widest text-[10px] gap-3">
+          <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#00E5FF] to-transparent animate-pulse" />
+          <span>Caricamento...</span>
+        </div>
+      }>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/lavori" element={<LavoriPage />} />
+          <Route path="/progetto/:id" element={<ProjectPage />} />
+        </Routes>
+      </React.Suspense>
     </div>
   );
 }

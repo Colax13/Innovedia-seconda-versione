@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { Share2, Globe, ShoppingCart, Users, Zap } from 'lucide-react';
 
 const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
@@ -8,21 +8,21 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
 
   const mobileOffset = isMobile ? -0.05 : 0;
 
-  // Timings manually tuned for slower entry on specific cards
+  // Timings manually tuned for slower entry on specific cards - reduced by 25% for faster appearance
   const desk_t_props = [
-    { start: 0.15, duration: 0.12 }, 
-    { start: 0.30, duration: 0.12 }, 
-    { start: 0.45, duration: 0.12 }, 
-    { start: 0.60, duration: 0.12 }, 
-    { start: 0.75, duration: 0.12 }  
+    { start: 0.12, duration: 0.15 }, 
+    { start: 0.22, duration: 0.15 }, 
+    { start: 0.32, duration: 0.15 }, 
+    { start: 0.42, duration: 0.15 }, 
+    { start: 0.53, duration: 0.11 }  
   ];
 
   const mob_t_props = [
-    { start: 0.10, duration: 0.16 },
-    { start: 0.28, duration: 0.16 }, 
-    { start: 0.46, duration: 0.16 }, 
-    { start: 0.64, duration: 0.16 }, 
-    { start: 0.82, duration: 0.16 }  
+    { start: 0.15, duration: 0.15 },
+    { start: 0.44, duration: 0.14 }, 
+    { start: 0.59, duration: 0.14 }, 
+    { start: 0.74, duration: 0.14 }, 
+    { start: 0.89, duration: 0.10 }  
   ];
 
   const t_props = isMobile ? mob_t_props : desk_t_props;
@@ -33,19 +33,49 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
   const t_next_slide_start = index < 4 ? t_props[index + 1].start : t_slide_start + 0.13;
   const t_next_slide_end = index < 4 ? t_props[index + 1].start + t_props[index + 1].duration : t_next_slide_start + 0.08;
 
-  // Transforms
-  let yIn = [0, t_slide_start, t_slide_end, 1];
-  let yOut = [1500, 1500, 0, 0];
-  if (index === 0) {
-    yIn = [0, 1];
-    yOut = [0, 0];
-  }
+  const y = useTransform(scrollYProgress, (v: any) => {
+    let currentY = 0;
+    const shiftY = isMobile ? 180 : 250;
+    
+    // 1. Entry slide
+    if (index > 0) {
+      if (v < t_slide_start) currentY = shiftY;
+      else if (v >= t_slide_end) currentY = 0;
+      else {
+        // Apply smooth ease-out for the entry but close the gap much less aggressively
+        const p = (v - t_slide_start) / t_props[index].duration;
+        const easeOut = 1 - Math.pow(1 - p, 2);
+        currentY = shiftY * (1 - easeOut);
+      }
+    }
 
-  const y = useTransform(scrollYProgress, yIn, yOut);
+    // 2. Subsquent cards push this one up
+    for (let k = index + 1; k < 5; k++) {
+      const kStart = t_props[k].start;
+      const kDur = t_props[k].duration;
+      const kEnd = kStart + kDur;
+      if (v > kStart) {
+        if (v >= kEnd) {
+          currentY -= shiftY;
+        } else {
+          const p = (v - kStart) / kDur;
+          const easeOut = 1 - Math.pow(1 - p, 2);
+          currentY -= shiftY * easeOut;
+        }
+      }
+    }
+    return currentY;
+  });
 
-  // All cards are 100% opaque, 100% scaled, no text slide animations. 
-  // They just physically slide into view from below.
-  const opacity = 1;
+  // All cards have text slide animations disabled, but cards fade in
+  const opacity = useTransform(scrollYProgress, (v: any) => {
+    if (index === 0) return 1;
+    if (v < t_slide_start) return 0;
+    if (v >= t_slide_start + (t_props[index].duration * 0.5)) return 1;
+    const p = (v - t_slide_start) / (t_props[index].duration * 0.5);
+    return Math.pow(p, 2);
+  });
+  
   const scale = 1;
   const textOpacity = 1;
   const textY = 0;
@@ -54,8 +84,8 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
     "01 — ATTRAI",
     "02 — CONVERTI",
     "03 — RACCOGLI",
-    "04 — RICONTATTA",
-    "↻ REPEAT"
+    "04 — MONETIZZA",
+    "↻ RIPARTI"
   ];
 
   const descriptions = [
@@ -101,25 +131,32 @@ export default function MarketingSystemSection() {
   }, []);
   
   // Track scroll for merge animation
-  const { scrollYProgress } = useScroll({
+  const { scrollYProgress: rawScrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  const { scrollYProgress: introProgress } = useScroll({
+  // Map 100% of the new shorter section to be equal to 65% (desktop) or 100% (mobile) of the old animation values.
+  // This causes the section to unpin immediately as soon as the last card finishes its animation.
+  const mappedYDesk = useTransform(rawScrollYProgress, [0, 1], [0, 0.65]);
+  const mappedYMob = useTransform(rawScrollYProgress, [0, 1], [0, 1]);
+  const scrollYProgress = isMobile ? mappedYMob : mappedYDesk;
+
+  const { scrollYProgress: rawIntroProgress } = useScroll({
     target: introRef,
     offset: ["start start", "end start"]
   });
+  
+  // Smooth out the extremely short scroll chunks so opacity tweening is visible
+  const introProgress = useSpring(rawIntroProgress, { damping: 25, stiffness: 120 });
 
   const p1 = "Tranquillo.";
   const p2 = "La direzione è giusta.";
   const p3 = "Ti manca solo un pezzo.";
-  const p4 = "Ti manca un sistema.";
 
-  const t_intro1 = isMobile ? [0.05, 0.12] : [0.05, 0.08];
-  const t_intro2 = isMobile ? [0.18, 0.25] : [0.14, 0.17];
-  const t_intro3 = isMobile ? [0.31, 0.38] : [0.20, 0.23];
-  const t_intro4 = isMobile ? [0.44, 0.51] : [0.26, 0.29];
+  const t_intro1 = [0.02, 0.07];
+  const t_intro2 = [0.09, 0.14];
+  const t_intro3 = [0.16, 0.21];
 
   const op1 = useTransform(introProgress, t_intro1, [0, 1]);
   const introY1 = useTransform(introProgress, t_intro1, [30, 0]);
@@ -127,8 +164,6 @@ export default function MarketingSystemSection() {
   const introY2 = useTransform(introProgress, t_intro2, [30, 0]);
   const op3 = useTransform(introProgress, t_intro3, [0, 1]);
   const introY3 = useTransform(introProgress, t_intro3, [30, 0]);
-  const op4 = useTransform(introProgress, t_intro4, [0, 1]);
-  const introY4 = useTransform(introProgress, t_intro4, [30, 0]);
 
   // Horizontal spread distance for the initial line layout
   const SPACING = isMobile ? 120 : 240; 
@@ -145,19 +180,29 @@ export default function MarketingSystemSection() {
   const yDeskOffset = 800; // amount to move world up
   const yMobOffset = 1150; 
   const worldYDesktop = useTransform(scrollYProgress, [0, 0.10, 0.22, 1], [0, 0, -yDeskOffset, -yDeskOffset]);
-  const worldYMobile = useTransform(scrollYProgress, [0, 0.22, 0.35, 1], [0, 0, -yMobOffset, -yMobOffset]);
+  const worldYMobile = useTransform(scrollYProgress, [0, 0.22, 0.40, 1], [0, 0, -yMobOffset, -yMobOffset]);
   const worldY = isMobile ? worldYMobile : worldYDesktop;
 
   const illuminateStart = isMobile ? 0.18 : 0.08;
   const illuminateEnd = isMobile ? 0.20 : 0.10;
 
-  const lineHeightDesktop = useTransform(scrollYProgress, [0.10, 0.22], [0, 800 - 110 - 85]); 
-  const lineHeightMobile = useTransform(scrollYProgress, [0.22, 0.35], [0, 1150 - 90 - 85]); 
+  const lineStartDesk = 0.09;
+  const lineEndDesk = 0.23;
+  const lineHeightDesktop = useTransform(scrollYProgress, [lineStartDesk, lineEndDesk], [0, 605]); 
+
+  const lineStartMob = 0.20;
+  const lineEndMob = 0.34;
+  const lineHeightMobile = useTransform(scrollYProgress, [lineStartMob, lineEndMob], [0, 975]); 
+  
   const lineHeight = isMobile ? lineHeightMobile : lineHeightDesktop;
   
-  const lineOpacityDesktop = useTransform(scrollYProgress, [0.10, 0.13], [0, 1]);
-  const lineOpacityMobile = useTransform(scrollYProgress, [0.22, 0.25], [0, 1]);
+  const lineOpacityDesktop = useTransform(scrollYProgress, [lineStartDesk, lineStartDesk + 0.02], [0, 1]);
+  const lineOpacityMobile = useTransform(scrollYProgress, [lineStartMob, lineStartMob + 0.02], [0, 1]);
   const lineOpacity = isMobile ? lineOpacityMobile : lineOpacityDesktop;
+
+  const lineTextOpacityDesktop = useTransform(scrollYProgress, [lineStartDesk, lineStartDesk + 0.02, lineEndDesk - 0.02, lineEndDesk], [0, 1, 1, 0]);
+  const lineTextOpacityMobile = useTransform(scrollYProgress, [lineStartMob, lineStartMob + 0.02, lineEndMob - 0.02, lineEndMob], [0, 1, 1, 0]);
+  const lineTextOpacity = isMobile ? lineTextOpacityMobile : lineTextOpacityDesktop;
 
   // 1. Social (Far Left start -> Top Left pentagon)
   const x0 = useTransform(scrollYProgress, [startMerge, endMerge], [-SPACING * 2, -R2 * 0.95]);
@@ -196,25 +241,22 @@ export default function MarketingSystemSection() {
   return (
     <section className="relative w-full bg-[#050B14] text-white">
       {/* 1. SCROLLING INTRO OR STATIC ON MOBILE */}
-      <div ref={introRef} className={`relative w-full z-0 ${isMobile ? "h-[200vh]" : "h-[450vh]"}`}>
+      <div ref={introRef} className={`relative w-full z-0 ${isMobile ? "h-[300vh]" : "h-[380vh]"}`}>
         <div className={`sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-4`}>
           <motion.div 
             className={`flex flex-col items-center justify-center space-y-4 md:space-y-6 w-full`}
           >
-            <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-3 w-full">
-              <motion.h2 style={{ opacity: op1, y: introY1 }} className={`font-display font-medium text-white/90 text-center ${isMobile ? "text-3xl sm:text-4xl px-2 mb-2" : "text-[3vw] sm:text-[2.2vw] md:text-[2vw] lg:text-[1.8vw] xl:text-3xl whitespace-nowrap"}`}>
+            <div className={`flex ${isMobile ? "flex-col" : "flex-row flex-wrap"} items-center justify-center space-y-4 md:space-y-0 md:space-x-3 w-full max-w-5xl mx-auto`}>
+              <motion.h2 style={{ opacity: op1, y: introY1 }} className={`font-display font-medium text-white/90 text-center ${isMobile ? "text-3xl sm:text-4xl px-2" : "text-[3vw] sm:text-[2.2vw] md:text-[2vw] lg:text-[1.8vw] xl:text-3xl whitespace-nowrap"}`}>
                 {p1}
               </motion.h2>
-              <motion.h2 style={{ opacity: op2, y: introY2 }} className={`font-display font-medium text-white/90 text-center ${isMobile ? "text-2xl sm:text-3xl px-2 mb-2 max-w-sm" : "text-[3vw] sm:text-[2.2vw] md:text-[2vw] lg:text-[1.8vw] xl:text-3xl whitespace-nowrap"}`}>
+              <motion.h2 style={{ opacity: op2, y: introY2 }} className={`font-display font-medium text-white/90 text-center ${isMobile ? "text-2xl sm:text-3xl px-2 max-w-sm" : "text-[3vw] sm:text-[2.2vw] md:text-[2vw] lg:text-[1.8vw] xl:text-3xl whitespace-nowrap"}`}>
                 {p2}
               </motion.h2>
-              <motion.h2 style={{ opacity: op3, y: introY3 }} className={`font-display font-medium text-white/90 text-center ${isMobile ? "text-2xl sm:text-3xl px-2 mb-4 max-w-sm" : "text-[3vw] sm:text-[2.2vw] md:text-[2vw] lg:text-[1.8vw] xl:text-3xl whitespace-nowrap"}`}>
+              <motion.h2 style={{ opacity: op3, y: introY3 }} className={`font-display font-medium text-white/90 text-center ${isMobile ? "text-2xl sm:text-3xl px-2 max-w-sm" : "text-[3vw] sm:text-[2.2vw] md:text-[2vw] lg:text-[1.8vw] xl:text-3xl whitespace-nowrap"}`}>
                 {p3}
               </motion.h2>
             </div>
-            <motion.h2 style={{ opacity: op4, y: introY4 }} className={`font-display font-medium text-cyan-400 text-center ${isMobile ? "text-3xl sm:text-4xl px-2 mt-4" : "text-[3vw] sm:text-[2.2vw] md:text-[2vw] lg:text-[1.8vw] xl:text-3xl whitespace-nowrap mt-4"}`}>
-              {p4}
-            </motion.h2>
           </motion.div>
         </div>
       </div>
@@ -224,19 +266,19 @@ export default function MarketingSystemSection() {
         <div className="w-full max-w-7xl mx-auto px-4 pb-4 md:mt-12 z-20 relative">
           <div className="w-full text-center flex flex-col justify-center items-center border-b border-white/10 pb-8">
           <span className="font-sans text-cyan-400 text-[10px] md:text-[12px] font-bold uppercase tracking-[0.3em] block mb-3 md:mb-4">
-            LA SOLUZIONE
+            IL PEZZO MANCANTE
           </span>
           <h2 className="font-barlow font-bold text-5xl sm:text-6xl md:text-7xl uppercase tracking-tighter text-white mb-6">
             IL SISTEMA R1
           </h2>
           <p className="font-sans text-white/70 max-w-2xl text-sm md:text-base leading-relaxed">
-            In 5 anni di lavoro ho sviluppato il sistema revenue-first che parte da una regola semplice: prima genero liquidità nella tua attività, poi costruiamo tutto il resto
+            In 5 anni di lavoro ho sviluppato il <strong className="text-[#00E5FF] font-semibold">Sistema Revenue First</strong> che parte da una regola semplice: <strong className="text-white font-semibold border-b border-[#00E5FF]/40 pb-0.5">prima genero liquidità</strong> nella tua attività, poi costruiamo tutto il resto
           </p>
         </div>
       </div>
 
       {/* 3. STICKY CANVAS */}
-      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[500vh]" : "h-[800vh]"}`}>
+      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[650vh]" : "h-[700vh]"}`}>
         <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden">
           
           {/* Canvas */}
@@ -273,7 +315,7 @@ export default function MarketingSystemSection() {
                       fill="none"
                       className="stroke-[#00E5FF] drop-shadow-[0_0_8px_rgba(0,229,255,0.8)]"
                       strokeWidth="1"
-                      style={{ pathLength: circleDraw, opacity: illuminateOpacity }}
+                      style={{ pathLength: circleDraw }}
                     />
                   </svg>
                   
@@ -290,11 +332,11 @@ export default function MarketingSystemSection() {
                         style={{ pathLength: circleDraw }}
                       />
                     </svg>
-                    <motion.div style={{ rotateY: iconRotate, opacity: iconOpacity }} className="relative z-10 flex items-center justify-center w-full h-full">
+                    <motion.div style={{ rotateY: iconRotate }} className="relative z-10 flex items-center justify-center w-full h-full">
                       <Icon className="w-4 h-4 md:w-5 md:h-5 text-[#00E5FF]" strokeWidth={1.5} />
                     </motion.div>
                   </div>
-                  <motion.span style={{ opacity: iconOpacity }} className="uppercase text-[10px] md:text-xs font-semibold tracking-widest text-white/90 text-center px-1 relative z-10">
+                  <motion.span className="uppercase text-[10px] md:text-xs font-semibold tracking-widest text-white/90 text-center px-1 relative z-10">
                     {item.label}
                   </motion.span>
                 </motion.div>
@@ -306,6 +348,16 @@ export default function MarketingSystemSection() {
               style={{ opacity: lineOpacity, height: lineHeight }}
               className="absolute z-10 w-[2px] left-1/2 -ml-[1px] bg-gradient-to-b from-[#00E5FF] via-[#00E5FF]/80 to-transparent top-[85px] drop-shadow-[0_0_8px_rgba(0,229,255,0.8)] rounded-full"
             />
+            
+            {/* Tracking text on the tip of the line */}
+            <motion.div
+              style={{ opacity: lineTextOpacity, y: lineHeight }}
+              className="absolute z-20 left-1/2 -translate-x-1/2 w-max text-center top-[90px] pt-4 pointer-events-none"
+            >
+              <span className="text-[#00E5FF] text-[10px] md:text-xs font-semibold tracking-widest uppercase bg-[#050B14]/60 px-2 py-1 rounded-full backdrop-blur-sm border border-[#00E5FF]/20 whitespace-nowrap">
+                5 STRUMENTI IN UN UNICO SISTEMA
+              </span>
+            </motion.div>
 
             {/* Cards */}
             {[0, 1, 2, 3, 4].map(i => (

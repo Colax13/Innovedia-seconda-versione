@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, useInView, useMotionValue, useTransform, animate, useScroll } from 'motion/react';
+import OptimizedImage from './OptimizedImage';
 
 // ============================================================
 // COUNTER COMPONENT
@@ -331,7 +332,7 @@ const CaseStudySection: React.FC = () => {
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
-                <img 
+                <OptimizedImage 
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774624472/Screenshot_3_w8ts30.jpg" 
                   alt="Hero Salone"
                   className="w-full h-auto block transition-transform duration-1000 group-hover:scale-105"
@@ -348,7 +349,7 @@ const CaseStudySection: React.FC = () => {
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
-                <img 
+                <OptimizedImage 
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1775413522/cambio_look_z7qqxj.png" 
                   alt="Reel Cambio Look"
                   className="w-full h-auto block transition-transform duration-1000 group-hover:scale-105"
@@ -365,7 +366,7 @@ const CaseStudySection: React.FC = () => {
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
-                <img 
+                <OptimizedImage 
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084327/Screenshot_5_pursfi.jpg" 
                   alt="Hero Hair Spa"
                   className="w-full h-auto block transition-transform duration-1000 group-hover:scale-105"
@@ -382,7 +383,7 @@ const CaseStudySection: React.FC = () => {
             >
               <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
-                <img 
+                <OptimizedImage 
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1775413526/tonalizzante_in8vjo.png" 
                   alt="Reel Tonalizzante"
                   className="w-full h-auto block transition-transform duration-1000 group-hover:scale-105"

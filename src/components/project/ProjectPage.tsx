@@ -1,15 +1,28 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { projects } from '../../data/projects';
-import { ProjectDetailLayout } from './ProjectDetailLayout';
-import ProjectRDSalon from './ProjectRDSalon';
-import ProjectGFService from './ProjectGFService';
-import ProjectFreeTime from './ProjectFreeTime';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar';
 import UnifiedBackground from '../UnifiedBackground';
 import { useForms } from '../../context/FormContext';
+import OptimizedImage from '../OptimizedImage';
+
+const ProjectDetailLayout = React.lazy(() => import('./ProjectDetailLayout').then(m => ({ default: m.ProjectDetailLayout })));
+const ProjectRDSalon = React.lazy(() => import('./ProjectRDSalon'));
+const ProjectGFService = React.lazy(() => import('./ProjectGFService'));
+const ProjectFreeTime = React.lazy(() => import('./ProjectFreeTime'));
+
+const LazySuspense: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <React.Suspense fallback={
+        <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center font-tech text-[#00E5FF] uppercase tracking-widest text-[10px] gap-3">
+          <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#00E5FF] to-transparent animate-pulse" />
+          <span>Caricamento...</span>
+        </div>
+    }>
+        {children}
+    </React.Suspense>
+);
 
 export const ProjectPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -33,15 +46,15 @@ export const ProjectPage: React.FC = () => {
     }
 
     // Custom designs for specific projects
-    if (project.id === 4) return <ProjectRDSalon />;
-    if (project.id === 3) return <ProjectGFService />;
-    if (project.id === 1) return <ProjectFreeTime />;
+    if (project.id === 4) return <LazySuspense><ProjectRDSalon /></LazySuspense>;
+    if (project.id === 3) return <LazySuspense><ProjectGFService /></LazySuspense>;
+    if (project.id === 1) return <LazySuspense><ProjectFreeTime /></LazySuspense>;
 
     // If the project has detailed data, use the new layout
     if (project.detail) {
         return (
             <div className="relative">
-                <ProjectDetailLayout project={project} />
+                <LazySuspense><ProjectDetailLayout project={project} /></LazySuspense>
             </div>
         );
     }
@@ -63,7 +76,7 @@ export const ProjectPage: React.FC = () => {
             
             {/* Hero Section */}
             <div className="w-full h-[70vh] relative">
-                <img src={project.img} className="w-full h-full object-cover" alt={project.title} />
+                <OptimizedImage src={project.img} className="w-full h-full object-cover" alt={project.title} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                 <div className="absolute bottom-0 left-0 w-full p-8 md:p-24 max-w-7xl mx-auto">
                      <div 
@@ -137,7 +150,7 @@ export const ProjectPage: React.FC = () => {
 
                 {/* Foto Section */}
                 <div className="mb-24 w-full rounded-3xl overflow-hidden shadow-2xl bg-zinc-900">
-                    <img src={project.middleImage || project.carouselImages?.[0]?.url || project.img} alt="Project detail" className="w-full h-auto md:h-[70vh] object-contain md:object-cover" />
+                    <OptimizedImage src={project.middleImage || project.carouselImages?.[0]?.url || project.img} alt="Project detail" className="w-full h-auto md:h-[70vh] object-contain md:object-cover" />
                 </div>
 
                 {project.soluzione && (
@@ -184,7 +197,7 @@ export const ProjectPage: React.FC = () => {
                                     key={idx}
                                     className="relative w-full rounded-xl md:rounded-2xl overflow-hidden shadow-2xl bg-zinc-900 group break-inside-avoid"
                                 >
-                                    <img src={imgObj.url} className="w-full h-auto object-cover" alt={`Gallery ${idx + 1}`} />
+                                    <OptimizedImage src={imgObj.url} className="w-full h-auto object-cover" alt={`Gallery ${idx + 1}`} />
                                     
                                     {/* Caption overlay */}
                                     <div className="absolute bottom-0 left-0 w-full p-4 md:p-6 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">

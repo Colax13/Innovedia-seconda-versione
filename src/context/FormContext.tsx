@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
-import FormModal from '../components/forms/FormModal';
-import AnalysisForm from '../components/forms/AnalysisForm';
-import ServiceForm from '../components/forms/ServiceForm';
+
+const FormModal = React.lazy(() => import('../components/forms/FormModal'));
+const AnalysisForm = React.lazy(() => import('../components/forms/AnalysisForm'));
+const ServiceForm = React.lazy(() => import('../components/forms/ServiceForm'));
 
 interface FormContextType {
   openAnalysisForm: () => void;
@@ -21,21 +22,29 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <FormContext.Provider value={{ openAnalysisForm, openServiceForm }}>
       {children}
       
-      <FormModal
-        isOpen={isAnalysisOpen}
-        onClose={() => setIsAnalysisOpen(false)}
-        title="Richiesta Analisi Gratuita"
-      >
-        <AnalysisForm onSuccess={() => setIsAnalysisOpen(false)} />
-      </FormModal>
+      {isAnalysisOpen && (
+        <React.Suspense fallback={null}>
+          <FormModal
+            isOpen={isAnalysisOpen}
+            onClose={() => setIsAnalysisOpen(false)}
+            title="Richiesta Analisi Gratuita"
+          >
+            <AnalysisForm onSuccess={() => setIsAnalysisOpen(false)} />
+          </FormModal>
+        </React.Suspense>
+      )}
 
-      <FormModal
-        isOpen={isServiceOpen}
-        onClose={() => setIsServiceOpen(false)}
-        title="Parlami del tuo Progetto"
-      >
-        <ServiceForm onSuccess={() => setIsServiceOpen(false)} />
-      </FormModal>
+      {isServiceOpen && (
+        <React.Suspense fallback={null}>
+          <FormModal
+            isOpen={isServiceOpen}
+            onClose={() => setIsServiceOpen(false)}
+            title="Parlami del tuo Progetto"
+          >
+            <ServiceForm onSuccess={() => setIsServiceOpen(false)} />
+          </FormModal>
+        </React.Suspense>
+      )}
     </FormContext.Provider>
   );
 };

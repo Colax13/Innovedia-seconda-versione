@@ -1,11 +1,12 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import OptimizedImage from './OptimizedImage';
 
 const ScrollParagraph = ({ num, children }: { num: number, children: React.ReactNode }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 90%", "start 60%"] 
+    offset: ["start 95%", "start 80%"] 
   });
   
   const x = useTransform(scrollYProgress, [0, 1], [40, 0]);
@@ -72,7 +73,7 @@ export default function QualcosaSuDiMe() {
       >
          <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-[#1A1A1C] p-1.5 transition-transform duration-500 hover:rotate-0">
              <div className="w-full h-full rounded-lg overflow-hidden relative">
-                <img 
+                <OptimizedImage 
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774028261/Senza_titolo-1_yamovm.png" 
                   alt="Ludovico" 
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
@@ -87,7 +88,7 @@ export default function QualcosaSuDiMe() {
       >
          <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] bg-[#1A1A1C] p-2 transition-transform duration-500 hover:rotate-0">
              <div className="w-full h-full rounded-lg overflow-hidden relative">
-                <img 
+                <OptimizedImage 
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779236620/io_che_parlo_rcrvap.png" 
                   alt="Ludovico Portrait" 
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
