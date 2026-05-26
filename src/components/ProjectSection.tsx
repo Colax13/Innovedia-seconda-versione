@@ -502,7 +502,7 @@ export default function ProjectSection() {
           <span className="font-sans text-cyan-400 text-[10px] font-bold uppercase tracking-[0.3em] block mb-2">
             PORTFOLIO
           </span>
-          <h2 className="font-display text-5xl md:text-7xl uppercase tracking-tighter text-white">
+          <h2 className="font-barlow font-bold text-5xl md:text-7xl uppercase tracking-tighter text-white">
             Progetti
           </h2>
         </div>

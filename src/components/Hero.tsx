@@ -73,6 +73,22 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   const { scrollYProgress: mobilePhrasesProgress } = useScroll({ target: mobilePhrasesRef, offset: ["start end", "end start"] });
   const heroBgOpacityMobile = useTransform(mobilePhrasesProgress, [0.5, 1], [1, 0.1]);
 
+  // Hoisted useTransforms for mobile phrases
+  const mPhrase1Opacity = useTransform(mobilePhrasesProgress, [0.02, 0.1], [0, 1]);
+  const mPhrase1Y = useTransform(mobilePhrasesProgress, [0.02, 0.1], [20, 0]);
+  
+  const mPhrase2Opacity = useTransform(mobilePhrasesProgress, [0.05, 0.15], [0, 1]);
+  const mPhrase2X = useTransform(mobilePhrasesProgress, [0.05, 0.15], [-50, 0]);
+  
+  const mPhrase3Opacity = useTransform(mobilePhrasesProgress, [0.15, 0.25], [0, 1]);
+  const mPhrase3X = useTransform(mobilePhrasesProgress, [0.15, 0.25], [50, 0]);
+  
+  const mPhrase4Opacity = useTransform(mobilePhrasesProgress, [0.25, 0.35], [0, 1]);
+  const mPhrase4X = useTransform(mobilePhrasesProgress, [0.25, 0.35], [-50, 0]);
+  
+  const mPhrase5Opacity = useTransform(mobilePhrasesProgress, [0.35, 0.45], [0, 1]);
+  const mPhrase5X = useTransform(mobilePhrasesProgress, [0.35, 0.45], [50, 0]);
+
   useEffect(() => {
     const handleScroll = () => {
       // We no longer lock the scroll. We just check if the hero is active based on scroll and elapsed time
@@ -963,7 +979,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 <img
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779229305/mobile_hero_smqsm2.png"
                   alt="Hero Background"
-                  className="w-full h-full object-cover object-top md:object-center transform translate-y-8 md:translate-y-0 scale-110 md:scale-100"
+                  className="w-full h-full object-cover object-[center_35%] md:object-center transform translate-y-[15vh] translate-x-[40px] scale-90 md:translate-x-0 md:translate-y-0 md:scale-100"
                 />
               </picture>
               <div className="absolute inset-0 bg-transparent mix-blend-multiply opacity-50" />
@@ -994,21 +1010,18 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
             </div>
             <div ref={phrase2Ref} className="absolute text-left left-4 md:left-[20vw] lg:left-[25vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
                 <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl font-bold tracking-widest leading-relaxed block">
-                    HAI PROVATO I VIDEO <span className="text-[#00E5FF]">MA NON HA FUNZIONATO.</span>
+                    HAI PROVATO I SOCIAL <span className="text-[#00E5FF]">MA NON HANNO FUNZIONATO.</span>
                 </span>
             </div>
             <div ref={phrase3Ref} className="absolute text-left left-4 md:left-[30vw] lg:left-[35vw] w-auto max-w-[85vw] sm:max-w-[70vw] p-4 sm:p-6 rounded-2xl bg-black/30 backdrop-blur-sm border border-[#00E5FF]/20 text-white" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
                 <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl font-bold tracking-widest leading-relaxed block">
-                    <span className="text-[#00E5FF]">I CLIENTI NON SAI COME</span> E DA DOVE ARRIVANO
+                    <span className="text-[#00E5FF]">IL SITO È BELLO</span> MA NON PORTA CLIENTI
                 </span>
             </div>
             <div ref={punch1Ref} className="absolute text-left left-4 md:left-[40vw] lg:left-[45vw] w-auto max-w-[85vw] sm:max-w-[70vw]" style={{ opacity: 0, top: 0, transform: 'translateY(120vh)' }}>
                 <div className="relative w-full h-full p-4 sm:p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-[#00E5FF]/20 text-white z-10">
                   <span className="text-[14px] sm:text-lg md:text-xl lg:text-2xl font-bold tracking-widest leading-[1.4] block relative z-10">
-                      E HAI DECISO DI <span className="text-[#00E5FF]">INNOVARE LA TUA ATTIVITÀ</span>
-                  </span>
-                  <span className="text-[9px] sm:text-[11px] md:text-[13px] mt-3 md:mt-4 block font-normal text-white/50 italic tracking-widest text-right relative z-10">
-                      e adesso ti spiego come
+                      I CLIENTI ARRIVANO <span className="text-[#00E5FF]">MA NON SAI DA DOVE</span>
                   </span>
                 </div>
             </div>
@@ -1043,7 +1056,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                           damping: 15,
                           delay: phase === 3 ? (0.2 + i * 0.02) : 0
                         }}
-                        className="inline-block text-[9px] md:text-[clamp(9px,0.9vw,11px)] font-tech font-bold uppercase tracking-[0.3em] text-[#00E5FF] cursor-default select-none pointer-events-auto"
+                        className="inline-block text-[11px] md:text-[clamp(9px,0.9vw,11px)] font-tech font-bold uppercase tracking-[0.3em] text-[#00E5FF] cursor-default select-none pointer-events-auto"
                       >
                         {char === " " ? "\u00A0" : char}
                       </motion.span>
@@ -1051,7 +1064,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   </div>
      
                   <motion.div
-                    className="font-display font-black text-[clamp(52px,13vw,100px)] md:text-[clamp(42px,7.5vw,100px)] tracking-tight leading-[0.85] md:leading-[0.85] flex flex-col md:flex-row items-start md:items-baseline gap-0 md:gap-[0.3em] text-white pointer-events-auto"
+                    className="font-display font-black text-[clamp(64px,16vw,100px)] md:text-[clamp(42px,7.5vw,100px)] tracking-tight leading-[0.85] md:leading-[0.85] flex flex-col md:flex-row items-start md:items-baseline gap-0 md:gap-[0.3em] text-white pointer-events-auto"
                   >
                     <div className="flex items-baseline uppercase pointer-events-auto">
                       {"Soluzion".split("").map((char, i) => (
@@ -1132,14 +1145,14 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   stiffness: 50,
                   damping: 20
                 }}
-                className="text-[11px] md:text-[clamp(11px,1.2vw,15px)] font-tech font-medium tracking-wide md:tracking-[0.02em] uppercase text-white/70 mt-5 md:mt-6 text-left leading-[1.4] md:leading-normal whitespace-normal max-w-[240px] md:max-w-[460px]"
+                className="text-[14px] md:text-[clamp(11px,1.2vw,15px)] font-tech font-medium tracking-wide md:tracking-[0.02em] uppercase text-white/70 mt-5 md:mt-6 text-left leading-[1.4] md:leading-normal whitespace-normal max-w-[280px] md:max-w-[460px]"
               >
                 Per farti guadagnare prima<br className="md:hidden" /> di farti investire.
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={phase === 3 ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ delay: 1.5, duration: 1 }}
-                  className="mt-2 text-[9px] md:text-[11px] font-sans text-white/40 italic normal-case"
+                  className="mt-2 text-[11px] md:text-[11px] font-sans text-white/40 italic normal-case"
                 >
                   (So che sembra una fregatura,<br className="md:hidden" /> ma fammi spiegare meglio)
                 </motion.div>
@@ -1285,13 +1298,13 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
     </section>
     
     {/* Phrases Section below Hero (Mobile Only visually) */}
-    <section ref={mobilePhrasesRef} className={`relative w-full flex-col gap-12 font-tech uppercase overflow-hidden z-20 ${isMobile ? 'flex bg-black py-20 px-4' : 'hidden'}`} style={{ minHeight: isMobile ? '120vh' : 0 }}>
+    <section ref={mobilePhrasesRef} className={`relative w-full flex-col gap-8 font-barlow uppercase overflow-hidden z-20 ${isMobile ? 'flex bg-black py-20 px-4' : 'hidden'}`} style={{ minHeight: isMobile ? '120vh' : 0 }}>
       {isMobile && (
         <>
         <motion.div
            style={{
-             opacity: useTransform(mobilePhrasesProgress, [0.02, 0.1], [0, 1]),
-             y: useTransform(mobilePhrasesProgress, [0.02, 0.1], [20, 0]),
+             opacity: mPhrase1Opacity,
+             y: mPhrase1Y,
            }}
            className="relative z-10 w-full text-center mt-[2vh] mb-[-2vh]"
         >
@@ -1302,52 +1315,49 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
         <motion.div 
           style={{ 
-            opacity: useTransform(mobilePhrasesProgress, [0.05, 0.15], [0, 1]), 
-            x: useTransform(mobilePhrasesProgress, [0.05, 0.15], [-50, 0]),
+            opacity: mPhrase2Opacity, 
+            x: mPhrase2X,
           }}
           className="relative z-10 w-full max-w-[85vw] p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)] mt-[5vh]"
         >
-          <span className="text-[16px] font-bold tracking-widest leading-relaxed block">
+          <span className="text-xl tracking-wide leading-relaxed block font-medium">
             <span className="text-[#00E5FF]">TI HANNO CHIESTO 10.000€</span> PER ANDARE ONLINE.
           </span>
         </motion.div>
 
         <motion.div 
           style={{ 
-            opacity: useTransform(mobilePhrasesProgress, [0.15, 0.25], [0, 1]), 
-            x: useTransform(mobilePhrasesProgress, [0.15, 0.25], [50, 0]),
+            opacity: mPhrase3Opacity, 
+            x: mPhrase3X,
           }}
           className="relative z-10 w-full max-w-[85vw] self-end p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
         >
-          <span className="text-[16px] font-bold tracking-widest leading-relaxed block text-right">
-             HAI PROVATO I VIDEO <span className="text-[#00E5FF]">MA NON HA FUNZIONATO.</span>
+          <span className="text-xl tracking-wide leading-relaxed block text-right font-medium">
+             HAI PROVATO I SOCIAL <span className="text-[#00E5FF]">MA NON HANNO FUNZIONATO.</span>
           </span>
         </motion.div>
 
         <motion.div 
           style={{ 
-            opacity: useTransform(mobilePhrasesProgress, [0.25, 0.35], [0, 1]), 
-            x: useTransform(mobilePhrasesProgress, [0.25, 0.35], [-50, 0]),
+            opacity: mPhrase4Opacity, 
+            x: mPhrase4X,
           }}
           className="relative z-10 w-full max-w-[85vw] p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
         >
-          <span className="text-[16px] font-bold tracking-widest leading-relaxed block">
-             <span className="text-[#00E5FF]">I CLIENTI NON SAI COME</span> E DA DOVE ARRIVANO
+          <span className="text-xl tracking-wide leading-relaxed block font-medium">
+             <span className="text-[#00E5FF]">IL SITO È BELLO</span> MA NON PORTA CLIENTI
           </span>
         </motion.div>
 
         <motion.div 
           style={{ 
-            opacity: useTransform(mobilePhrasesProgress, [0.35, 0.45], [0, 1]), 
-            x: useTransform(mobilePhrasesProgress, [0.35, 0.45], [50, 0]),
+            opacity: mPhrase5Opacity, 
+            x: mPhrase5X,
           }}
           className="relative z-10 w-full max-w-[85vw] self-end p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
         >
-          <span className="text-[16px] font-bold tracking-widest leading-[1.4] block relative z-10 text-right">
-              E HAI DECISO DI <br/><span className="text-[#00E5FF]">INNOVARE LA TUA ATTIVITÀ</span>
-          </span>
-          <span className="text-[11px] mt-4 block font-normal text-white/50 italic tracking-widest text-right relative z-10">
-              e adesso ti spiego come
+          <span className="text-xl tracking-wide leading-[1.4] block relative z-10 text-right font-medium">
+              I CLIENTI ARRIVANO <span className="text-[#00E5FF]">MA NON SAI DA DOVE</span>
           </span>
         </motion.div>
         </>

@@ -62,7 +62,7 @@ const StackingCardMobile: React.FC<{ service: any; index: number }> = ({ service
                 </div>
 
                 <div className="mt-auto">
-                    <h3 className="font-display text-3xl uppercase text-white mb-3 tracking-tight">
+                    <h3 className="font-barlow font-bold text-3xl uppercase text-white mb-3 tracking-tight">
                         {service.title}
                     </h3>
                     <p className="font-sans text-white text-[14px] leading-relaxed mb-6 font-bold max-w-[280px]">
@@ -119,7 +119,7 @@ const ServicesSection: React.FC = () => {
         },
         {
             id: 3,
-            title: "Contenuti & Social",
+            title: "Contenuti social",
             desc: "Non post quando ti ricordi. Un piano preciso che sa cosa dire, a chi e quando.",
             tags: ["CONTENT PLAN", "COPYWRITING", "ANALYTICS"],
             color: "from-cyan-400/20 to-transparent",
@@ -166,7 +166,7 @@ const ServicesSection: React.FC = () => {
                     <div className="mb-16 text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-end border-b border-white/10 pb-12">
                         <div>
                             <span className="font-sans text-[#00E5FF] text-[10px] font-bold uppercase tracking-[0.3em] block mb-3">COSA COSTRUISCO PER TE</span>
-                            <h2 className="font-display text-6xl md:text-8xl uppercase text-white tracking-tighter">
+                            <h2 className="font-barlow font-bold text-6xl md:text-8xl uppercase text-white tracking-tighter">
                                 Servizi
                             </h2>
                         </div>
@@ -225,7 +225,7 @@ const ServicesSection: React.FC = () => {
 
                                             <div className="mt-auto relative">
                                                 <h3 className={`
-                                                    font-display text-4xl uppercase leading-none transition-all duration-500 origin-bottom-left
+                                                    font-barlow font-bold text-4xl uppercase leading-none transition-all duration-500 origin-bottom-left
                                                     ${isActive ? 'text-white translate-y-0' : 'text-gray-500 md:-rotate-90 md:absolute md:bottom-0 md:left-0 md:origin-bottom-left md:whitespace-nowrap md:translate-x-10 md:-translate-y-6'}
                                                 `}>
                                                     {service.title}

@@ -8,6 +8,7 @@ import ServicesSection from './components/ServicesSection';
 import ParallaxSection from './components/ParallaxSection';
 import CaseStudySection from './components/CaseStudySection';
 import ProjectSection from './components/ProjectSection';
+import MarketingSystemSection from './components/MarketingSystemSection';
 import UnifiedBackground from './components/UnifiedBackground';
 import { ProjectPage } from './components/project/ProjectPage';
 import LavoriPage from './components/LavoriPage';
@@ -50,12 +51,13 @@ function HomePage() {
       <UnifiedBackground />
       <Navbar show={heroPhase === 3} />
       <Hero onPhaseChange={setHeroPhase} skipAnimation={heroPhase === 3} />
-      <QualcosaSuDiMe />
+      <MarketingSystemSection />
       <ChiSono />
       <ServicesSection />
       <ParallaxSection />
       <CaseStudySection />
       <ProjectSection />
+      <QualcosaSuDiMe />
       <FinalCTA />
       <footer className="bg-black/80 backdrop-blur-md py-12 text-center border-t border-white/5 relative z-10">
         <div className="flex justify-center gap-8 mb-8 text-xs font-tech uppercase tracking-widest text-gray-500">
