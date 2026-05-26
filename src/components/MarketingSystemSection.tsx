@@ -59,7 +59,7 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
     <motion.div
       style={{ top: cardTargetY - cardHalf, y, opacity, scale, zIndex: 30 + index }}
       className={`absolute left-1/2 flex flex-col items-center justify-center p-8 rounded-2xl border border-white/10 bg-[#050B14] shadow-[0_40px_100px_-15px_rgba(0,0,0,0.8)]
-      ${isMobile ? "w-[300px] h-[200px] -ml-[150px]" : "w-[500px] h-[220px] -ml-[250px]"}`}
+      ${isMobile ? "w-[500px] h-[250px] -ml-[250px]" : "w-[500px] h-[220px] -ml-[250px]"}`}
     >
       <motion.div
         style={{ opacity: glow }}
@@ -67,13 +67,13 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
       />
       <motion.h3 
         style={{ opacity: textOpacity, y: textY }}
-        className="text-[#00E5FF] font-bold text-2xl md:text-3xl tracking-widest uppercase mb-4"
+        className="text-[#00E5FF] font-bold text-4xl md:text-3xl tracking-widest uppercase mb-4"
       >
         {titles[index]}
       </motion.h3>
       <motion.p
         style={{ opacity: textOpacity, y: textY }}
-        className="text-white/80 text-sm md:text-base text-center leading-relaxed max-w-[90%]"
+        className="text-white/80 text-xl md:text-base text-center leading-relaxed max-w-[90%]"
       >
         {descriptions[index]}
       </motion.p>
@@ -109,38 +109,19 @@ export default function MarketingSystemSection() {
   const p3 = "Ti manca solo un pezzo.";
   const p4 = "Ti manca un sistema.";
 
-  const op1Desktop = useTransform(introProgress, [0.05, 0.08], [0, 1]);
-  const introY1Desktop = useTransform(introProgress, [0.05, 0.08], [30, 0]);
-  const op2Desktop = useTransform(introProgress, [0.14, 0.17], [0, 1]);
-  const introY2Desktop = useTransform(introProgress, [0.14, 0.17], [30, 0]);
-  const op3Desktop = useTransform(introProgress, [0.20, 0.23], [0, 1]);
-  const introY3Desktop = useTransform(introProgress, [0.20, 0.23], [30, 0]);
-  const op4Desktop = useTransform(introProgress, [0.26, 0.29], [0, 1]);
-  const introY4Desktop = useTransform(introProgress, [0.26, 0.29], [30, 0]);
-
-  // Mobile variables are not used as we make it static, but we keep them to avoid refactoring hooks
-  const op1Mobile = useTransform(introProgress, [0.0, 0.02], [0, 1]);
-  const introY1Mobile = useTransform(introProgress, [0.0, 0.02], [30, 0]);
-  const op2Mobile = useTransform(introProgress, [0.03, 0.05], [0, 1]);
-  const introY2Mobile = useTransform(introProgress, [0.03, 0.05], [30, 0]);
-  const op3Mobile = useTransform(introProgress, [0.06, 0.08], [0, 1]);
-  const introY3Mobile = useTransform(introProgress, [0.06, 0.08], [30, 0]);
-  const op4Mobile = useTransform(introProgress, [0.09, 0.11], [0, 1]);
-  const introY4Mobile = useTransform(introProgress, [0.09, 0.11], [30, 0]);
-
-  const op1 = isMobile ? 1 : op1Desktop;
-  const introY1 = isMobile ? 0 : introY1Desktop;
-  const op2 = isMobile ? 1 : op2Desktop;
-  const introY2 = isMobile ? 0 : introY2Desktop;
-  const op3 = isMobile ? 1 : op3Desktop;
-  const introY3 = isMobile ? 0 : introY3Desktop;
-  const op4 = isMobile ? 1 : op4Desktop;
-  const introY4 = isMobile ? 0 : introY4Desktop;
+  const op1 = useTransform(introProgress, [0.05, 0.08], [0, 1]);
+  const introY1 = useTransform(introProgress, [0.05, 0.08], [30, 0]);
+  const op2 = useTransform(introProgress, [0.14, 0.17], [0, 1]);
+  const introY2 = useTransform(introProgress, [0.14, 0.17], [30, 0]);
+  const op3 = useTransform(introProgress, [0.20, 0.23], [0, 1]);
+  const introY3 = useTransform(introProgress, [0.20, 0.23], [30, 0]);
+  const op4 = useTransform(introProgress, [0.26, 0.29], [0, 1]);
+  const introY4 = useTransform(introProgress, [0.26, 0.29], [30, 0]);
 
   // Horizontal spread distance for the initial line layout
-  const SPACING = isMobile ? 130 : 240; 
+  const SPACING = isMobile ? 120 : 240; 
   // Modest radius for the merged pentagon layout
-  const R2 = isMobile ? 70 : 70;  
+  const R2 = isMobile ? 90 : 70;  
 
   // Move the animation triggers based on isMobile
   const startMerge = 0.02;
@@ -201,8 +182,8 @@ export default function MarketingSystemSection() {
   return (
     <section className="relative w-full bg-[#050B14] text-white">
       {/* 1. SCROLLING INTRO OR STATIC ON MOBILE */}
-      <div ref={introRef} className={`relative w-full z-0 ${isMobile ? "h-auto py-32" : "h-[450vh]"}`}>
-        <div className={`${isMobile ? "relative" : "sticky top-0 h-screen"} w-full flex flex-col items-center justify-center overflow-hidden px-4`}>
+      <div ref={introRef} className={`relative w-full z-0 h-[450vh]`}>
+        <div className={`sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-4`}>
           <motion.div 
             className={`flex flex-col items-center justify-center space-y-4 md:space-y-6 w-full`}
           >
@@ -224,7 +205,7 @@ export default function MarketingSystemSection() {
         </div>
       </div>
 
-      <div className={`relative z-20 w-full bg-[#050B14] ${isMobile ? "" : "-mt-[100vh] pt-32 shadow-[0_-30px_50px_rgba(5,11,20,1)]"}`}>
+      <div className={`relative z-20 w-full bg-[#050B14] -mt-[100vh] pt-32 shadow-[0_-30px_50px_rgba(5,11,20,1)]`}>
         {/* 2. STATIC TITLE & SYSTEM SECTION */}
         <div className="w-full max-w-7xl mx-auto px-4 pb-4 md:mt-12 z-20 relative">
           <div className="w-full text-center flex flex-col justify-center items-center border-b border-white/10 pb-8">
@@ -242,12 +223,12 @@ export default function MarketingSystemSection() {
 
       {/* 3. STICKY CANVAS */}
       <div ref={containerRef} className="relative w-full h-[800vh]">
-        <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-start md:justify-center overflow-hidden pt-10 md:pt-0">
+        <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden">
           
           {/* Canvas */}
           <motion.div 
             style={{ y: worldY }}
-            className="relative w-full flex justify-center scale-[0.85] sm:scale-90 md:scale-100 mt-[-100px] md:mt-0"
+            className="relative w-full flex justify-center scale-[0.60] sm:scale-75 md:scale-100"
           >
             <div className="relative w-0 h-0 flex items-center justify-center">
 
