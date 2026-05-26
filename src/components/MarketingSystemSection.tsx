@@ -18,11 +18,11 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
   ];
 
   const mob_t_props = [
-    { start: 0.15, duration: 0.12 },
-    { start: 0.30, duration: 0.12 }, 
-    { start: 0.45, duration: 0.12 }, 
-    { start: 0.60, duration: 0.12 }, 
-    { start: 0.75, duration: 0.12 }  
+    { start: 0.10, duration: 0.16 },
+    { start: 0.28, duration: 0.16 }, 
+    { start: 0.46, duration: 0.16 }, 
+    { start: 0.64, duration: 0.16 }, 
+    { start: 0.82, duration: 0.16 }  
   ];
 
   const t_props = isMobile ? mob_t_props : desk_t_props;
@@ -116,10 +116,10 @@ export default function MarketingSystemSection() {
   const p3 = "Ti manca solo un pezzo.";
   const p4 = "Ti manca un sistema.";
 
-  const t_intro1 = isMobile ? [0.005, 0.010] : [0.05, 0.08];
-  const t_intro2 = isMobile ? [0.013, 0.018] : [0.14, 0.17];
-  const t_intro3 = isMobile ? [0.021, 0.026] : [0.20, 0.23];
-  const t_intro4 = isMobile ? [0.029, 0.034] : [0.26, 0.29];
+  const t_intro1 = isMobile ? [0.05, 0.12] : [0.05, 0.08];
+  const t_intro2 = isMobile ? [0.18, 0.25] : [0.14, 0.17];
+  const t_intro3 = isMobile ? [0.31, 0.38] : [0.20, 0.23];
+  const t_intro4 = isMobile ? [0.44, 0.51] : [0.26, 0.29];
 
   const op1 = useTransform(introProgress, t_intro1, [0, 1]);
   const introY1 = useTransform(introProgress, t_intro1, [30, 0]);
@@ -196,7 +196,7 @@ export default function MarketingSystemSection() {
   return (
     <section className="relative w-full bg-[#050B14] text-white">
       {/* 1. SCROLLING INTRO OR STATIC ON MOBILE */}
-      <div ref={introRef} className={`relative w-full z-0 h-[450vh]`}>
+      <div ref={introRef} className={`relative w-full z-0 ${isMobile ? "h-[200vh]" : "h-[450vh]"}`}>
         <div className={`sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-4`}>
           <motion.div 
             className={`flex flex-col items-center justify-center space-y-4 md:space-y-6 w-full`}
@@ -236,7 +236,7 @@ export default function MarketingSystemSection() {
       </div>
 
       {/* 3. STICKY CANVAS */}
-      <div ref={containerRef} className={`relative w-full h-[450vh]`}>
+      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[500vh]" : "h-[800vh]"}`}>
         <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden">
           
           {/* Canvas */}
