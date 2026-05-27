@@ -9,6 +9,7 @@ import ParallaxSection from './components/ParallaxSection';
 import CaseStudySection from './components/CaseStudySection';
 import ProjectSection from './components/ProjectSection';
 import MarketingSystemSection from './components/MarketingSystemSection';
+import ResultsSection from './components/ResultsSection';
 import UnifiedBackground from './components/UnifiedBackground';
 const ProjectPage = React.lazy(() => import('./components/project/ProjectPage').then(m => ({ default: m.ProjectPage })));
 const LavoriPage = React.lazy(() => import('./components/LavoriPage'));
@@ -52,6 +53,7 @@ function HomePage() {
       <Navbar show={heroPhase === 3} />
       <Hero onPhaseChange={setHeroPhase} skipAnimation={heroPhase === 3} />
       <MarketingSystemSection />
+      <ResultsSection />
       <ChiSono />
       <ServicesSection />
       <ParallaxSection />

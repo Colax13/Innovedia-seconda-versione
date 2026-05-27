@@ -79,9 +79,9 @@ export const ProjectDetailLayout: React.FC<{ project: Project }> = ({ project })
           <div className="flex items-center gap-3.5 mb-5 animate-in slide-in-from-bottom-8 duration-700">
             <span className="text-[9px] font-bold uppercase tracking-[0.28em]" style={{ color: project.accentColor || project.color }}>{project.category}</span>
             <div className="w-7 h-px bg-white/20" style={{ backgroundColor: `${project.accentColor || project.color}55` }} />
-            <span className="font-mono text-[10px] text-white/30 tracking-widest">{detail.year}</span>
+            <span className="font-tech text-[10px] text-white/30 tracking-widest">{detail.year}</span>
             <div className="w-7 h-px bg-white/10" />
-            <span className="font-mono text-[10px] text-white/20 tracking-wider">{detail.location}</span>
+            <span className="font-tech text-[10px] text-white/20 tracking-wider">{detail.location}</span>
           </div>
           <h1 className="font-display font-extrabold text-[clamp(48px,11vw,140px)] leading-[0.86] uppercase tracking-tighter mb-0 animate-in slide-in-from-bottom-12 duration-900 delay-100">
             {project.title.split(' ').slice(0, 2).join(' ')}

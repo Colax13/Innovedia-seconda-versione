@@ -426,8 +426,8 @@ const ProjectRDSalon: React.FC = () => {
             <div className="sb"></div>
             <p className="sp2">Il sito dialoga con l'Hair Spa — sezione dedicata che porta il cliente da un'esperienza all'altra, aumentando il valore medio senza aumentare i costi.</p>
             <div style={{ marginTop: '24px' }}>
-              <div className="ec"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839203/collegamento_ritual_hair_spa_do4mec.jpg" alt="Hair Spa" style={{ aspectRatio: '1919/921', objectPosition: 'top' }} /></div>
-              <p className="ic">05 — Collegamento Ritual Hair Spa</p>
+              <div className="ec"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084327/Screenshot_5_pursfi.jpg" alt="Hair Spa" style={{ aspectRatio: '1919/921', objectPosition: 'top' }} /></div>
+              <p className="ic">05 — Landing Page Hair Spa</p>
             </div>
           </div>
         </div>

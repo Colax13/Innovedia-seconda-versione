@@ -9,7 +9,7 @@ const SRCS = [
   'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1769513413/Hair_Spa_sofu9v.jpg',
   'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773089052/Screenshot_8_exvaml.jpg',
   'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773839517/social_qm63bp.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773839203/collegamento_ritual_hair_spa_do4mec.jpg',
+  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773084327/Screenshot_5_pursfi.jpg',
 ];
 
 const CARD_W = 154; // reduced by 30% from 220
@@ -74,16 +74,16 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   const heroBgOpacityMobile = useTransform(mobilePhrasesProgress, [0, 0.05], [1, 0.1]);
 
   // Hoisted useTransforms for mobile phrases
-  const mPhrase1Opacity = useTransform(mobilePhrasesProgress, [0.02, 0.1, 0.12, 1], [0, 1, 0.25, 0.25]);
+  const mPhrase1Opacity = useTransform(mobilePhrasesProgress, [0.02, 0.1], [0, 1]);
   const mPhrase1Y = useTransform(mobilePhrasesProgress, [0.02, 0.1], [20, 0]);
   
-  const mPhrase2Opacity = useTransform(mobilePhrasesProgress, [0.05, 0.15, 0.22, 1], [0, 1, 0.25, 0.25]);
+  const mPhrase2Opacity = useTransform(mobilePhrasesProgress, [0.05, 0.15], [0, 1]);
   const mPhrase2X = useTransform(mobilePhrasesProgress, [0.05, 0.15], [-50, 0]);
   
-  const mPhrase3Opacity = useTransform(mobilePhrasesProgress, [0.15, 0.25, 0.32, 1], [0, 1, 0.25, 0.25]);
+  const mPhrase3Opacity = useTransform(mobilePhrasesProgress, [0.15, 0.25], [0, 1]);
   const mPhrase3X = useTransform(mobilePhrasesProgress, [0.15, 0.25], [50, 0]);
   
-  const mPhrase4Opacity = useTransform(mobilePhrasesProgress, [0.25, 0.35, 0.42, 1], [0, 1, 0.25, 0.25]);
+  const mPhrase4Opacity = useTransform(mobilePhrasesProgress, [0.25, 0.35], [0, 1]);
   const mPhrase4X = useTransform(mobilePhrasesProgress, [0.25, 0.35], [-50, 0]);
   
   const mPhrase5Opacity = useTransform(mobilePhrasesProgress, [0.35, 0.45], [0, 1]);
@@ -986,7 +986,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
 
   return (
     <>
-    <section ref={sectionRef} id="hero" className={`relative w-full ${isMobile ? 'min-h-[100dvh] snap-start' : 'min-h-[270vh] h-[270vh]'}`}>
+    <section ref={sectionRef} id="hero" className={`relative w-full ${isMobile ? 'min-h-[160vh] relative bg-transparent' : 'min-h-[270vh] h-[270vh]'}`}>
       {/* Background Image Container */}
       <AnimatePresence>
         {phase === 3 && (
@@ -1182,7 +1182,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   initial={{ opacity: 0 }}
                   animate={phase === 3 ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ delay: 1.5, duration: 1 }}
-                  className="mt-2 text-[11px] md:text-[11px] font-sans text-white/40 italic normal-case"
+                  className="mt-2 text-[11px] md:text-[11px] font-tech text-white/40 italic normal-case"
                 >
                   (So che sembra una fregatura,<br className="md:hidden" /> ma fammi spiegare meglio)
                 </motion.div>
@@ -1328,7 +1328,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
     </section>
     
     {/* Phrases Section below Hero (Mobile Only visually) */}
-    <section ref={mobilePhrasesRef} className={`relative w-full flex-col gap-8 font-barlow uppercase overflow-hidden z-20 ${isMobile ? 'flex bg-black py-20 px-4' : 'hidden'}`} style={{ minHeight: isMobile ? '120vh' : 0 }}>
+    <section ref={mobilePhrasesRef} className={`relative w-full flex-col gap-8 font-display uppercase overflow-hidden z-20 ${isMobile ? 'flex bg-[#050B14] py-20 px-4 rounded-t-[32px] border-t border-white/10 shadow-[0_-30px_60px_rgba(0,0,0,0.85)]' : 'hidden'}`} style={{ minHeight: isMobile ? '120vh' : 0 }}>
       {isMobile && (
         <>
         <motion.div
@@ -1338,7 +1338,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
            }}
            className="relative z-10 w-full text-center mt-[2vh] mb-[-2vh]"
         >
-           <span className="text-[12px] md:text-[14px] font-medium text-white/50 tracking-widest lowercase italic font-sans">
+           <span className="text-[12px] md:text-[14px] font-medium text-white/50 tracking-widest lowercase italic font-tech">
              io so che...
            </span>
         </motion.div>
@@ -1351,7 +1351,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
           className="relative z-10 w-full max-w-[85vw] p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)] mt-[5vh]"
         >
           <span className="text-xl tracking-wide leading-relaxed block font-medium">
-            <span className="text-[#00E5FF]">TI HANNO CHIESTO 10.000€</span> PER ANDARE ONLINE.
+            <span className="text-[#00E5FF]">TI HANNO CHIESTO 10.000€</span><br /> PER ANDARE ONLINE.
           </span>
         </motion.div>
 
@@ -1363,7 +1363,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
           className="relative z-10 w-full max-w-[85vw] self-end p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
         >
           <span className="text-xl tracking-wide leading-relaxed block text-right font-medium">
-             HAI PROVATO I SOCIAL <span className="text-[#00E5FF]">MA NON HANNO FUNZIONATO.</span>
+             HAI PROVATO I SOCIAL<br /> <span className="text-[#00E5FF]">MA NON HANNO FUNZIONATO.</span>
           </span>
         </motion.div>
 
@@ -1387,7 +1387,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
           className="relative z-10 w-full max-w-[85vw] self-end p-4 rounded-2xl bg-black border border-[#00E5FF]/20 text-white shadow-[0_0_15px_rgba(0,229,255,0.1)]"
         >
           <span className="text-xl tracking-wide leading-[1.4] block relative z-10 text-right font-medium">
-              I CLIENTI ARRIVANO <span className="text-[#00E5FF]">MA NON SAI DA DOVE</span>
+              I CLIENTI ARRIVANO<br /> <span className="text-[#00E5FF]">MA NON SAI DA DOVE</span>
           </span>
         </motion.div>
         </>

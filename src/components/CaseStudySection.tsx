@@ -1,13 +1,15 @@
 import React, { useRef, useEffect } from 'react';
-import { motion, useInView, useMotionValue, useTransform, animate, useScroll } from 'motion/react';
-import OptimizedImage from './OptimizedImage';
+import { motion, useInView, useMotionValue, useTransform, animate, useScroll } from 'framer-motion';
 
 // ============================================================
 // COUNTER COMPONENT
 // ============================================================
-function Counter({ value, duration = 2, delay = 0 }: { value: number, duration?: number, delay?: number }) {
+function Counter({ value, duration = 2, delay = 0, format = false }: { value: number, duration?: number, delay?: number, format?: boolean }) {
   const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => Math.round(latest));
+  const rounded = useTransform(count, (latest) => {
+    const val = Math.round(latest);
+    return format ? val.toLocaleString('it-IT') : String(val);
+  });
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.5 });
 
@@ -20,7 +22,7 @@ function Counter({ value, duration = 2, delay = 0 }: { value: number, duration?:
       });
       return controls.stop;
     } else {
-      // Reset when out of view (invisible to user as it's outside viewport)
+      // Reset when out of view
       count.set(0);
     }
   }, [isInView, value, duration, delay, count]);
@@ -31,7 +33,7 @@ function Counter({ value, duration = 2, delay = 0 }: { value: number, duration?:
 // ============================================================
 // FLIP BUTTON (Hero Style)
 // ============================================================
-export function FlipButton({ text, onClick, primary = false, noBorder = false }: { text: string, onClick?: () => void, primary?: boolean, noBorder?: boolean }) {
+export function FlipButton({ text, onClick, primary = false, noBorder = false, className = '' }: { text: string, onClick?: () => void, primary?: boolean, noBorder?: boolean, className?: string }) {
   return (
     <motion.button 
       initial="initial"
@@ -43,7 +45,7 @@ export function FlipButton({ text, onClick, primary = false, noBorder = false }:
       }}
       transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
       onClick={onClick}
-      className={`group relative h-10 px-7 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer ${noBorder ? '' : 'border'} shadow-[0_0_20px_rgba(0, 229, 255, 0.1)] w-full sm:w-auto`}
+      className={`group relative h-10 px-7 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer ${noBorder ? '' : 'border'} shadow-[0_0_20px_rgba(0, 229, 255, 0.1)] w-full sm:w-auto flex items-center justify-center ${className}`}
     >
       <div className="relative z-10 flex h-full items-center justify-center">
         {text.split("").map((char, i) => (
@@ -164,7 +166,7 @@ const CaseStudySection: React.FC = () => {
       value: (
         <span>
           +<Counter value={30} delay={0.5} />
-          <span className="text-pixar-cyan">%</span>
+          <span className="text-[#00E5FF]">%</span>
         </span>
       ),
       label: "Fatturato generato dal canale digitale"
@@ -181,7 +183,7 @@ const CaseStudySection: React.FC = () => {
       value: (
         <div className="flex items-center justify-center md:justify-start gap-2">
           <span className="text-white/20">€20</span>
-          <span className="text-pixar-cyan text-[0.6em]">→</span>
+          <span className="text-[#00E5FF] text-[0.6em]">→</span>
           <span>€<Counter value={2} delay={0.9} />k</span>
         </div>
       ),
@@ -191,10 +193,10 @@ const CaseStudySection: React.FC = () => {
 
   return (
     <section 
-      ref={sectionRef}
       id="caso-studio"
-      className="relative pt-20 md:pt-32 pb-[72px] md:pb-12 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent border-t border-white/5 overflow-hidden z-30"
+      className="relative mt-40 md:mt-0 pt-20 md:pt-32 pb-[72px] md:pb-12 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent border-t border-white/5 overflow-hidden z-30"
       style={{ perspective: '2000px' }}
+      ref={sectionRef}
     >
       <div className="max-w-7xl mx-auto">
         {/* Title Section */}
@@ -208,7 +210,7 @@ const CaseStudySection: React.FC = () => {
                 transition={{ duration: 0.8 }}
                 className="flex items-center justify-center md:justify-start gap-6 mb-6"
               >
-                <span className="font-tech text-[10px] font-medium tracking-[0.4em] uppercase text-pixar-cyan/60 whitespace-nowrap">
+                <span className="font-tech text-[10px] font-medium tracking-[0.4em] uppercase text-[#00E5FF]/60 whitespace-nowrap">
                   l'ho già fatto
                 </span>
                 <div
@@ -230,7 +232,7 @@ const CaseStudySection: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.8, delay: isMobile ? 0 : 0.2 }}
-                  className="font-sans text-[clamp(16px,2vw,18px)] font-light leading-relaxed text-white/60 mb-12 md:mb-0"
+                  className="font-tech text-[clamp(16px,2vw,18px)] font-light leading-relaxed text-white/60 mb-12 md:mb-0"
                 >
                   Da salone locale a brand digitale. Partiti da zero, ho costruito Sito, e-commerce spa, strategia social integrata.
                 </motion.p>
@@ -272,7 +274,7 @@ const CaseStudySection: React.FC = () => {
                     }}
                     transition={{ duration: 1.5, ease: "easeInOut" }}
                     style={{ originY: 1 }}
-                    className="absolute left-0 top-0 bottom-0 w-[2px] bg-pixar-cyan shadow-[2px_0_15px_rgba(6,182,212,0.6)] block" 
+                    className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#00E5FF] shadow-[2px_0_15px_rgba(6,182,212,0.6)] block" 
                   />
 
                   {/* Water Stain / Leak Animation */}
@@ -287,14 +289,14 @@ const CaseStudySection: React.FC = () => {
                       }
                     }}
                     transition={{ duration: 1.6, ease: "easeOut" }}
-                    className="absolute bottom-0 left-0 w-16 h-16 bg-pixar-cyan/30 blur-2xl rounded-full pointer-events-none"
+                    className="absolute bottom-0 left-0 w-16 h-16 bg-[#00E5FF]/30 blur-2xl rounded-full pointer-events-none"
                   />
                   
                   <div className="relative z-10 flex flex-col items-center md:items-start">
                     <div className="font-display text-[clamp(24px,4vw,42px)] font-bold text-white mb-1 tracking-tight">
                       {metric.value}
                     </div>
-                    <div className="font-sans text-[9px] md:text-[10px] text-white/30 leading-relaxed uppercase tracking-wider">
+                    <div className="font-tech text-[9px] md:text-[10px] text-white/30 leading-relaxed uppercase tracking-wider">
                       {metric.label}
                     </div>
                   </div>
@@ -325,14 +327,13 @@ const CaseStudySection: React.FC = () => {
 
           {/* Right Column: Floating Images (2/5) */}
           <div className="lg:col-span-2 relative min-h-0 md:min-h-[750px] flex flex-col pt-4">
-            {/* Hero Salone */}
             <motion.div
               style={{ x: img1X, opacity: img1Opacity }}
               className="relative w-[100%] md:w-[95%] z-10"
             >
-              <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <div className="absolute inset-0 bg-[#00E5FF]/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
-                <OptimizedImage 
+                <img 
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774624472/Screenshot_3_w8ts30.jpg" 
                   alt="Hero Salone"
                   className="w-full h-auto block transition-transform duration-1000 group-hover:scale-105"
@@ -347,9 +348,9 @@ const CaseStudySection: React.FC = () => {
               style={{ x: img2X, opacity: img2Opacity }}
               className="relative w-[26%] md:w-[30%] z-40 -mt-40 md:-mt-60 ml-auto mr-[-4%]"
             >
-              <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <div className="absolute inset-0 bg-[#00E5FF]/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
-                <OptimizedImage 
+                <img 
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1775413522/cambio_look_z7qqxj.png" 
                   alt="Reel Cambio Look"
                   className="w-full h-auto block transition-transform duration-1000 group-hover:scale-105"
@@ -364,9 +365,9 @@ const CaseStudySection: React.FC = () => {
               style={{ x: img3X, opacity: img3Opacity }}
               className="relative w-[90%] md:w-[85%] z-20 mt-24 md:mt-20 ml-[-5%] mr-auto"
             >
-              <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <div className="absolute inset-0 bg-[#00E5FF]/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
-                <OptimizedImage 
+                <img 
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084327/Screenshot_5_pursfi.jpg" 
                   alt="Hero Hair Spa"
                   className="w-full h-auto block transition-transform duration-1000 group-hover:scale-105"
@@ -381,9 +382,9 @@ const CaseStudySection: React.FC = () => {
               style={{ x: img4X, opacity: img4Opacity }}
               className="relative w-[26%] md:w-[30%] z-30 -mt-52 md:-mt-72 ml-auto mr-[5%]"
             >
-              <div className="absolute inset-0 bg-pixar-cyan/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <div className="absolute inset-0 bg-[#00E5FF]/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group bg-black">
-                <OptimizedImage 
+                <img 
                   src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1775413526/tonalizzante_in8vjo.png" 
                   alt="Reel Tonalizzante"
                   className="w-full h-auto block transition-transform duration-1000 group-hover:scale-105"
@@ -394,7 +395,7 @@ const CaseStudySection: React.FC = () => {
             </motion.div>
             
             {/* Main Background Glow for the whole stack */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[100%] bg-pixar-cyan/5 blur-[150px] rounded-full -z-10 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[100%] bg-[#00E5FF]/5 blur-[150px] rounded-full -z-10 pointer-events-none" />
           </div>
 
           {/* Mobile CTA Section - Appears after images on mobile, hidden on desktop */}

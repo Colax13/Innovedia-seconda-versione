@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { Share2, Globe, ShoppingCart, Users, Zap } from 'lucide-react';
+import { useForms } from '../context/FormContext';
+import { FlipButton } from './CaseStudySection';
 
 const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
   const cardTargetY = isMobile ? 1150 : 800; 
@@ -85,7 +87,7 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
     "02 — CONVERTI",
     "03 — RACCOGLI",
     "04 — MONETIZZA",
-    "↻ RIPARTI"
+    "05 — OTTIMIZZA"
   ];
 
   const descriptions = [
@@ -93,7 +95,7 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
     "Attraverso il tuo sito web o il tuo e-commerce.",
     "I contatti nel CRM per tenere traccia dei tuoi clienti.",
     "Con automazioni di email, messaggi e promozioni per riconvertire.",
-    "Il sistema ricomincia da zero."
+    "Analizzando i dati raccolti per migliorare le performance e scalare continuamente i profitti."
   ];
 
   return (
@@ -119,6 +121,7 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
 };
 
 export default function MarketingSystemSection() {
+  const { openAnalysisForm } = useForms();
   const containerRef = useRef<HTMLDivElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
@@ -139,7 +142,7 @@ export default function MarketingSystemSection() {
   // Map 100% of the new shorter section to be equal to 46% (desktop) or 75% (mobile) of the old animation values.
   // This causes the section to unpin immediately as soon as the last card finishes its animation.
   const mappedYDesk = useTransform(rawScrollYProgress, [0, 1], [0, 0.46]);
-  const mappedYMob = useTransform(rawScrollYProgress, [0, 1], [0, 0.75]);
+  const mappedYMob = useTransform(rawScrollYProgress, [0, 0.78, 1], [0, 0.75, 0.75]);
   const scrollYProgress = isMobile ? mappedYMob : mappedYDesk;
 
   const { scrollYProgress: rawIntroProgress } = useScroll({
@@ -154,9 +157,9 @@ export default function MarketingSystemSection() {
   const p2 = "La direzione è giusta.";
   const p3 = "Ti manca solo un pezzo.";
 
-  const t_intro1 = [0.02, 0.07];
-  const t_intro2 = [0.09, 0.14];
-  const t_intro3 = [0.16, 0.21];
+  const t_intro1 = isMobile ? [0.0, 0.05] : [0.02, 0.07];
+  const t_intro2 = isMobile ? [0.03, 0.08] : [0.09, 0.14];
+  const t_intro3 = isMobile ? [0.06, 0.11] : [0.16, 0.21];
 
   const op1 = useTransform(introProgress, t_intro1, [0, 1]);
   const introY1 = useTransform(introProgress, t_intro1, [30, 0]);
@@ -265,20 +268,20 @@ export default function MarketingSystemSection() {
         {/* 2. STATIC TITLE & SYSTEM SECTION */}
         <div className="w-full max-w-7xl mx-auto px-4 pb-4 md:mt-12 z-20 relative">
           <div className="w-full text-center flex flex-col justify-center items-center border-b border-white/10 pb-8">
-          <span className="font-sans text-cyan-400 text-[10px] md:text-[12px] font-bold uppercase tracking-[0.3em] block mb-3 md:mb-4">
+          <span className="font-tech text-cyan-400 text-[10px] md:text-[12px] font-bold uppercase tracking-[0.3em] block mb-3 md:mb-4">
             IL PEZZO MANCANTE
           </span>
-          <h2 className="font-barlow font-bold text-5xl sm:text-6xl md:text-7xl uppercase tracking-tighter text-white mb-6">
+          <h2 className="font-display font-bold text-5xl sm:text-6xl md:text-7xl uppercase tracking-tighter text-white mb-6">
             IL SISTEMA R1
           </h2>
-          <p className="font-sans text-white/70 max-w-2xl text-sm md:text-base leading-relaxed">
-            In 5 anni di lavoro ho sviluppato il <strong className="text-[#00E5FF] font-semibold">Sistema Revenue First</strong> che parte da una regola semplice: <br /> <strong className="text-white font-semibold border-b border-[#00E5FF]/40 pb-0.5">prima genero liquidità</strong> nella tua attività, poi costruiamo tutto il resto
+          <p className="font-tech text-white/70 max-w-2xl text-sm md:text-base leading-relaxed">
+            In 5 anni di lavoro ho sviluppato il <strong className="text-[#00E5FF] font-semibold">Sistema Revenue First</strong> che parte da una regola semplice: <br /> <strong className="text-white font-semibold">prima genero liquidità</strong> nella tua attività, poi costruiamo tutto il resto
           </p>
         </div>
       </div>
 
       {/* 3. STICKY CANVAS */}
-      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[500vh]" : "h-[450vh]"}`}>
+      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[540vh]" : "h-[450vh]"}`}>
         <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden">
           
           {/* Canvas */}
@@ -369,6 +372,7 @@ export default function MarketingSystemSection() {
 
         </div>
       </div>
+
       </div>
     </section>
   );
