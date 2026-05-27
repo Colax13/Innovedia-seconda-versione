@@ -215,21 +215,24 @@ const ResultsSection: React.FC = () => {
 
   const videos = [
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1773845155/0318_tflaqt.mov",
+      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1773845155/0318_tflaqt.mov",
       title: "Consulenza Colore"
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1773845362/lv_0_20260318153958_r4ecdo.mp4",
+      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1773845362/lv_0_20260318153958_r4ecdo.mp4",
       title: "La Storia del Brand"
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1776813461/0422_u3cqlq.mov",
+      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1776813461/0422_u3cqlq.mov",
       title: "Video Taglio"
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1773845362/lv_0_20260318153958_r4ecdo.mp4",
-      title: "Quarto Video",
-      grayscale: true
+      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1779909947/spa_compresso_bhvzqr.mp4",
+      title: "Hair Spa",
+    },
+    {
+      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1779913352/Compresso_fzavti.mov",
+      title: "Tour Salone",
     }
   ];
 
@@ -349,10 +352,15 @@ const ResultsSection: React.FC = () => {
              transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
              className="w-full max-w-4xl mx-auto"
           >
-             <div className="grid grid-cols-4 gap-4 lg:gap-8 w-full">
+             <div className="grid grid-cols-5 gap-4 lg:gap-8 w-full">
                {videos.map((vid, i) => (
-                 <div key={`desk-vid-${i}`} className="w-full aspect-[9/16] rounded-xl overflow-hidden border border-white/10 bg-white/5 relative group">
-                   <video src={vid.src} autoPlay loop muted playsInline className={`w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out ${vid.grayscale ? 'grayscale opacity-50' : ''}`}></video>
+                 <div 
+                   key={`desk-vid-${i}`} 
+                   className="w-full aspect-[9/16] rounded-xl overflow-hidden border border-white/10 bg-white/5 relative group"
+                   onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play().catch(()=>{}); }}
+                   onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.pause(); }}
+                 >
+                   <video src={vid.src} preload="none" loop muted playsInline className={`w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out ${vid.grayscale ? 'grayscale opacity-50' : ''}`}></video>
                    <div className={`absolute inset-0 bg-gradient-to-t pointer-events-none ${vid.grayscale ? 'from-black/80 via-black/40 to-transparent' : 'from-black/80 via-transparent to-transparent'}`}></div>
                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center pointer-events-none">
                       <span className="font-tech text-center text-[10px] text-white/80 uppercase tracking-widest leading-tight">{vid.title}</span>
@@ -486,12 +494,17 @@ const ResultsSection: React.FC = () => {
                className="w-full lg:w-1/2 relative"
             >
                {/* DESKTOP GRID */}
-               <div className="hidden lg:grid grid-cols-2 gap-4 w-full justify-items-center">
+               <div className="hidden lg:flex flex-wrap justify-center gap-4 w-full">
                  {videos.map((vid, i) => (
-                   <div key={`desk-vid-${i}`} className="w-full max-w-[260px] aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative group">
+                   <div 
+                     key={`desk-vid-${i}`} 
+                     className="w-full max-w-[260px] aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative group"
+                     onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play().catch(()=>{}); }}
+                     onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.pause(); }}
+                   >
                      {/* Use a placeholder image or a static layout if video doesn't play natively on grids without scroll, 
                          but playing multiple videos is fine or muted autoplay */}
-                     <video src={vid.src} autoPlay loop muted playsInline className={`w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out ${vid.grayscale ? 'grayscale opacity-50' : ''}`}></video>
+                     <video src={vid.src} preload="none" loop muted playsInline className={`w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out ${vid.grayscale ? 'grayscale opacity-50' : ''}`}></video>
                      <div className={`absolute inset-0 bg-gradient-to-t pointer-events-none ${vid.grayscale ? 'from-black/80 via-black/40 to-transparent' : 'from-black/80 via-transparent to-transparent'}`}></div>
                      <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none">
                        <div className="flex items-center gap-2">
@@ -509,7 +522,7 @@ const ResultsSection: React.FC = () => {
                <DragCarousel className="lg:hidden hide-scrollbar" innerClassName="px-[calc(50%-90px)] md:px-[calc(50%-180px)]">
                  {videos.map((vid, i) => (
                       <div key={`mob-vid-${i}`} className="snap-center shrink-0 w-[180px] h-[320px] md:w-[360px] md:h-[640px] rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative group">
-                        <video src={vid.src} autoPlay loop muted playsInline className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none ${vid.grayscale ? 'grayscale opacity-50' : 'opacity-80'}`}></video>
+                        <video src={vid.src} preload="none" loop muted playsInline className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none ${vid.grayscale ? 'grayscale opacity-50' : 'opacity-80'}`}></video>
                         <div className={`absolute inset-0 bg-gradient-to-t pointer-events-none ${vid.grayscale ? 'from-black/80 via-black/40 to-transparent' : 'from-black/80 via-transparent to-transparent'}`}></div>
                         <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none">
                           <div className="flex items-center gap-2">

@@ -1007,9 +1007,9 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   srcSet="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_1920/v1779229305/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.png"
                 />
                 <img
-                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_800/v1779229305/mobile_hero_smqsm2.png"
+                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_800/v1779915062/1ee18e70-7e9b-4ed4-8348-b35ec129788b_szqcwm.png"
                   alt="Hero Background"
-                  className="w-full h-full object-cover object-[center_35%] md:object-center transform translate-y-[15vh] translate-x-[40px] scale-90 md:translate-x-0 md:translate-y-0 md:scale-100"
+                  className="w-full h-full object-cover object-top md:object-center"
                 />
               </picture>
               <div className="absolute inset-0 bg-transparent mix-blend-multiply opacity-50" />
@@ -1318,13 +1318,6 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
           )}
         </AnimatePresence>
       </div>
-
-      {/* Loading State */}
-      {loaded < SRCS.length && (
-        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-[#050508]">
-          <div className="w-12 h-12 border-2 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin" />
-        </div>
-      )}
     </section>
     
     {/* Phrases Section below Hero (Mobile Only visually) */}

@@ -146,7 +146,9 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
           width: "100%", height: "100%",
           borderRadius: "1.5rem",
           overflow: "hidden",
-          background: "#08080C",
+          background: "rgba(5, 11, 20, 0.4)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
           transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isVisualActive ? 1.02 : 1}) translateY(${entered ? 0 : 40}px)`,
           opacity: entered ? 1 : 0,
           transition: entered
@@ -167,29 +169,48 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
             overflow: "hidden",
             cursor: "pointer"
           }} className="group" onClick={togglePlay}>
-            <motion.video
-              ref={videoRef}
-              src={optVideoSrc || project.img || project.coverImage}
-              poster={project.img || project.coverImage}
-              preload={isActive ? "auto" : "none"}
-              muted={isMuted}
-              loop
-              playsInline
-              animate={{
-                scale: hovered ? 1.05 : 1,
-              }}
-              transition={{
-                duration: 0.8,
-                ease: [0.23, 1, 0.32, 1]
-              }}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            />
+            {isActive ? (
+              <motion.video
+                ref={videoRef}
+                src={optVideoSrc || project.img || project.coverImage}
+                poster={project.img || project.coverImage}
+                preload="auto"
+                muted={isMuted}
+                loop
+                playsInline
+                animate={{
+                  scale: hovered ? 1.05 : 1,
+                }}
+                transition={{
+                  duration: 0.8,
+                  ease: [0.23, 1, 0.32, 1]
+                }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            ) : (
+              <MotionOptimizedImage
+                src={project.img || project.coverImage}
+                alt={project.title}
+                animate={{
+                  scale: hovered ? 1.05 : 1,
+                }}
+                transition={{
+                  duration: 0.8,
+                  ease: [0.23, 1, 0.32, 1]
+                }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            )}
             {/* Play mask for playing/pausing overlay */}
-            {!isPlaying && (
+            {(!isPlaying || !isActive) && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors duration-300">
                  <div className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-lg">
                    <div className="w-0 h-0 border-t-[8px] border-b-[8px] border-l-[14px] border-transparent border-l-white ml-1"></div>
@@ -198,16 +219,18 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
             )}
             
             {/* Volume Toggle */}
-            <button
-              onClick={toggleMute}
-              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20"
-            >
-              {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-            </button>
+            {isActive && (
+              <button
+                onClick={toggleMute}
+                className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20"
+              >
+                {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+              </button>
+            )}
             
             {/* Decorative category label */}
             <div className="absolute top-6 left-6 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 z-10 pointer-events-none">
-              <span className="font-tech text-[0.6rem] font-bold tracking-[0.15em] text-white uppercase">VIDEO</span>
+              <span className="font-tech text-[0.55rem] font-bold tracking-[0.15em] text-white uppercase">{project.detail?.client || 'VIDEO'}</span>
             </div>
           </div>
         ) : (
@@ -242,7 +265,7 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
           <div style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(to bottom, transparent 60%, #0a0a0a 100%)",
+            background: "linear-gradient(to bottom, transparent 40%, rgba(5,11,20,0.6) 80%, rgba(5,11,20,0.95) 100%)",
           }} />
         </div>
 
@@ -610,13 +633,13 @@ function ProjectCarousel({
       exit={{ opacity: 0 }}
       viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 0.8 }}
-      className="relative w-full min-h-[110vh] overflow-hidden bg-transparent flex flex-col items-center pt-24 pb-16 md:pb-24 px-4 select-none mb-12"
+      className="relative w-full min-h-[110vh] overflow-hidden bg-transparent flex flex-col items-center pt-5 md:pt-12 pb-16 md:pb-24 px-4 select-none mb-6 md:mb-12"
     >
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative z-10 w-full max-w-7xl mx-auto mb-24 md:mb-16 text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-end border-b border-white/10 pb-8"
+        className="relative z-10 w-full max-w-7xl mx-auto mb-5 md:mb-10 text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-end border-b border-white/10 pb-4 md:pb-6"
       >
         <div>
           <span className="font-sans text-[#00E5FF] text-[10px] font-bold uppercase tracking-[0.3em] block mb-2">
@@ -736,24 +759,85 @@ export default function ProjectSection() {
   const videoProjects = projects.filter(p => p.id >= 100);
 
   return (
-    <div className="w-full flex flex-col bg-transparent relative z-10">
-      <ProjectCarousel 
-        id="lavori"
-        subtitle="LAVORI DI CUI VADO FIERO"
-        title="Portfolio Progetti"
-        data={webProjects}
-        showFilter={true}
-        categories={["Tutti", "Web Design", "Brand Identity"]}
-      />
-      
-      <ProjectCarousel 
-        id="video"
-        subtitle="I MIEI MIGLIORI VIDEO"
-        title="Portfolio Video"
-        data={videoProjects}
-        showFilter={false}
-        descriptionRight="Alcuni dei miei migliori video che mostrano le capacità di ripresa ed editing realizzati per alcuni dei miei clienti"
-      />
-    </div>
+    <>
+      {/* Visual Divider / Stacco */}
+      <div className="relative w-full py-16 md:py-24 flex flex-col items-center justify-center bg-[#050B14] z-20 shadow-[0_30px_60px_rgba(5,11,20,1)] border-b border-white/5">
+         <div className="w-px h-24 md:h-32 bg-gradient-to-b from-[#00E5FF]/0 via-[#00E5FF] to-[#00E5FF]/0 animate-pulse"></div>
+         <div className="my-6 md:my-8 flex items-center gap-4 text-[#00E5FF]/50 uppercase tracking-[0.3em] md:tracking-[0.5em] text-[8px] md:text-[10px] font-tech font-bold text-center px-4">
+            <div className="w-8 md:w-12 h-px bg-[#00E5FF]/30"></div>
+            ESPLORA LE MIE CREAZIONI
+            <div className="w-8 md:w-12 h-px bg-[#00E5FF]/30"></div>
+         </div>
+      </div>
+
+      {/* Portfolio Progetti Section */}
+      <div className="w-full flex flex-col relative z-20">
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <div className="sticky top-0 w-full h-screen">
+             <picture className="w-full h-full block">
+                <source
+                  media="(min-width: 768px)"
+                  srcSet="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_1920/v1779229305/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.png"
+                />
+                <img
+                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_800/v1779915062/1ee18e70-7e9b-4ed4-8348-b35ec129788b_szqcwm.png"
+                  alt="Portfolio Progetti Background"
+                  className="w-full h-full object-cover opacity-20 mix-blend-luminosity grayscale object-top"
+                />
+             </picture>
+            {/* Dark opacity overlay to blend with the app */}
+            <div className="absolute inset-0 bg-[#050B14]/85 backdrop-blur-[2px]"></div>
+            <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#050B14] to-transparent"></div>
+            <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#050B14] to-transparent"></div>
+          </div>
+        </div>
+
+        <div className="w-full flex flex-col relative z-10">
+          <ProjectCarousel 
+            id="lavori"
+            subtitle="LAVORI DI CUI VADO FIERO"
+            title="Portfolio Progetti"
+            data={webProjects}
+            showFilter={true}
+            categories={["Tutti", "Web Design", "Brand Identity"]}
+          />
+        </div>
+      </div>
+
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent relative z-30"></div>
+
+      {/* Portfolio Video Section */}
+      <div className="w-full flex flex-col relative z-20">
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <div className="sticky top-0 w-full h-screen">
+             <picture className="w-full h-full block">
+                <source
+                  media="(min-width: 768px)"
+                  srcSet="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_1920/v1779914776/eae9364b-4b3b-4702-9f3c-e874ae494c83_dk0wzw.png"
+                />
+                <img
+                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_800/v1779915049/a701991e-50ab-4e84-9099-2f7f9528a485_zrhx13.png"
+                  alt="Portfolio Video Background"
+                  className="w-full h-full object-cover opacity-20 mix-blend-luminosity grayscale object-top"
+                />
+             </picture>
+            <div className="absolute inset-0 bg-[#050B14]/85 backdrop-blur-[2px]"></div>
+            <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#050B14] to-transparent"></div>
+            <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#050B14] to-transparent"></div>
+          </div>
+        </div>
+
+        <div className="w-full flex flex-col relative z-10 pt-10">
+          <ProjectCarousel 
+            id="video"
+            subtitle="I MIEI MIGLIORI VIDEO"
+            title="Portfolio Video"
+            data={videoProjects}
+            showFilter={false}
+            descriptionRight="Alcuni dei miei migliori video che mostrano le capacità di ripresa ed editing realizzati per alcuni dei miei clienti"
+          />
+        </div>
+      </div>
+    </>
   );
 }

@@ -65,20 +65,61 @@ function HomePage() {
 }
 
 function App() {
+  const [isLoaded, setIsLoaded] = React.useState(() => {
+    return typeof window !== 'undefined' && document.readyState === 'complete';
+  });
+
+  React.useEffect(() => {
+    if (isLoaded) return;
+    
+    const handleLoad = () => setIsLoaded(true);
+    if (document.readyState === 'complete') {
+      setIsLoaded(true);
+    } else {
+      window.addEventListener('load', handleLoad);
+    }
+    
+    const fallbackTimer = setTimeout(() => setIsLoaded(true), 4000);
+
+    return () => {
+      window.removeEventListener('load', handleLoad);
+      clearTimeout(fallbackTimer);
+    };
+  }, [isLoaded]);
+
   return (
-    <div className="lg:cursor-none min-h-screen">
+    <div className="lg:cursor-none min-h-screen relative">
       <CustomCursor />
-      <React.Suspense fallback={
-        <div className="min-h-screen bg-[#050B14] flex flex-col items-center justify-center font-tech text-[#00E5FF] uppercase tracking-widest text-[10px] gap-3">
-          <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#00E5FF] to-transparent animate-pulse" />
-          <span>Caricamento...</span>
+      
+      {!isLoaded && (
+        <div className="fixed inset-0 z-[99999] bg-[#050B14] flex flex-col items-center justify-center font-tech text-[#00E5FF] uppercase tracking-widest text-[10px] gap-6 overflow-hidden">
+          <div className="w-16 h-16 relative">
+            <div className="absolute inset-0 border-2 border-[#00E5FF]/20 rounded-full animate-[spin_3s_linear_infinite]" />
+            <div className="absolute inset-0 border-2 border-transparent border-t-[#00E5FF] rounded-full animate-[spin_1s_ease-in-out_infinite]" />
+            <div className="absolute inset-1/4 bg-[#00E5FF]/20 rounded-full animate-pulse blur-sm" />
+          </div>
+          <div className="flex flex-col items-center gap-2">
+             <span className="text-white/80 font-bold tracking-[0.3em]">INIT_SYSTEM</span>
+             <div className="w-24 h-px bg-gradient-to-r from-transparent via-[#00E5FF]/50 to-transparent animate-pulse" />
+          </div>
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 text-[8px] tracking-[0.5em] animate-pulse">
+            LUDOVICO COLASANTI
+          </div>
         </div>
-      }>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/progetto/:id" element={<ProjectPage />} />
-        </Routes>
-      </React.Suspense>
+      )}
+
+      <div style={{ 
+        opacity: isLoaded ? 1 : 0, 
+        pointerEvents: isLoaded ? 'auto' : 'none', 
+        transition: 'opacity 0.8s ease-out' 
+      }}>
+        <React.Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/progetto/:id" element={<ProjectPage />} />
+          </Routes>
+        </React.Suspense>
+      </div>
     </div>
   );
 }

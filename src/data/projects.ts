@@ -9,7 +9,7 @@ export const projects = [
         brief: "Realizzazione di un commercial in Egitto.",
         detail: {
             year: "2024",
-            client: "Hurghada",
+            client: "Video personale",
             role: "Video Production",
             duration: "2 settimane",
             overview: "Un video emozionale per comunicare esperienze.",
@@ -29,7 +29,7 @@ export const projects = [
         brief: "Video per Spa.",
         detail: {
             year: "2024",
-            client: "Spa",
+            client: "RD Salon",
             role: "Video Editing",
             duration: "Continuativo",
             overview: "Video rilassante per centro benessere.",
@@ -49,7 +49,7 @@ export const projects = [
         brief: "Recap evento estivo.",
         detail: {
             year: "2024",
-            client: "Da Mare",
+            client: "Da'mare",
             role: "Montaggio",
             duration: "1 settimana",
             overview: "Il ritratto dell'estate in un video recap.",
@@ -69,7 +69,7 @@ export const projects = [
         brief: "Video showcase piatto per ECOBLU.",
         detail: {
             year: "2024",
-            client: "ECOBLU",
+            client: "Ecoblu",
             role: "Video Production",
             duration: "1 settimana",
             overview: "Focus sui dettagli del food.",
@@ -89,7 +89,7 @@ export const projects = [
         brief: "Cocktail presentation for GIN AMIATA.",
         detail: {
             year: "2024",
-            client: "GIN AMIATA",
+            client: "Gin Amiata",
             role: "Video Production",
             duration: "1 settimana",
             overview: "Commercial video for Gin Amiata cocktail.",
@@ -109,7 +109,7 @@ export const projects = [
         brief: "Idea creativa per short video.",
         detail: {
             year: "2024",
-            client: "Private",
+            client: "Maracanà",
             role: "Video Production",
             duration: "1 giorno",
             overview: "Video social impact.",
@@ -129,7 +129,7 @@ export const projects = [
         brief: "Video con effetti speciali per MARACANA.",
         detail: {
             year: "2024",
-            client: "MARACANA",
+            client: "Maracanà",
             role: "VFX & Video Production",
             duration: "2 settimane",
             overview: "Creazione di cloni tramite effetti.",
@@ -149,7 +149,7 @@ export const projects = [
         brief: "Fashion shoot video.",
         detail: {
             year: "2024",
-            client: "MARACANA",
+            client: "Maracanà",
             role: "Video Production",
             duration: "1 settimana",
             overview: "Video promozionale abbigliamento.",
@@ -169,7 +169,7 @@ export const projects = [
         brief: "Video Commercial 0527.",
         detail: {
             year: "2024",
-            client: "Unknown",
+            client: "Porta di Roma",
             role: "Video Production",
             duration: "1 settimana",
             overview: "Video format.",
