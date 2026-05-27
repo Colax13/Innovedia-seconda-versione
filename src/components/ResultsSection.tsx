@@ -565,7 +565,7 @@ const ResultsSection: React.FC = () => {
                 <div className="hidden lg:grid grid-cols-2 gap-4 xl:gap-6 w-full justify-items-center">
                   {images.map((img, i) => (
                     <div key={`desk-img-${i}`} className="w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative group pointer-events-none">
-                      <img src={img.src} alt={img.alt} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out object-top pointer-events-none" draggable={false} />
+                      <OptimizedImage src={img.src} alt={img.alt} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out object-top pointer-events-none" draggable={false} />
                       <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-[#050B14] to-transparent opacity-80 pointer-events-none"></div>
                     </div>
                   ))}
@@ -575,7 +575,7 @@ const ResultsSection: React.FC = () => {
                 <DragCarousel className="hidden md:flex lg:hidden hide-scrollbar" innerClassName="md:px-[calc(50%-240px)]">
                   {images.map((img, i) => (
                     <div key={`tab-img-${i}`} className="snap-center shrink-0 w-[480px] aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative group pointer-events-none">
-                      <img src={img.src} alt={img.alt} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out object-top pointer-events-none" draggable={false} />
+                      <OptimizedImage src={img.src} alt={img.alt} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out object-top pointer-events-none" draggable={false} />
                       <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-[#050B14] to-transparent opacity-80 pointer-events-none"></div>
                     </div>
                   ))}

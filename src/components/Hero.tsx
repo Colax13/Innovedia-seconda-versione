@@ -190,7 +190,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
     }
     const timer = setTimeout(() => {
       setLoaded(prev => Math.max(prev, SRCS.length));
-    }, 6000);
+    }, 2000);
 
     imagesRef.current = [];
     let count = 0;

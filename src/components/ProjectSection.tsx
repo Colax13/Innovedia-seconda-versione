@@ -81,13 +81,25 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
   const isVideo = project.category === "Video";
   
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(isActive);
   const [isMuted, setIsMuted] = useState(true);
 
   // Cloudinary video optimization (avif/webm + q_auto)
   const optVideoSrc = project.videoSrc 
     ? project.videoSrc.replace('/video/upload/', '/video/upload/f_auto,q_auto/') 
     : project.videoSrc;
+
+  useEffect(() => {
+    if (isVideo && videoRef.current) {
+      if (isActive) {
+        videoRef.current.play().catch(() => {});
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  }, [isActive, isVideo]);
 
   const togglePlay = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -158,8 +170,9 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
             <motion.video
               ref={videoRef}
               src={optVideoSrc || project.img || project.coverImage}
+              poster={project.img || project.coverImage}
+              preload={isActive ? "auto" : "none"}
               muted={isMuted}
-              autoPlay
               loop
               playsInline
               animate={{
@@ -447,7 +460,23 @@ const Card = React.memo(({ item, index, offsetSpring, isActive, isMobile, totalC
 
 // ── MAIN EXPORT ───────────────────────────────────────────────────────
 
-export default function ProjectSection() {
+function ProjectCarousel({
+  id,
+  subtitle,
+  title,
+  data,
+  showFilter = false,
+  categories = [],
+  descriptionRight
+}: {
+  id: string;
+  subtitle: string;
+  title: string;
+  data: any[];
+  showFilter?: boolean;
+  categories?: string[];
+  descriptionRight?: string;
+}) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -456,20 +485,15 @@ export default function ProjectSection() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const [activeFilter, setActiveFilter] = useState("Tutti");
-  const categories = ["Tutti", "Web Design", "Brand Identity", "Video"];
+  const [activeFilter, setActiveFilter] = useState(categories[0] || "Tutti");
 
-  const filteredData = projects.filter(p => {
+  const filteredData = data.filter(p => {
+    if (!showFilter) return true;
     if (activeFilter === "Tutti") return true;
     return (
       (p.category && p.category.toLowerCase().includes(activeFilter.toLowerCase())) || 
       (p.tags && p.tags.some((t: string) => t.toLowerCase().includes(activeFilter.toLowerCase())))
     );
-  }).sort((a, b) => {
-    // Priority: IDs < 10 (Web/Branding projects) come BEFORE IDs >= 100 (Videos)
-    const aPriority = a.id < 100 ? 0 : 1;
-    const bPriority = b.id < 100 ? 0 : 1;
-    return aPriority - bPriority;
   });
 
   const N = filteredData.length || 1; // Fallback to avoid div by zero
@@ -580,19 +604,14 @@ export default function ProjectSection() {
 
   return (
       <motion.section 
-      id="lavori"
+      id={id}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 0.8 }}
-      className="relative w-full min-h-[125vh] md:min-h-[115vh] overflow-hidden bg-[#020205] flex flex-col items-center pt-24 pb-16 md:pb-24 px-4 select-none"
+      className="relative w-full min-h-[110vh] overflow-hidden bg-transparent flex flex-col items-center pt-24 pb-16 md:pb-24 px-4 select-none mb-12"
     >
-      {/* Cinematic Background Lighting - Site Style */}
-      <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-cyan-400/20 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-400/20 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-cyan-400/10 blur-[160px] rounded-full pointer-events-none" />
-      
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -600,33 +619,40 @@ export default function ProjectSection() {
         className="relative z-10 w-full max-w-7xl mx-auto mb-24 md:mb-16 text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-end border-b border-white/10 pb-8"
       >
         <div>
-          <span className="font-sans text-[#FF6B00] text-[10px] font-bold uppercase tracking-[0.3em] block mb-2">
-            LAVORI DI CUI VADO FIERO
+          <span className="font-sans text-[#00E5FF] text-[10px] font-bold uppercase tracking-[0.3em] block mb-2">
+            {subtitle}
           </span>
-          <h2 className="font-display font-bold text-[2rem] leading-tight md:text-5xl uppercase tracking-tighter text-white max-w-2xl">
-            Portfolio
+          <h2 className="font-display font-bold text-[2.5rem] leading-tight md:text-5xl uppercase tracking-tighter text-white max-w-2xl">
+            {title}
           </h2>
         </div>
-        <div className="hidden md:flex flex-col items-end gap-3 z-20 relative">
-          <p className="text-gray-400 font-sans text-right text-xs uppercase tracking-widest mb-1">
-            Filtra per categoria:
-          </p>
-          <div className="flex gap-2">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveFilter(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
-                  activeFilter === cat 
-                    ? 'bg-[#00E5FF] text-black shadow-[0_0_15px_rgba(0,229,255,0.4)]'
-                    : 'bg-white/5 text-white hover:bg-white/20'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+        {descriptionRight && (
+          <div className="hidden md:block max-w-md text-right text-gray-400 font-sans text-sm font-light leading-relaxed relative z-20">
+            {descriptionRight}
           </div>
-        </div>
+        )}
+        {showFilter && categories.length > 0 && (
+          <div className="hidden md:flex flex-col items-end gap-3 z-20 relative">
+            <p className="text-gray-400 font-sans text-right text-xs uppercase tracking-widest mb-1">
+              Filtra per categoria:
+            </p>
+            <div className="flex gap-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveFilter(cat)}
+                  className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
+                    activeFilter === cat 
+                      ? 'bg-[#00E5FF] text-black shadow-[0_0_15px_rgba(0,229,255,0.4)]'
+                      : 'bg-white/5 text-white hover:bg-white/20'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </motion.div>
 
       <div className="relative w-full flex-1 flex items-center justify-center min-h-[450px] md:min-h-[550px]">
@@ -686,7 +712,7 @@ export default function ProjectSection() {
         </div>
       </div>
 
-      <div className="mt-24 md:mt-12 mb-8 md:mb-12 flex flex-col items-center gap-8 md:gap-10">
+      <div className="mt-24 md:mt-12 flex flex-col items-center gap-8 md:gap-10">
         <div className="flex items-center gap-3">
           {filteredData.map((_, i) => (
             <button
@@ -702,5 +728,32 @@ export default function ProjectSection() {
         </div>
       </div>
     </motion.section>
+  );
+}
+
+export default function ProjectSection() {
+  const webProjects = projects.filter(p => p.id < 100);
+  const videoProjects = projects.filter(p => p.id >= 100);
+
+  return (
+    <div className="w-full flex flex-col bg-transparent relative z-10">
+      <ProjectCarousel 
+        id="lavori"
+        subtitle="LAVORI DI CUI VADO FIERO"
+        title="Portfolio Progetti"
+        data={webProjects}
+        showFilter={true}
+        categories={["Tutti", "Web Design", "Brand Identity"]}
+      />
+      
+      <ProjectCarousel 
+        id="video"
+        subtitle="I MIEI MIGLIORI VIDEO"
+        title="Portfolio Video"
+        data={videoProjects}
+        showFilter={false}
+        descriptionRight="Alcuni dei miei migliori video che mostrano le capacità di ripresa ed editing realizzati per alcuni dei miei clienti"
+      />
+    </div>
   );
 }
