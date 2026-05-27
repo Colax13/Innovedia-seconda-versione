@@ -18,11 +18,11 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
   ];
 
   const mob_t_props = [
-    { start: 0.15, duration: 0.15 },
-    { start: 0.44, duration: 0.14 }, 
-    { start: 0.59, duration: 0.14 }, 
-    { start: 0.74, duration: 0.14 }, 
-    { start: 0.89, duration: 0.10 }  
+    { start: 0.15, duration: 0.12 },
+    { start: 0.32, duration: 0.12 }, 
+    { start: 0.42, duration: 0.12 }, 
+    { start: 0.52, duration: 0.12 }, 
+    { start: 0.62, duration: 0.10 }  
   ];
 
   const t_props = isMobile ? mob_t_props : desk_t_props;
@@ -136,10 +136,10 @@ export default function MarketingSystemSection() {
     offset: ["start start", "end end"]
   });
 
-  // Map 100% of the new shorter section to be equal to 46% (desktop) or 100% (mobile) of the old animation values.
+  // Map 100% of the new shorter section to be equal to 46% (desktop) or 75% (mobile) of the old animation values.
   // This causes the section to unpin immediately as soon as the last card finishes its animation.
   const mappedYDesk = useTransform(rawScrollYProgress, [0, 1], [0, 0.46]);
-  const mappedYMob = useTransform(rawScrollYProgress, [0, 1], [0, 1]);
+  const mappedYMob = useTransform(rawScrollYProgress, [0, 1], [0, 0.75]);
   const scrollYProgress = isMobile ? mappedYMob : mappedYDesk;
 
   const { scrollYProgress: rawIntroProgress } = useScroll({
@@ -172,26 +172,26 @@ export default function MarketingSystemSection() {
 
   // Move the animation triggers based on isMobile
   const startMerge = isMobile ? 0.04 : 0.02;
-  const endMerge = isMobile ? 0.20 : 0.15;
+  const endMerge = isMobile ? 0.16 : 0.15;
   
   const drawStart = isMobile ? 0.04 : 0.02;
-  const drawEnd = isMobile ? 0.20 : 0.15;
+  const drawEnd = isMobile ? 0.16 : 0.15;
 
   const yDeskOffset = 800; // amount to move world up
   const yMobOffset = 1150; 
   const worldYDesktop = useTransform(scrollYProgress, [0, 0.10, 0.22, 1], [0, 0, -yDeskOffset, -yDeskOffset]);
-  const worldYMobile = useTransform(scrollYProgress, [0, 0.22, 0.40, 1], [0, 0, -yMobOffset, -yMobOffset]);
+  const worldYMobile = useTransform(scrollYProgress, [0, 0.18, 0.32, 1], [0, 0, -yMobOffset, -yMobOffset]);
   const worldY = isMobile ? worldYMobile : worldYDesktop;
 
-  const illuminateStart = isMobile ? 0.18 : 0.08;
-  const illuminateEnd = isMobile ? 0.20 : 0.10;
+  const illuminateStart = isMobile ? 0.14 : 0.08;
+  const illuminateEnd = isMobile ? 0.16 : 0.10;
 
   const lineStartDesk = 0.09;
   const lineEndDesk = 0.23;
   const lineHeightDesktop = useTransform(scrollYProgress, [lineStartDesk, lineEndDesk], [0, 605]); 
 
-  const lineStartMob = 0.20;
-  const lineEndMob = 0.34;
+  const lineStartMob = 0.16;
+  const lineEndMob = 0.28;
   const lineHeightMobile = useTransform(scrollYProgress, [lineStartMob, lineEndMob], [0, 975]); 
   
   const lineHeight = isMobile ? lineHeightMobile : lineHeightDesktop;
@@ -278,7 +278,7 @@ export default function MarketingSystemSection() {
       </div>
 
       {/* 3. STICKY CANVAS */}
-      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[650vh]" : "h-[450vh]"}`}>
+      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[500vh]" : "h-[450vh]"}`}>
         <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden">
           
           {/* Canvas */}
