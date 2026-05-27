@@ -13,7 +13,7 @@ interface Stat {
 
 interface ImageSection {
   type: string; // Use string to avoid literal type mismatch with projects.ts
-  images: { url: string; caption?: string }[];
+  images?: { url: string; caption?: string }[];
   title?: string;
   subtitle?: string;
   text?: string;
@@ -22,25 +22,26 @@ interface ImageSection {
 
 export interface ProjectDetailData {
   year: string;
-  location: string;
+  location?: string;
   client: string;
   role: string;
   duration: string;
-  where: string;
+  where?: string;
   overview: string;
   heroImage: string;
   sections: ImageSection[];
   quote?: string;
-  stats: Stat[];
+  stats?: Stat[];
 }
 
 export interface Project {
   id: number;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   category: string;
   color: string;
   accentColor?: string;
+  videoSrc?: string;
   tags: string[];
   detail?: ProjectDetailData;
 }
@@ -129,10 +130,19 @@ export const ProjectDetailLayout: React.FC<{ project: Project }> = ({ project })
           <div key={idx} className="pb-28">
             {section.type === 'full' && (
               <div>
-                <div className="border border-white/5 overflow-hidden bg-white/5">
-                  <OptimizedImage src={section.images[0].url} alt={section.images[0].caption} className="w-full h-auto block" />
+                <div className="border border-white/5 overflow-hidden bg-black flex justify-center w-full">
+                  {(section as any).videoSrc ? (
+                    <video 
+                      src={(section as any).videoSrc} 
+                      autoPlay 
+                      controls
+                      className="w-full h-auto max-h-[85vh] object-contain block" 
+                    />
+                  ) : section.images?.[0]?.url ? (
+                    <OptimizedImage src={section.images[0].url} alt={section.images[0].caption} className="w-full h-auto block" />
+                  ) : null}
                 </div>
-                {section.images[0].caption && (
+                {section.images?.[0]?.caption && (
                   <p className="text-[9px] text-white/20 uppercase tracking-widest font-semibold mt-3 pl-1">
                     {idx + 1 < 10 ? `0${idx + 1}` : idx + 1} — {section.images[0].caption}
                   </p>

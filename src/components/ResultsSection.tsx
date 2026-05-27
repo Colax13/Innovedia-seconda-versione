@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
 import { useForms } from '../context/FormContext';
+import OptimizedImage from './OptimizedImage';
 
 export function FlipButton({ text, onClick, primary = false, noBorder = false, className = '' }: { text: string, onClick?: () => void, primary?: boolean, noBorder?: boolean, className?: string }) {
   return (
@@ -267,7 +268,7 @@ const ResultsSection: React.FC = () => {
   ];
 
   return (
-    <>
+    <div id="successi">
     {/* =========================================
         DESKTOP VIEW (Normal Scrolling + Overlay)
         ========================================= */}
@@ -394,7 +395,7 @@ const ResultsSection: React.FC = () => {
           >
              {images.map((img, i) => (
                 <div key={`desk-img-${i}`} className="w-full rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative group pointer-events-none shadow-2xl">
-                  <img src={img.src} alt={img.alt} className="w-full h-auto opacity-80 group-hover:opacity-100 transition-all duration-700 ease-out pointer-events-none object-contain" draggable={false} />
+                  <OptimizedImage src={img.src} alt={img.alt} className="w-full h-auto opacity-80 group-hover:opacity-100 transition-all duration-700 ease-out pointer-events-none object-contain" draggable={false} />
                   <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#050B14]/80 to-transparent pointer-events-none"></div>
                 </div>
              ))}
@@ -584,7 +585,7 @@ const ResultsSection: React.FC = () => {
                <div className="flex flex-col gap-6 md:hidden">
                   {images.map((img, i) => (
                     <div key={`mob-img-${i}`} className="w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative pointer-events-none">
-                      <img src={img.src} alt={img.alt} className="w-full h-full object-cover opacity-80 object-top pointer-events-none" draggable={false} />
+                      <OptimizedImage src={img.src} alt={img.alt} className="w-full h-full object-cover opacity-80 object-top pointer-events-none" draggable={false} />
                       <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-[#050B14] to-transparent opacity-80 pointer-events-none"></div>
                     </div>
                   ))}
@@ -635,7 +636,7 @@ const ResultsSection: React.FC = () => {
         </motion.div>
       </div>
     </section>
-    </>
+    </div>
   );
 };
 

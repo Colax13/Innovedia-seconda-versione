@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useSpring, useTransform } from 'motion/react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Volume2, VolumeX } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { projects } from '../data/projects';
 import OptimizedImage from './OptimizedImage';
@@ -78,6 +78,34 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
 
   const c = project.color || "#00E5FF";
   const tags = project.tags ? project.tags.slice(0, 2) : [];
+  const isVideo = project.category === "Video";
+  
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+
+  // Cloudinary video optimization (avif/webm + q_auto)
+  const optVideoSrc = project.videoSrc 
+    ? project.videoSrc.replace('/video/upload/', '/video/upload/f_auto,q_auto/') 
+    : project.videoSrc;
+
+  const togglePlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsMuted(!isMuted);
+  };
 
   useEffect(() => {
     if (isMobile && isActive) {
@@ -119,12 +147,64 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
           willChange: "transform, opacity",
         }}
       >
-        <div style={{
-          width: "100%",
-          height: "58%",
-          position: "relative",
-          overflow: "hidden",
-        }}>
+        {isVideo ? (
+          <div style={{
+            width: "100%",
+            height: "100%",
+            position: "relative",
+            overflow: "hidden",
+            cursor: "pointer"
+          }} className="group" onClick={togglePlay}>
+            <motion.video
+              ref={videoRef}
+              src={optVideoSrc || project.img || project.coverImage}
+              muted={isMuted}
+              autoPlay
+              loop
+              playsInline
+              animate={{
+                scale: hovered ? 1.05 : 1,
+              }}
+              transition={{
+                duration: 0.8,
+                ease: [0.23, 1, 0.32, 1]
+              }}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+            {/* Play mask for playing/pausing overlay */}
+            {!isPlaying && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors duration-300">
+                 <div className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-lg">
+                   <div className="w-0 h-0 border-t-[8px] border-b-[8px] border-l-[14px] border-transparent border-l-white ml-1"></div>
+                 </div>
+              </div>
+            )}
+            
+            {/* Volume Toggle */}
+            <button
+              onClick={toggleMute}
+              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20"
+            >
+              {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+            </button>
+            
+            {/* Decorative category label */}
+            <div className="absolute top-6 left-6 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 z-10 pointer-events-none">
+              <span className="font-tech text-[0.6rem] font-bold tracking-[0.15em] text-white uppercase">VIDEO</span>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div style={{
+              width: "100%",
+              height: "58%",
+              position: "relative",
+              overflow: "hidden",
+            }}>
           <MotionOptimizedImage
             src={project.img}
             alt={project.title}
@@ -269,6 +349,8 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
             </motion.div>
           </div>
         </div>
+        </>
+        )}
 
         <div style={{
           position: "absolute",
@@ -383,6 +465,11 @@ export default function ProjectSection() {
       (p.category && p.category.toLowerCase().includes(activeFilter.toLowerCase())) || 
       (p.tags && p.tags.some((t: string) => t.toLowerCase().includes(activeFilter.toLowerCase())))
     );
+  }).sort((a, b) => {
+    // Priority: IDs < 10 (Web/Branding projects) come BEFORE IDs >= 100 (Videos)
+    const aPriority = a.id < 100 ? 0 : 1;
+    const bPriority = b.id < 100 ? 0 : 1;
+    return aPriority - bPriority;
   });
 
   const N = filteredData.length || 1; // Fallback to avoid div by zero
@@ -513,11 +600,11 @@ export default function ProjectSection() {
         className="relative z-10 w-full max-w-7xl mx-auto mb-24 md:mb-16 text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-end border-b border-white/10 pb-8"
       >
         <div>
-          <span className="font-sans text-cyan-400 text-[10px] font-bold uppercase tracking-[0.3em] block mb-2">
-            PORTFOLIO
+          <span className="font-sans text-[#FF6B00] text-[10px] font-bold uppercase tracking-[0.3em] block mb-2">
+            LAVORI DI CUI VADO FIERO
           </span>
           <h2 className="font-display font-bold text-[2rem] leading-tight md:text-5xl uppercase tracking-tighter text-white max-w-2xl">
-            Altri lavori di cui vado molto fiero
+            Portfolio
           </h2>
         </div>
         <div className="hidden md:flex flex-col items-end gap-3 z-20 relative">
@@ -567,8 +654,6 @@ export default function ProjectSection() {
             <div className="text-white/50 font-sans text-sm tracking-widest uppercase">Nessun progetto trovato.</div>
           ) : (
             filteredData.map((item, i) => {
-              // Only render cards that are within a reasonable distance from the current offset
-              // to improve performance (virtualization-like behavior)
               const diff = Math.abs(i - (offset % N + N) % N);
               const isNear = diff <= 3 || diff >= N - 3;
               if (!isNear) return null;
@@ -615,54 +700,6 @@ export default function ProjectSection() {
             />
           ))}
         </div>
-
-        {/* Tutti i lavori button - Hero Style */}
-        <motion.button 
-          initial="initial"
-          whileHover="hover"
-          variants={{
-            initial: { backgroundColor: "rgba(255, 255, 255, 0.12)", borderColor: "#00E5FF" },
-            hover: { backgroundColor: "#ffffff", borderColor: "#ffffff" }
-          }}
-          transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-          onClick={() => navigate('/lavori')} 
-          className="group relative h-[41px] md:h-12 px-8 md:px-12 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.25em] uppercase overflow-hidden cursor-pointer border shadow-[0_0_20px_rgba(0,229,255,0.2)]"
-        >
-          <div className="relative z-10 flex h-full items-center justify-center">
-            {"Tutti i lavori".split("").map((char, i) => (
-              <span key={i} className="relative inline-block overflow-hidden">
-                <motion.span
-                  variants={{
-                    initial: { y: 0, rotateX: 0, color: "#ffffff" },
-                    hover: { y: "-100%", rotateX: 90, color: "#000000" }
-                  }}
-                  transition={{ 
-                    delay: i * 0.015, 
-                    duration: 0.5, 
-                    ease: [0.23, 1, 0.32, 1] 
-                  }}
-                  className="inline-block"
-                >
-                  {char === " " ? "\u00A0" : char}
-                </motion.span>
-                <motion.span
-                  variants={{
-                    initial: { y: "100%", rotateX: -90, color: "#000000" },
-                    hover: { y: 0, rotateX: 0, color: "#000000" }
-                  }}
-                  transition={{ 
-                    delay: i * 0.015, 
-                    duration: 0.5, 
-                    ease: [0.23, 1, 0.32, 1] 
-                  }}
-                  className="absolute inset-0 inline-block"
-                >
-                  {char === " " ? "\u00A0" : char}
-                </motion.span>
-              </span>
-            ))}
-          </div>
-        </motion.button>
       </div>
     </motion.section>
   );

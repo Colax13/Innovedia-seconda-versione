@@ -242,7 +242,7 @@ export default function MarketingSystemSection() {
   ];
 
   return (
-    <section className="relative w-full bg-[#050B14] text-white">
+    <section id="servizi" className="relative w-full bg-[#050B14] text-white">
       {/* 1. SCROLLING INTRO OR STATIC ON MOBILE */}
       <div ref={introRef} className={`relative w-full z-0 ${isMobile ? "h-[300vh]" : "h-[380vh]"}`}>
         <div className={`sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-4`}>

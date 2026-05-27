@@ -8,7 +8,6 @@ import MarketingSystemSection from './components/MarketingSystemSection';
 import ResultsSection from './components/ResultsSection';
 import UnifiedBackground from './components/UnifiedBackground';
 const ProjectPage = React.lazy(() => import('./components/project/ProjectPage').then(m => ({ default: m.ProjectPage })));
-const LavoriPage = React.lazy(() => import('./components/LavoriPage'));
 import FinalCTA from './components/FinalCTA';
 import CustomCursor from './components/CustomCursor';
 
@@ -77,7 +76,6 @@ function App() {
       }>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/lavori" element={<LavoriPage />} />
           <Route path="/progetto/:id" element={<ProjectPage />} />
         </Routes>
       </React.Suspense>
