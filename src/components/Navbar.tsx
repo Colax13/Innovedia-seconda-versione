@@ -57,7 +57,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
     }
   };
 
-  const menuItems = ['Metodo', 'Servizi', 'Lavori'];
+  const menuItems = ['Servizi', 'Lavori'];
 
   return (
     <>

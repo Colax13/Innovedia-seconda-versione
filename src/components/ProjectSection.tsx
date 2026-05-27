@@ -7,10 +7,6 @@ import OptimizedImage from './OptimizedImage';
 
 const MotionOptimizedImage = motion(OptimizedImage);
 
-// ── DATA ──────────────────────────────────────────────────────────────
-const DATA = projects;
-const N = DATA.length;
-
 // ── SUB-COMPONENTS ────────────────────────────────────────────────────
 
 const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, isMobile }: any) => {
@@ -294,13 +290,14 @@ interface CardProps {
   offsetSpring: any;
   isActive: boolean;
   isMobile: boolean;
+  totalCards: number;
   key?: React.Key;
 }
 
-const Card = React.memo(({ item, index, offsetSpring, isActive, isMobile }: CardProps) => {
+const Card = React.memo(({ item, index, offsetSpring, isActive, isMobile, totalCards }: CardProps) => {
   const p = useTransform(offsetSpring, (off: number) => {
     let rawP = index - off;
-    return rawP - N * Math.round(rawP / N);
+    return rawP - totalCards * Math.round(rawP / totalCards);
   });
 
   const x = useTransform(p, (val: number) => {
@@ -376,6 +373,23 @@ export default function ProjectSection() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const [activeFilter, setActiveFilter] = useState("Tutti");
+  const categories = ["Tutti", "Web Design", "Brand Identity", "Video"];
+
+  const filteredData = projects.filter(p => {
+    if (activeFilter === "Tutti") return true;
+    return (
+      (p.category && p.category.toLowerCase().includes(activeFilter.toLowerCase())) || 
+      (p.tags && p.tags.some((t: string) => t.toLowerCase().includes(activeFilter.toLowerCase())))
+    );
+  });
+
+  const N = filteredData.length || 1; // Fallback to avoid div by zero
+
+  useEffect(() => {
+    setOffset(0);
+  }, [activeFilter]);
 
   const [offset, setOffset] = useState(0);
   const offsetSpring = useSpring(0, { stiffness: 120, damping: 20 });
@@ -502,13 +516,30 @@ export default function ProjectSection() {
           <span className="font-sans text-cyan-400 text-[10px] font-bold uppercase tracking-[0.3em] block mb-2">
             PORTFOLIO
           </span>
-          <h2 className="font-display font-bold text-5xl md:text-7xl uppercase tracking-tighter text-white">
-            Progetti
+          <h2 className="font-display font-bold text-[2rem] leading-tight md:text-5xl uppercase tracking-tighter text-white max-w-2xl">
+            Altri lavori di cui vado molto fiero
           </h2>
         </div>
-        <p className="hidden md:block text-gray-400 font-sans max-w-sm text-right text-sm leading-relaxed">
-          Una selezione di lavori che raccontano la mia visione e il mio impegno per l'eccellenza digitale.
-        </p>
+        <div className="hidden md:flex flex-col items-end gap-3 z-20 relative">
+          <p className="text-gray-400 font-sans text-right text-xs uppercase tracking-widest mb-1">
+            Filtra per categoria:
+          </p>
+          <div className="flex gap-2">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveFilter(cat)}
+                className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
+                  activeFilter === cat 
+                    ? 'bg-[#00E5FF] text-black shadow-[0_0_15px_rgba(0,229,255,0.4)]'
+                    : 'bg-white/5 text-white hover:bg-white/20'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
       </motion.div>
 
       <div className="relative w-full flex-1 flex items-center justify-center min-h-[450px] md:min-h-[550px]">
@@ -532,24 +563,29 @@ export default function ProjectSection() {
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
         >
-          {DATA.map((item, i) => {
-            // Only render cards that are within a reasonable distance from the current offset
-            // to improve performance (virtualization-like behavior)
-            const diff = Math.abs(i - (offset % N + N) % N);
-            const isNear = diff <= 3 || diff >= N - 3;
-            if (!isNear) return null;
+          {filteredData.length === 0 ? (
+            <div className="text-white/50 font-sans text-sm tracking-widest uppercase">Nessun progetto trovato.</div>
+          ) : (
+            filteredData.map((item, i) => {
+              // Only render cards that are within a reasonable distance from the current offset
+              // to improve performance (virtualization-like behavior)
+              const diff = Math.abs(i - (offset % N + N) % N);
+              const isNear = diff <= 3 || diff >= N - 3;
+              if (!isNear) return null;
 
-            return (
-              <Card 
-                key={item.id} 
-                item={item} 
-                index={i} 
-                offsetSpring={offsetSpring} 
-                isActive={currentIndex === i}
-                isMobile={isMobile}
-              />
-            );
-          })}
+              return (
+                <Card 
+                  key={item.id} 
+                  item={item} 
+                  index={i} 
+                  offsetSpring={offsetSpring} 
+                  isActive={currentIndex === i}
+                  isMobile={isMobile}
+                  totalCards={N}
+                />
+              );
+            })
+          )}
         </div>
 
         {/* Right Arrow */}
@@ -567,7 +603,7 @@ export default function ProjectSection() {
 
       <div className="mt-24 md:mt-12 mb-8 md:mb-12 flex flex-col items-center gap-8 md:gap-10">
         <div className="flex items-center gap-3">
-          {DATA.map((_, i) => (
+          {filteredData.map((_, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}

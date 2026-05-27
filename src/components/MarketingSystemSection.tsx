@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { Share2, Globe, ShoppingCart, Users, Zap } from 'lucide-react';
 import { useForms } from '../context/FormContext';
-import { FlipButton } from './CaseStudySection';
 
 const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
   const cardTargetY = isMobile ? 1150 : 800; 
@@ -141,7 +140,8 @@ export default function MarketingSystemSection() {
 
   // Map 100% of the new shorter section to be equal to 46% (desktop) or 75% (mobile) of the old animation values.
   // This causes the section to unpin immediately as soon as the last card finishes its animation.
-  const mappedYDesk = useTransform(rawScrollYProgress, [0, 1], [0, 0.46]);
+  // For desktop, we hold the animation after 0.82 to allow ResultsSection to overlap the last 100vh
+  const mappedYDesk = useTransform(rawScrollYProgress, [0, 0.82, 1], [0, 0.46, 0.46]);
   const mappedYMob = useTransform(rawScrollYProgress, [0, 0.78, 1], [0, 0.75, 0.75]);
   const scrollYProgress = isMobile ? mappedYMob : mappedYDesk;
 
@@ -281,7 +281,7 @@ export default function MarketingSystemSection() {
       </div>
 
       {/* 3. STICKY CANVAS */}
-      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[540vh]" : "h-[450vh]"}`}>
+      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[540vh]" : "h-[550vh]"}`}>
         <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden">
           
           {/* Canvas */}

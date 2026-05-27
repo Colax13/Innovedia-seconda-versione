@@ -3,10 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import QualcosaSuDiMe from './components/QualcosaSuDiMe';
-import ChiSono from './components/ChiSono';
-import ServicesSection from './components/ServicesSection';
-import ParallaxSection from './components/ParallaxSection';
-import CaseStudySection from './components/CaseStudySection';
 import ProjectSection from './components/ProjectSection';
 import MarketingSystemSection from './components/MarketingSystemSection';
 import ResultsSection from './components/ResultsSection';
@@ -54,12 +50,8 @@ function HomePage() {
       <Hero onPhaseChange={setHeroPhase} skipAnimation={heroPhase === 3} />
       <MarketingSystemSection />
       <ResultsSection />
-      <ChiSono />
-      <ServicesSection />
-      <ParallaxSection />
-      <CaseStudySection />
-      <ProjectSection />
       <QualcosaSuDiMe />
+      <ProjectSection />
       <FinalCTA />
       <footer className="bg-black/80 backdrop-blur-md py-12 text-center border-t border-white/5 relative z-10">
         <div className="flex justify-center gap-8 mb-8 text-xs font-tech uppercase tracking-widest text-gray-500">

@@ -1,76 +1,12 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import OptimizedImage from './OptimizedImage';
 
-const ScrollParagraph = ({ num, children }: { num: number, children: React.ReactNode }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 95%", "start 80%"] 
-  });
-  
-  const x = useTransform(scrollYProgress, [0, 1], [40, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
-  return (
-    <motion.div 
-      ref={ref}
-      style={{ x, opacity }}
-      className="flex flex-col md:flex-row gap-6 md:gap-10 items-start"
-    >
-      <div 
-        className="font-display text-[70px] md:text-[100px] font-black leading-none pt-2 select-none"
-        style={{ 
-          color: 'transparent',
-          WebkitTextStroke: '2px rgba(0, 229, 255, 0.5)',
-          textShadow: '0 0 40px rgba(0, 229, 255, 0.15)'
-        }}
-      >
-        0{num}
-      </div>
-      <div className="font-sans text-[clamp(16px,1.2vw,18px)] font-light leading-relaxed text-white/70 flex-1 pt-4">
-        {children}
-      </div>
-    </motion.div>
-  );
-};
-
 export default function QualcosaSuDiMe() {
-  const sectionRef = useRef<HTMLElement>(null);
-  
-  // Per l'entrata laterale delle immagini.
-  const { scrollYProgress: photoEnterProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 90%", "start 50%"]
-  });
-  
-  const photosX = useTransform(photoEnterProgress, [0, 1], [-200, 0]);
-  const photosOpacity = useTransform(photoEnterProgress, [0, 1], [0, 1]);
-
-  // Per l'entrata del titolo.
-  const { scrollYProgress: titleEnterProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 80%", "start 40%"]
-  });
-  const titleX = useTransform(titleEnterProgress, [0, 1], [100, 0]);
-  const titleOpacity = useTransform(titleEnterProgress, [0, 1], [0, 1]);
-
-  // Per l'entrata dell'intera sezione
-  const { scrollYProgress: sectionProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 80%", "start 30%"]
-  });
-  const sectionOpacity = useTransform(sectionProgress, [0, 1], [0, 1]);
-
   const ImagesBlock = () => (
-    <motion.div 
-      style={{ x: photosX, opacity: photosOpacity }}
-      className="w-full h-full relative"
-    >
-      {/* Secondary photo (Bottom Left) */}
-      <div 
-        className="absolute bottom-[14%] lg:bottom-[0%] left-[0%] w-[55%] md:w-[60%] aspect-[4/5] z-10 -rotate-3 hover:z-40"
-      >
+    <div className="w-full h-full relative">
+      {/* Secondary photo */}
+      <div className="absolute bottom-[0%] lg:bottom-[0%] left-[0%] w-[55%] md:w-[60%] aspect-[4/5] z-10 -rotate-3 hover:z-40">
          <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-[#1A1A1C] p-1.5 transition-transform duration-500 hover:rotate-0">
              <div className="w-full h-full rounded-lg overflow-hidden relative">
                 <OptimizedImage 
@@ -81,11 +17,8 @@ export default function QualcosaSuDiMe() {
              </div>
          </div>
       </div>
-
-      {/* Main photo (Top Center/Right) */}
-      <div 
-        className="absolute top-[8%] lg:top-[0%] right-[0%] w-[65%] md:w-[70%] aspect-[3/4] z-30 rotate-2 hover:z-40"
-      >
+      {/* Main photo */}
+      <div className="absolute top-[0%] lg:top-[0%] right-[0%] w-[65%] md:w-[70%] aspect-[3/4] z-30 rotate-2 hover:z-40">
          <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] bg-[#1A1A1C] p-2 transition-transform duration-500 hover:rotate-0">
              <div className="w-full h-full rounded-lg overflow-hidden relative">
                 <OptimizedImage 
@@ -96,112 +29,296 @@ export default function QualcosaSuDiMe() {
              </div>
          </div>
       </div>
-    </motion.div>
+    </div>
+  );
+
+  const StepNumber = ({ num }: { num: number }) => (
+    <div 
+      className="font-display text-[80px] md:text-[120px] font-black leading-none pt-2 select-none flex-shrink-0"
+      style={{ 
+        color: 'transparent',
+        WebkitTextStroke: '2px rgba(0, 229, 255, 0.5)',
+        textShadow: '0 0 40px rgba(0, 229, 255, 0.15)'
+      }}
+    >
+      0{num}
+    </div>
   );
 
   return (
-    <section 
-      ref={sectionRef} 
-      id="qualcosa-su-di-me" 
-      className="relative pt-32 pb-24 md:pt-[30vh] md:pb-32 px-8 md:px-[clamp(2rem,8vw,10rem)] bg-transparent z-40 -mt-[10vh] lg:-mt-[15vh] md:snap-start"
-    >
-      <motion.div style={{ opacity: sectionOpacity }} className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-start relative">
-        
-        {/* IMAGES LEFT - STICKY (DESKTOP) */}
-        <div className="hidden lg:block lg:w-[45%] lg:sticky lg:top-[calc(50vh-250px)] h-[400px] md:h-[500px] z-20 flex-shrink-0">
-          <ImagesBlock />
-        </div>
-
-        {/* TEXT CONTENT RIGHT */}
-        <div className="flex-1 w-full lg:w-[55%] z-20 flex flex-col gap-12 md:gap-16">
+    <>
+      {/* =========================================
+          DESKTOP VIEW (Overlapping Right Side)
+          ========================================= */}
+      <section 
+        id="qualcosa-su-di-me-desktop" 
+        className="hidden lg:block relative w-full z-40 bg-[#050B14] -mt-[100vh] border-t border-white/5 shadow-[0_-30px_60px_rgba(5,11,20,1)]"
+      >
+        <div className="max-w-7xl mx-auto flex relative px-8">
           
-          <div className="mb-0 md:mb-6 overflow-hidden">
-            <motion.div
-              style={{ x: titleX, opacity: titleOpacity }}
+          {/* IMAGES LEFT - STICKY */}
+          <div className="w-[45%] h-screen sticky top-0 z-20 flex flex-col justify-center pr-8">
+            <motion.div 
+               initial={{ opacity: 0, x: -50 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               viewport={{ once: true }}
+               transition={{ duration: 1 }}
+               className="w-full h-[500px]"
             >
-              <div className="flex items-center gap-3 md:gap-6 mb-4">
-                <span className="font-tech text-xs sm:text-sm font-semibold tracking-[0.05em] md:tracking-[0.2em] uppercase text-white/50 whitespace-nowrap">
-                  IL TUO PROBLEMA NON È TROVARE CLIENTI.
-                </span>
-                <div
-                  className="flex-1 min-w-[2rem] max-w-[4rem] md:max-w-[6rem] h-px bg-[#00E5FF]/50 hidden min-[375px]:block"
-                />
-              </div>
-
-              <h2 className="font-display text-[clamp(40px,5vw,60px)] font-bold uppercase tracking-tight leading-[1.1] text-white">
-                È SAPERE COSA FARNE<br />
-                <span className="text-[#00E5FF]">
-                  QUANDO ARRIVANO.
-                </span>
-              </h2>
+              <ImagesBlock />
             </motion.div>
           </div>
 
-          {/* IMAGES MIDDLE (MOBILE ONLY) */}
-          <div className="block lg:hidden w-full h-[400px] z-20 flex-shrink-0">
-            <ImagesBlock />
-          </div>
-
-          <div className="space-y-16 md:space-y-24">
+          {/* TEXT CONTENT RIGHT - OVERLAPPING LAYERS */}
+          <div className="w-[55%] relative z-30">
             
-            <ScrollParagraph num={1}>
-              <h3 className="text-white font-bold text-[clamp(20px,2vw,28px)] mb-6 uppercase leading-tight tracking-wide">
-                TUTTI TI DICONO CHE TI SERVE "COMUNICARE".<br />
-                <span className="text-[#00E5FF]">MA NON TI DICONO IL RESTO.</span>
-              </h3>
-              <p className="mb-4">
-                Ho lavorato 5 anni nel marketing, in agenzia e a fianco di grandi aziende. Ho visto cosa funziona e cosa no, <strong className="text-white font-semibold">per imprenditori grandi e piccoli.</strong>
-              </p>
-              <p className="mb-4">
-                E da quell'esperienza ero convinto di una cosa: <strong className="text-white font-semibold">se trovi la chiave di comunicazione giusta, <span className="text-[#00E5FF]">i risultati arrivano.</span></strong>
-              </p>
-              <p>
-                Così mi sono messo in proprio per dimostrarlo.
-              </p>
-            </ScrollParagraph>
+            {/* Layer 0 */}
+            <div className="sticky top-0 w-full h-screen bg-[#050B14] flex flex-col justify-center pl-10 overflow-hidden z-20">
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <div className="flex items-center gap-6 mb-4">
+                  <span className="font-tech text-sm font-semibold tracking-[0.2em] uppercase text-white/50 whitespace-nowrap">
+                    IL TUO PROBLEMA NON È TROVARE CLIENTI.
+                  </span>
+                  <div className="flex-1 max-w-[6rem] h-px bg-[#00E5FF]/50" />
+                </div>
+                <h2 className="font-display text-[60px] font-bold uppercase tracking-tight leading-[1.1] text-white">
+                  È SAPERE COSA FARNE<br />
+                  <span className="text-[#00E5FF]">QUANDO ARRIVANO.</span>
+                </h2>
+              </motion.div>
+            </div>
 
-            <ScrollParagraph num={2}>
-              <h3 className="text-white font-bold text-[clamp(20px,2vw,28px)] mb-6 uppercase leading-tight tracking-wide">
-                COL MIO PRIMO CLIENTE, L'HO PROVATO.<br />
-                <span className="text-[#00E5FF]">E FUNZIONAVA DI BRUTTO.</span>
-              </h3>
-              <p className="mb-4">
-                Quando mi ha chiamato RD Salon mi ha chiesto una cosa sola.
-              </p>
-              <p className="mb-4 text-[#00E5FF] font-semibold text-[clamp(18px,1.5vw,22px)]">
-                Clienti nuovi.
-              </p>
-              <p>
-                Così abbiamo costruito insieme una strategia social e dopo i primi successi abbiamo finanziato il sito web. <strong className="text-white font-semibold">In 6 mesi abbiamo raggiunto 409 clienti. Grazie a tutti!</strong> Un risultato al di sopra delle aspettative.
-              </p>
-            </ScrollParagraph>
+            {/* Layer 1 */}
+            <div className="sticky top-0 w-full h-screen bg-[#050B14] flex flex-col justify-center pl-10 overflow-hidden z-30 shadow-[0_-30px_60px_rgba(5,11,20,1)] border-t border-white/5">
+              <div className="flex flex-col gap-6 md:flex-row items-start">
+                <StepNumber num={1} />
+                <div className="flex-1 pt-6">
+                  <h3 className="text-white font-bold text-[28px] mb-6 uppercase leading-tight tracking-wide">
+                    TUTTI TI DICONO CHE TI SERVE "COMUNICARE".<br />
+                    <span className="text-[#00E5FF]">MA NON TI DICONO IL RESTO.</span>
+                  </h3>
+                  <div className="font-sans text-[18px] font-light leading-relaxed text-white/70 space-y-4">
+                    <p>
+                      Ho lavorato 5 anni nel marketing, in agenzia e a fianco di grandi aziende. Ho visto cosa funziona e cosa no, <strong className="text-white font-semibold">per imprenditori grandi e piccoli.</strong>
+                    </p>
+                    <p>
+                      E da quell'esperienza ero convinto di una cosa: <strong className="text-white font-semibold">se trovi la chiave di comunicazione giusta, <span className="text-[#00E5FF]">i risultati arrivano.</span></strong>
+                    </p>
+                    <p>
+                      Così mi sono messo in proprio per dimostrarlo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            <ScrollParagraph num={3}>
-              <h3 className="text-white font-bold text-[clamp(20px,2vw,28px)] mb-6 uppercase leading-tight tracking-wide text-[#00E5FF]">
-                MA NIENTE FUNZIONA PER SEMPRE.
-              </h3>
-              <p className="mb-4">
-                I clienti arrivavano, questo sì. <strong className="text-[#00E5FF] font-semibold">Ma non eravamo pronti a gestirli.</strong> Non sapevamo chi tornava e chi spariva, non c'era modo di ricontattarli e gestire il salone era diventato un casino.
-              </p>
-              <p className="mb-4">
-                Mancava tutto quello che viene dopo la comunicazione.
-              </p>
-              <p className="font-semibold text-white">
-                Ed è da lì che ho finalmente capito i problemi di un imprenditore.
-              </p>
-            </ScrollParagraph>
+            {/* Layer 2 */}
+            <div className="sticky top-0 w-full h-screen bg-[#050B14] flex flex-col justify-center pl-10 overflow-hidden z-40 shadow-[0_-30px_60px_rgba(5,11,20,1)] border-t border-white/5">
+              <div className="flex flex-col gap-6 md:flex-row items-start">
+                <StepNumber num={2} />
+                <div className="flex-1 pt-6">
+                  <h3 className="text-white font-bold text-[28px] mb-6 uppercase leading-tight tracking-wide">
+                    COL MIO PRIMO CLIENTE, L'HO PROVATO.<br />
+                    <span className="text-[#00E5FF]">E FUNZIONAVA DI BRUTTO.</span>
+                  </h3>
+                  <div className="font-sans text-[18px] font-light leading-relaxed text-white/70 space-y-4">
+                    <p>
+                      Quando mi ha chiamato RD Salon mi ha chiesto una cosa sola.
+                    </p>
+                    <p className="text-[#00E5FF] font-semibold text-[22px]">
+                      Clienti nuovi.
+                    </p>
+                    <p>
+                      Così abbiamo costruito insieme una strategia social e dopo i primi successi abbiamo finanziato il sito web. <strong className="text-white font-semibold">In 6 mesi abbiamo raggiunto 409 clienti. Grazie a tutti!</strong> Un risultato al di sopra delle aspettative.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            <ScrollParagraph num={4}>
-              <h3 className="text-white font-bold text-[clamp(24px,2.5vw,36px)] mb-4 uppercase leading-tight tracking-wide">
-                COSÌ HO SVILUPPATO IL<br className="hidden md:block" /> METODO DI LAVORO PERFETTO<br />
-                <span className="text-[#00E5FF]">PER UNA PICCOLA MEDIA IMPRESA.</span>
-              </h3>
-            </ScrollParagraph>
+            {/* Layer 3 */}
+            <div className="sticky top-0 w-full h-screen bg-[#050B14] flex flex-col justify-center pl-10 overflow-hidden z-50 shadow-[0_-30px_60px_rgba(5,11,20,1)] border-t border-white/5">
+              <div className="flex flex-col gap-6 md:flex-row items-start">
+                <StepNumber num={3} />
+                <div className="flex-1 pt-6">
+                  <h3 className="text-white font-bold text-[28px] mb-6 uppercase leading-tight tracking-wide text-[#00E5FF]">
+                    MA NIENTE FUNZIONA PER SEMPRE.
+                  </h3>
+                  <div className="font-sans text-[18px] font-light leading-relaxed text-white/70 space-y-4">
+                    <p>
+                      I clienti arrivavano, questo sì. <strong className="text-[#00E5FF] font-semibold">Ma non eravamo pronti a gestirli.</strong> Non sapevamo chi tornava e chi spariva, non c'era modo di ricontattarli e gestire il salone era diventato un casino.
+                    </p>
+                    <p>
+                      Mancava tutto quello che viene dopo la comunicazione.
+                    </p>
+                    <p className="font-semibold text-white">
+                      Ed è da lì che ho finalmente capito i problemi di un imprenditore.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Layer 4 */}
+            <div className="sticky top-0 w-full h-screen bg-[#050B14] flex flex-col justify-center pl-10 overflow-hidden z-[60] shadow-[0_-30px_60px_rgba(5,11,20,1)] border-t border-white/5">
+              <div className="flex flex-col gap-6 md:flex-row items-start">
+                <StepNumber num={4} />
+                <div className="flex-1 pt-6">
+                  <h3 className="text-white font-bold text-[36px] uppercase leading-tight tracking-wide">
+                    COSÌ HO SVILUPPATO IL<br /> METODO DI LAVORO PERFETTO<br />
+                    <span className="text-[#00E5FF]">PER UNA PICCOLA MEDIA IMPRESA.</span>
+                  </h3>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
+      </section>
 
-      </motion.div>
-    </section>
+      {/* =========================================
+          MOBILE VIEW (Layered / Overlapping)
+          ========================================= */}
+      <section 
+        id="qualcosa-su-di-me" 
+        className="block lg:hidden relative w-full z-20 -mt-[100vh]"
+      >
+        {/* Layer 0: Titolo e Foto */}
+        <div className="sticky top-0 w-full h-screen bg-[#050B14] flex flex-col justify-center overflow-hidden border-t border-white/5 shadow-[0_-30px_60px_rgba(5,11,20,1)] z-20">
+          <div className="max-w-7xl w-full mx-auto px-6 sm:px-8 mt-12 flex flex-col justify-center">
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <span className="font-tech text-[10px] font-semibold tracking-[0.1em] uppercase text-white/50 whitespace-nowrap">
+                  IL TUO PROBLEMA NON È TROVARE CLIENTI.
+                </span>
+                <div className="flex-1 min-w-[2rem] h-px bg-[#00E5FF]/50 hidden min-[375px]:block" />
+              </div>
+              <h2 className="font-display text-[clamp(28px,6vw,40px)] font-bold uppercase tracking-tight leading-[1.1] text-white">
+                È SAPERE COSA FARNE<br />
+                <span className="text-[#00E5FF]">QUANDO ARRIVANO.</span>
+              </h2>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="w-full h-[300px] sm:h-[350px] mt-8 flex-shrink-0 relative max-w-sm mx-auto"
+            >
+              <ImagesBlock />
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Layer 1 */}
+        <div className="sticky top-0 w-full h-screen bg-[#050B14] flex flex-col justify-center overflow-hidden border-t border-white/5 shadow-[0_-30px_60px_rgba(5,11,20,1)] z-30">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#00E5FF]/[0.02] to-transparent pointer-events-none" />
+          <div className="w-full mx-auto px-6 sm:px-8 flex flex-col justify-center">
+            <div className="flex flex-col gap-2">
+              <StepNumber num={1} />
+              <div className="flex-1 mt-2">
+                <h3 className="text-white font-bold text-[clamp(18px,4.5vw,24px)] mb-4 uppercase leading-tight tracking-wide">
+                  TUTTI TI DICONO CHE TI SERVE "COMUNICARE".<br />
+                  <span className="text-[#00E5FF]">MA NON TI DICONO IL RESTO.</span>
+                </h3>
+                <div className="font-sans text-[clamp(14px,3.5vw,16px)] font-light leading-relaxed text-white/70 space-y-3">
+                  <p>
+                    Ho lavorato 5 anni nel marketing, in agenzia e a fianco di grandi aziende. Ho visto cosa funziona e cosa no, <strong className="text-white font-semibold">per imprenditori grandi e piccoli.</strong>
+                  </p>
+                  <p>
+                    E da quell'esperienza ero convinto di una cosa: <strong className="text-white font-semibold">se trovi la chiave di comunicazione giusta, <span className="text-[#00E5FF]">i risultati arrivano.</span></strong>
+                  </p>
+                  <p>
+                    Così mi sono messo in proprio per dimostrarlo.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Layer 2 */}
+        <div className="sticky top-0 w-full h-screen bg-[#050B14] flex flex-col justify-center overflow-hidden border-t border-white/5 shadow-[0_-30px_60px_rgba(5,11,20,1)] z-40">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#00E5FF]/[0.02] to-transparent pointer-events-none" />
+          <div className="w-full mx-auto px-6 sm:px-8 flex flex-col justify-center">
+            <div className="flex flex-col gap-2">
+              <StepNumber num={2} />
+              <div className="flex-1 mt-2">
+                <h3 className="text-white font-bold text-[clamp(18px,4.5vw,24px)] mb-4 uppercase leading-tight tracking-wide">
+                  COL MIO PRIMO CLIENTE, L'HO PROVATO.<br />
+                  <span className="text-[#00E5FF]">E FUNZIONAVA DI BRUTTO.</span>
+                </h3>
+                <div className="font-sans text-[clamp(14px,3.5vw,16px)] font-light leading-relaxed text-white/70 space-y-3">
+                  <p>
+                    Quando mi ha chiamato RD Salon mi ha chiesto una cosa sola.
+                  </p>
+                  <p className="text-[#00E5FF] font-semibold text-[clamp(16px,4vw,18px)]">
+                    Clienti nuovi.
+                  </p>
+                  <p>
+                    Così abbiamo costruito insieme una strategia social e dopo i primi successi abbiamo finanziato il sito web. <strong className="text-white font-semibold">In 6 mesi abbiamo raggiunto 409 clienti. Grazie a tutti!</strong> Un risultato al di sopra delle aspettative.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Layer 3 */}
+        <div className="sticky top-0 w-full h-screen bg-[#050B14] flex flex-col justify-center overflow-hidden border-t border-white/5 shadow-[0_-30px_60px_rgba(5,11,20,1)] z-50">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#00E5FF]/[0.02] to-transparent pointer-events-none" />
+          <div className="w-full mx-auto px-6 sm:px-8 flex flex-col justify-center">
+            <div className="flex flex-col gap-2">
+              <StepNumber num={3} />
+              <div className="flex-1 mt-2">
+                <h3 className="text-white font-bold text-[clamp(18px,4.5vw,24px)] mb-4 uppercase leading-tight tracking-wide text-[#00E5FF]">
+                  MA NIENTE FUNZIONA PER SEMPRE.
+                </h3>
+                <div className="font-sans text-[clamp(14px,3.5vw,16px)] font-light leading-relaxed text-white/70 space-y-3">
+                  <p>
+                    I clienti arrivavano, questo sì. <strong className="text-[#00E5FF] font-semibold">Ma non eravamo pronti a gestirli.</strong> Non sapevamo chi tornava e chi spariva, non c'era modo di ricontattarli e gestire il salone era diventato un casino.
+                  </p>
+                  <p>
+                    Mancava tutto quello che viene dopo la comunicazione.
+                  </p>
+                  <p className="font-semibold text-white">
+                    Ed è da lì che ho finalmente capito i problemi di un imprenditore.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Layer 4 */}
+        <div className="sticky top-0 w-full h-screen bg-[#050B14] flex flex-col justify-center overflow-hidden border-t border-white/5 shadow-[0_-30px_60px_rgba(5,11,20,1)] z-[60]">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#00E5FF]/[0.02] to-transparent pointer-events-none" />
+          <div className="w-full mx-auto px-6 sm:px-8 flex flex-col justify-center">
+            <div className="flex flex-col gap-2">
+              <StepNumber num={4} />
+              <div className="flex-1 mt-2">
+                <h3 className="text-white font-bold text-[clamp(24px,6vw,32px)] uppercase leading-tight tracking-wide">
+                  COSÌ HO SVILUPPATO IL<br /> METODO DI LAVORO PERFETTO<br />
+                  <span className="text-[#00E5FF]">PER UNA PICCOLA MEDIA IMPRESA.</span>
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
+
+
