@@ -23,12 +23,12 @@ const FinalCTA: React.FC = () => {
           <div className="w-12 h-px bg-cyan-500/30 mb-8" />
           
           <span className="font-sans text-[#00E5FF] text-[10px] font-bold uppercase tracking-[0.4em] block mb-12">
-            PROSSIMO PASSO
+            IL PROSSIMO PASSO
           </span>
           
           <h2 className="font-display text-[clamp(40px,8vw,100px)] font-extrabold uppercase tracking-tighter leading-[0.9] mb-10 max-w-4xl">
-            SCOPRI COSA <br />
-            MANCA AL <span className="text-[#00E5FF]">TUO BRAND</span>
+            SCOPRI COSA TI RENDE <br />
+            <span className="text-[#00E5FF]">DAVVERO DIVERSO.</span>
           </h2>
           
           <motion.p 
@@ -38,42 +38,29 @@ const FinalCTA: React.FC = () => {
             transition={{ duration: 1, delay: 0.3 }}
             className="font-sans text-lg md:text-xl text-white/50 font-light max-w-2xl mx-auto mb-16 leading-relaxed"
           >
-            Un'analisi gratuita della tua presenza online. Nessun impegno, nessuna vendita forzata — solo un quadro chiaro di dove sei e dove puoi arrivare.
+            Una conversazione sulla tua attività. Capisci dove sei, dove puoi arrivare e cosa serve per arrivarci.
           </motion.p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-16 w-full sm:w-auto">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={openAnalysisForm}
+              onClick={openServiceForm}
               className="px-10 py-5 bg-[#00E5FF] text-black font-display font-bold text-sm uppercase tracking-widest rounded-full hover:shadow-[0_0_30px_rgba(0, 229, 255, 0.45)] transition-all duration-300 text-center"
             >
-              RICHIEDI L'ANALISI GRATUITA
+              PARLIAMI DEL TUO PROGETTO
             </motion.button>
             
             <motion.button
               whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.05)' }}
               whileTap={{ scale: 0.98 }}
-              onClick={openServiceForm}
+              onClick={openAnalysisForm}
               className="px-10 py-5 bg-transparent border border-white/10 text-white font-display font-bold text-sm uppercase tracking-widest rounded-full transition-all duration-300 text-center"
             >
-              PARLAMI DEL TUO PROGETTO
+              RICHIEDI UNA COLLABORAZIONE
             </motion.button>
           </div>
 
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="flex items-center justify-center gap-4 text-[10px] font-sans uppercase tracking-[0.2em] text-white/20"
-          >
-            <span>Risposta entro 24h</span>
-            <span className="w-1 h-1 rounded-full bg-white/10" />
-            <span>Nessun contratto</span>
-            <span className="w-1 h-1 rounded-full bg-white/10" />
-            <span>Zero rischi</span>
-          </motion.div>
         </motion.div>
       </div>
     </section>

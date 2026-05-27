@@ -55,10 +55,9 @@ function HomePage() {
       <footer className="bg-black/80 backdrop-blur-md py-12 text-center border-t border-white/5 relative z-10">
         <div className="flex justify-center gap-8 mb-8 text-xs font-tech uppercase tracking-widest text-gray-500">
              <a href="#" className="hover:text-white transition-colors">Instagram</a>
-             <a href="#" className="hover:text-white transition-colors">Twitter</a>
              <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
         </div>
-        <p className="text-gray-700 text-xs font-sans">© 2024 Ludovico Colasanti. Creato con React.</p>
+        <p className="text-gray-700 text-xs font-sans">© 2026 Ludovico Colasanti. Creato con React.</p>
       </footer>
     </div>
   );

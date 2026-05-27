@@ -268,7 +268,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
                     Innovazione Digitale & Design
                   </p>
                   <p className="text-[8px] font-sans text-white/10 uppercase tracking-widest mt-1">
-                    © 2024 Ludovico Colasanti
+                    © 2026 Ludovico Colasanti
                   </p>
                 </div>
               </motion.div>

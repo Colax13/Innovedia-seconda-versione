@@ -83,13 +83,13 @@ export default function QualcosaSuDiMe() {
             >
               <div className="flex items-center gap-6 mb-4">
                 <span className="font-tech text-sm font-semibold tracking-[0.2em] uppercase text-white/50 whitespace-nowrap">
-                  IL TUO PROBLEMA NON È TROVARE CLIENTI.
+                  NON DEVI FIDARTI DI ME.
                 </span>
                 <div className="flex-1 max-w-[6rem] h-px bg-[#00E5FF]/50" />
               </div>
               <h2 className="font-display text-[60px] font-bold uppercase tracking-tight leading-[1.1] text-white">
-                È SAPERE COSA FARNE<br />
-                <span className="text-[#00E5FF]">QUANDO ARRIVANO.</span>
+                FIDATI DELLA MIA<br />
+                <span className="text-[#00E5FF]">ESPERIENZA.</span>
               </h2>
             </motion.div>
 
@@ -104,15 +104,15 @@ export default function QualcosaSuDiMe() {
               <StepNumber num={1} />
               <div className="flex-1 pt-6">
                 <h3 className="text-white font-bold text-[28px] mb-6 uppercase leading-tight tracking-wide">
-                  TUTTI TI DICONO CHE TI SERVE "COMUNICARE".<br />
-                  <span className="text-[#00E5FF]">MA NON TI DICONO IL RESTO.</span>
+                  CINQUE ANNI IN AGENZIA.<br />
+                  <span className="text-[#00E5FF]">UNA SOLA CERTEZZA.</span>
                 </h3>
                 <div className="font-sans text-[18px] font-light leading-relaxed text-white/70 space-y-4">
                   <p>
-                    Ho lavorato 5 anni nel marketing, in agenzia e a fianco di grandi aziende. Ho visto cosa funziona e cosa no, <strong className="text-white font-semibold">per imprenditori grandi e piccoli.</strong>
+                    Ho lavorato 5 anni nel marketing, in agenzia e a fianco di grandi aziende.
                   </p>
                   <p>
-                    E da quell'esperienza ero convinto di una cosa: <strong className="text-white font-semibold">se trovi la chiave di comunicazione giusta, <span className="text-[#00E5FF]">i risultati arrivano.</span></strong>
+                    Da quell'esperienza ero convinto di una cosa: se trovi la chiave di comunicazione giusta, i risultati arrivano.
                   </p>
                   <p>
                     Così mi sono messo in proprio per dimostrarlo.
@@ -132,18 +132,18 @@ export default function QualcosaSuDiMe() {
               <StepNumber num={2} />
               <div className="flex-1 pt-6">
                 <h3 className="text-white font-bold text-[28px] mb-6 uppercase leading-tight tracking-wide">
-                  COL MIO PRIMO CLIENTE, L'HO PROVATO.<br />
-                  <span className="text-[#00E5FF]">E FUNZIONAVA DI BRUTTO.</span>
+                  COL MIO PRIMO CLIENTE,<br />
+                  <span className="text-[#00E5FF]">L'HO DIMOSTRATO.</span>
                 </h3>
                 <div className="font-sans text-[18px] font-light leading-relaxed text-white/70 space-y-4">
                   <p>
-                    Quando mi ha chiamato RD Salon mi ha chiesto una cosa sola.
-                  </p>
-                  <p className="text-[#00E5FF] font-semibold text-[22px]">
-                    Clienti nuovi.
+                    Quando mi ha chiamato RD Salon mi ha chiesto una cosa sola: clienti nuovi.
                   </p>
                   <p>
-                    Così abbiamo costruito insieme una strategia social e dopo i primi successi abbiamo finanziato il sito web. <strong className="text-white font-semibold">In 6 mesi abbiamo raggiunto 409 clienti. Grazie a tutti!</strong> Un risultato al di sopra delle aspettative.
+                    Abbiamo costruito insieme una strategia social e, dopo i primi risultati, abbiamo finanziato il sito web.
+                  </p>
+                  <p>
+                    In 6 mesi abbiamo raggiunto 415 clienti.
                   </p>
                 </div>
               </div>
@@ -164,13 +164,13 @@ export default function QualcosaSuDiMe() {
                 </h3>
                 <div className="font-sans text-[18px] font-light leading-relaxed text-white/70 space-y-4">
                   <p>
-                    I clienti arrivavano, questo sì. <strong className="text-[#00E5FF] font-semibold">Ma non eravamo pronti a gestirli.</strong> Non sapevamo chi tornava e chi spariva, non c'era modo di ricontattarli e gestire il salone era diventato un casino.
+                    I clienti arrivavano. Ma non eravamo pronti a gestirli.
                   </p>
                   <p>
-                    Mancava tutto quello che viene dopo la comunicazione.
+                    Non sapevamo chi tornava e chi spariva, non c'era modo di ricontattarli e il salone era diventato un caos.
                   </p>
-                  <p className="font-semibold text-white">
-                    Ed è da lì che ho finalmente capito i problemi di un imprenditore.
+                  <p>
+                    Ed è da lì che ho capito cosa manca davvero a un imprenditore.
                   </p>
                 </div>
               </div>
@@ -187,9 +187,20 @@ export default function QualcosaSuDiMe() {
               <StepNumber num={4} />
               <div className="flex-1 pt-6">
                 <h3 className="text-white font-bold text-[36px] uppercase leading-tight tracking-wide">
-                  COSÌ HO SVILUPPATO IL<br /> METODO DI LAVORO PERFETTO<br />
-                  <span className="text-[#00E5FF]">PER UNA PICCOLA MEDIA IMPRESA.</span>
+                  COSÌ HO COSTRUITO<br />
+                  <span className="text-[#00E5FF]">IL SISTEMA.</span>
                 </h3>
+                <div className="font-sans text-[18px] font-light leading-relaxed text-white/70 space-y-4 mt-6">
+                  <p>
+                    Ho rimesso tutto in discussione.
+                  </p>
+                  <p>
+                    Ho costruito un approccio che non si ferma alla comunicazione: parte dalla strategia, costruisce il sistema digitale e automatizza quello che viene dopo.
+                  </p>
+                  <p>
+                    Oggi lo applico a ogni progetto che seguo.
+                  </p>
+                </div>
               </div>
             </motion.div>
 
@@ -215,13 +226,13 @@ export default function QualcosaSuDiMe() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <span className="font-tech text-[10px] font-semibold tracking-[0.1em] uppercase text-white/50 whitespace-nowrap">
-                  IL TUO PROBLEMA NON È TROVARE CLIENTI.
+                  NON DEVI FIDARTI DI ME.
                 </span>
                 <div className="flex-1 min-w-[2rem] h-px bg-[#00E5FF]/50 hidden min-[375px]:block" />
               </div>
               <h2 className="font-display text-[clamp(28px,6vw,40px)] font-bold uppercase tracking-tight leading-[1.1] text-white">
-                È SAPERE COSA FARNE<br />
-                <span className="text-[#00E5FF]">QUANDO ARRIVANO.</span>
+                FIDATI DELLA MIA<br />
+                <span className="text-[#00E5FF]">ESPERIENZA.</span>
               </h2>
             </motion.div>
 
@@ -245,15 +256,15 @@ export default function QualcosaSuDiMe() {
               <StepNumber num={1} />
               <div className="flex-1 mt-2">
                 <h3 className="text-white font-bold text-[clamp(18px,4.5vw,24px)] mb-4 uppercase leading-tight tracking-wide">
-                  TUTTI TI DICONO CHE TI SERVE "COMUNICARE".<br />
-                  <span className="text-[#00E5FF]">MA NON TI DICONO IL RESTO.</span>
+                  CINQUE ANNI IN AGENZIA.<br />
+                  <span className="text-[#00E5FF]">UNA SOLA CERTEZZA.</span>
                 </h3>
                 <div className="font-sans text-[clamp(14px,3.5vw,16px)] font-light leading-relaxed text-white/70 space-y-3">
                   <p>
-                    Ho lavorato 5 anni nel marketing, in agenzia e a fianco di grandi aziende. Ho visto cosa funziona e cosa no, <strong className="text-white font-semibold">per imprenditori grandi e piccoli.</strong>
+                    Ho lavorato 5 anni nel marketing, in agenzia e a fianco di grandi aziende.
                   </p>
                   <p>
-                    E da quell'esperienza ero convinto di una cosa: <strong className="text-white font-semibold">se trovi la chiave di comunicazione giusta, <span className="text-[#00E5FF]">i risultati arrivano.</span></strong>
+                    Da quell'esperienza ero convinto di una cosa: se trovi la chiave di comunicazione giusta, i risultati arrivano.
                   </p>
                   <p>
                     Così mi sono messo in proprio per dimostrarlo.
@@ -272,18 +283,18 @@ export default function QualcosaSuDiMe() {
               <StepNumber num={2} />
               <div className="flex-1 mt-2">
                 <h3 className="text-white font-bold text-[clamp(18px,4.5vw,24px)] mb-4 uppercase leading-tight tracking-wide">
-                  COL MIO PRIMO CLIENTE, L'HO PROVATO.<br />
-                  <span className="text-[#00E5FF]">E FUNZIONAVA DI BRUTTO.</span>
+                  COL MIO PRIMO CLIENTE,<br />
+                  <span className="text-[#00E5FF]">L'HO DIMOSTRATO.</span>
                 </h3>
                 <div className="font-sans text-[clamp(14px,3.5vw,16px)] font-light leading-relaxed text-white/70 space-y-3">
                   <p>
-                    Quando mi ha chiamato RD Salon mi ha chiesto una cosa sola.
-                  </p>
-                  <p className="text-[#00E5FF] font-semibold text-[clamp(16px,4vw,18px)]">
-                    Clienti nuovi.
+                    Quando mi ha chiamato RD Salon mi ha chiesto una cosa sola: clienti nuovi.
                   </p>
                   <p>
-                    Così abbiamo costruito insieme una strategia social e dopo i primi successi abbiamo finanziato il sito web. <strong className="text-white font-semibold">In 6 mesi abbiamo raggiunto 409 clienti. Grazie a tutti!</strong> Un risultato al di sopra delle aspettative.
+                    Abbiamo costruito insieme una strategia social e, dopo i primi risultati, abbiamo finanziato il sito web.
+                  </p>
+                  <p>
+                    In 6 mesi abbiamo raggiunto 415 clienti.
                   </p>
                 </div>
               </div>
@@ -303,13 +314,13 @@ export default function QualcosaSuDiMe() {
                 </h3>
                 <div className="font-sans text-[clamp(14px,3.5vw,16px)] font-light leading-relaxed text-white/70 space-y-3">
                   <p>
-                    I clienti arrivavano, questo sì. <strong className="text-[#00E5FF] font-semibold">Ma non eravamo pronti a gestirli.</strong> Non sapevamo chi tornava e chi spariva, non c'era modo di ricontattarli e gestire il salone era diventato un casino.
+                    I clienti arrivavano. Ma non eravamo pronti a gestirli.
                   </p>
                   <p>
-                    Mancava tutto quello che viene dopo la comunicazione.
+                    Non sapevamo chi tornava e chi spariva, non c'era modo di ricontattarli e il salone era diventato un caos.
                   </p>
-                  <p className="font-semibold text-white">
-                    Ed è da lì che ho finalmente capito i problemi di un imprenditore.
+                  <p>
+                    Ed è da lì che ho capito cosa manca davvero a un imprenditore.
                   </p>
                 </div>
               </div>
@@ -325,9 +336,20 @@ export default function QualcosaSuDiMe() {
               <StepNumber num={4} />
               <div className="flex-1 mt-2">
                 <h3 className="text-white font-bold text-[clamp(24px,6vw,32px)] uppercase leading-tight tracking-wide">
-                  COSÌ HO SVILUPPATO IL<br /> METODO DI LAVORO PERFETTO<br />
-                  <span className="text-[#00E5FF]">PER UNA PICCOLA MEDIA IMPRESA.</span>
+                  COSÌ HO COSTRUITO<br />
+                  <span className="text-[#00E5FF]">IL SISTEMA.</span>
                 </h3>
+                <div className="font-sans text-[clamp(14px,3.5vw,16px)] font-light leading-relaxed text-white/70 space-y-3 mt-4">
+                  <p>
+                    Ho rimesso tutto in discussione.
+                  </p>
+                  <p>
+                    Ho costruito un approccio che non si ferma alla comunicazione: parte dalla strategia, costruisce il sistema digitale e automatizza quello che viene dopo.
+                  </p>
+                  <p>
+                    Oggi lo applico a ogni progetto che seguo.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
