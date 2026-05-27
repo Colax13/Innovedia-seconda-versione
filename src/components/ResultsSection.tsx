@@ -215,12 +215,12 @@ const ResultsSection: React.FC = () => {
 
   const videos = [
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1773845155/0318_tflaqt.mov",
-      title: "Consulenza Colore"
+      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1779913352/Compresso_fzavti.mov",
+      title: "Tour Salone",
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1773845362/lv_0_20260318153958_r4ecdo.mp4",
-      title: "La Storia del Brand"
+      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1773845155/0318_tflaqt.mov",
+      title: "Consulenza Colore"
     },
     {
       src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1776813461/0422_u3cqlq.mov",
@@ -231,8 +231,8 @@ const ResultsSection: React.FC = () => {
       title: "Hair Spa",
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1779913352/Compresso_fzavti.mov",
-      title: "Tour Salone",
+      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1773845362/lv_0_20260318153958_r4ecdo.mp4",
+      title: "La Storia del Brand"
     }
   ];
 
@@ -293,7 +293,7 @@ const ResultsSection: React.FC = () => {
               I risultati del mio sistema
             </span>
             <h2 className="font-display text-[80px] font-bold uppercase tracking-tight leading-[0.95] text-white mb-8">
-              Il caso studio RD Salon
+              Il caso studio <br /> RD Salon
             </h2>
             <p className="font-sans text-xl text-white/50 max-w-2xl mx-auto leading-relaxed">
               Partita da zero sviluppando prima i social e poi il sito e-commerce, ha raggiunto questi numeri in 6 mesi
@@ -430,7 +430,7 @@ const ResultsSection: React.FC = () => {
             I risultati del mio sistema
           </span>
           <h2 className="font-display text-[clamp(40px,6vw,80px)] font-bold uppercase tracking-tight leading-[0.95] text-white mb-6 md:mb-8">
-            Il caso studio RD Salon
+            Il caso studio <br /> RD Salon
           </h2>
           <p className="font-sans text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed">
             Partita da zero sviluppando prima i social e poi il sito e-commerce, ha raggiunto questi numeri in 6 mesi
@@ -518,27 +518,23 @@ const ResultsSection: React.FC = () => {
                  ))}
                </div>
 
-               {/* MOBILE CAROUSEL */}
-               <DragCarousel className="lg:hidden hide-scrollbar" innerClassName="px-[calc(50%-90px)] md:px-[calc(50%-180px)]">
+               {/* MOBILE GRID (2x2 + 1 centered) */}
+               <div className="lg:hidden flex flex-wrap justify-center gap-3 mt-4">
                  {videos.map((vid, i) => (
-                      <div key={`mob-vid-${i}`} className="snap-center shrink-0 w-[180px] h-[320px] md:w-[360px] md:h-[640px] rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative group">
+                      <div key={`mob-vid-${i}`} className="w-[calc(50%-6px)] aspect-[9/16] rounded-xl overflow-hidden border border-white/10 bg-white/5 relative group">
                         <video src={vid.src} preload="none" loop muted playsInline className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none ${vid.grayscale ? 'grayscale opacity-50' : 'opacity-80'}`}></video>
                         <div className={`absolute inset-0 bg-gradient-to-t pointer-events-none ${vid.grayscale ? 'from-black/80 via-black/40 to-transparent' : 'from-black/80 via-transparent to-transparent'}`}></div>
-                        <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none">
-                          <div className="flex items-center gap-2">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center border backdrop-blur-md ${vid.grayscale ? 'bg-[#00E5FF]/10 border-[#00E5FF]/30' : 'bg-[#00E5FF]/20 border-[#00E5FF]/50'}`}>
-                               <div className={`w-0 h-0 border-t-4 border-l-6 border-b-4 border-transparent border-l-white ml-1 ${vid.grayscale ? 'opacity-60' : ''}`}></div>
+                        <div className="absolute bottom-4 left-3 right-3 flex items-center justify-between pointer-events-none">
+                          <div className="flex items-center gap-1.5">
+                            <div className={`w-6 h-6 shrink-0 rounded-full flex items-center justify-center border backdrop-blur-md ${vid.grayscale ? 'bg-[#00E5FF]/10 border-[#00E5FF]/30' : 'bg-[#00E5FF]/20 border-[#00E5FF]/50'}`}>
+                               <div className={`w-0 h-0 border-t-[3px] border-l-[5px] border-b-[3px] border-transparent border-l-white ml-1 ${vid.grayscale ? 'opacity-60' : ''}`}></div>
                             </div>
-                            <span className="font-tech text-[10px] text-white/80 uppercase tracking-widest">{vid.title}</span>
+                            <span className="font-tech text-[8px] text-white/80 uppercase tracking-widest truncate max-w-[100px] leading-tight flex-1">{vid.title}</span>
                           </div>
                         </div>
                       </div>
                  ))}
-               </DragCarousel>
-               
-               {/* Fade edges */}
-               <div className="absolute top-0 bottom-0 left-0 w-[60px] md:w-[150px] bg-gradient-to-r from-[#050B14] via-[#050B14]/80 to-transparent pointer-events-none z-10 lg:hidden"></div>
-               <div className="absolute top-0 bottom-0 right-0 w-[60px] md:w-[150px] bg-gradient-to-l from-[#050B14] via-[#050B14]/80 to-transparent pointer-events-none z-10 lg:hidden"></div>
+               </div>
             </motion.div>
           </div>
 

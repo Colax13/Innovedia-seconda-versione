@@ -19,11 +19,11 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
   ];
 
   const mob_t_props = [
-    { start: 0.15, duration: 0.12 },
-    { start: 0.32, duration: 0.12 }, 
-    { start: 0.42, duration: 0.12 }, 
-    { start: 0.52, duration: 0.12 }, 
-    { start: 0.62, duration: 0.10 }  
+    { start: 0.01, duration: 0.12 },
+    { start: 0.18, duration: 0.12 }, 
+    { start: 0.28, duration: 0.12 }, 
+    { start: 0.38, duration: 0.12 }, 
+    { start: 0.48, duration: 0.10 }  
   ];
 
   const t_props = isMobile ? mob_t_props : desk_t_props;
@@ -142,7 +142,7 @@ export default function MarketingSystemSection() {
   // This causes the section to unpin immediately as soon as the last card finishes its animation.
   // For desktop, we hold the animation after 0.82 to allow ResultsSection to overlap the last 100vh
   const mappedYDesk = useTransform(rawScrollYProgress, [0, 0.82, 1], [0, 0.46, 0.46]);
-  const mappedYMob = useTransform(rawScrollYProgress, [0, 0.78, 1], [0, 0.75, 0.75]);
+  const mappedYMob = useTransform(rawScrollYProgress, [0, 0.81, 1], [0, 0.61, 0.61]);
   const scrollYProgress = isMobile ? mappedYMob : mappedYDesk;
 
   const { scrollYProgress: rawIntroProgress } = useScroll({
@@ -157,9 +157,9 @@ export default function MarketingSystemSection() {
   const p2 = "La direzione è giusta.";
   const p3 = "Ti manca solo un pezzo.";
 
-  const t_intro1 = isMobile ? [0.0, 0.05] : [0.02, 0.07];
-  const t_intro2 = isMobile ? [0.03, 0.08] : [0.09, 0.14];
-  const t_intro3 = isMobile ? [0.06, 0.11] : [0.16, 0.21];
+  const t_intro1 = isMobile ? [0.0, 0.01] : [0.02, 0.07];
+  const t_intro2 = isMobile ? [0.0, 0.05] : [0.09, 0.14];
+  const t_intro3 = isMobile ? [0.03, 0.08] : [0.16, 0.21];
 
   const op1 = useTransform(introProgress, t_intro1, [0, 1]);
   const introY1 = useTransform(introProgress, t_intro1, [30, 0]);
@@ -183,18 +183,18 @@ export default function MarketingSystemSection() {
   const yDeskOffset = 800; // amount to move world up
   const yMobOffset = 1150; 
   const worldYDesktop = useTransform(scrollYProgress, [0, 0.10, 0.22, 1], [0, 0, -yDeskOffset, -yDeskOffset]);
-  const worldYMobile = useTransform(scrollYProgress, [0, 0.18, 0.32, 1], [0, 0, -yMobOffset, -yMobOffset]);
+  const worldYMobile = useTransform(scrollYProgress, [0, 0.08, 0.22, 1], [0, 0, -yMobOffset, -yMobOffset]);
   const worldY = isMobile ? worldYMobile : worldYDesktop;
 
-  const illuminateStart = isMobile ? 0.14 : 0.08;
-  const illuminateEnd = isMobile ? 0.16 : 0.10;
+  const illuminateStart = isMobile ? 0.02 : 0.08;
+  const illuminateEnd = isMobile ? 0.04 : 0.10;
 
   const lineStartDesk = 0.09;
   const lineEndDesk = 0.23;
   const lineHeightDesktop = useTransform(scrollYProgress, [lineStartDesk, lineEndDesk], [0, 605]); 
 
-  const lineStartMob = 0.16;
-  const lineEndMob = 0.28;
+  const lineStartMob = 0.02;
+  const lineEndMob = 0.14;
   const lineHeightMobile = useTransform(scrollYProgress, [lineStartMob, lineEndMob], [0, 975]); 
   
   const lineHeight = isMobile ? lineHeightMobile : lineHeightDesktop;
@@ -208,28 +208,28 @@ export default function MarketingSystemSection() {
   const lineTextOpacity = isMobile ? lineTextOpacityMobile : lineTextOpacityDesktop;
 
   // 1. Social (Far Left start -> Top Left pentagon)
-  const x0 = useTransform(scrollYProgress, [startMerge, endMerge], [-SPACING * 2, -R2 * 0.95]);
-  const y0 = useTransform(scrollYProgress, [startMerge, endMerge], [0, -R2 * 0.31]);
+  const x0 = useTransform(scrollYProgress, [startMerge, endMerge], isMobile ? [-R2 * 0.95, -R2 * 0.95] : [-SPACING * 2, -R2 * 0.95]);
+  const y0 = useTransform(scrollYProgress, [startMerge, endMerge], isMobile ? [-R2 * 0.31, -R2 * 0.31] : [0, -R2 * 0.31]);
 
   // 2. Sito Web (Mid Left start -> Bottom Left pentagon)
-  const x1 = useTransform(scrollYProgress, [startMerge, endMerge], [-SPACING, -R2 * 0.59]);
-  const y1 = useTransform(scrollYProgress, [startMerge, endMerge], [0, R2 * 0.81]);
+  const x1 = useTransform(scrollYProgress, [startMerge, endMerge], isMobile ? [-R2 * 0.59, -R2 * 0.59] : [-SPACING, -R2 * 0.59]);
+  const y1 = useTransform(scrollYProgress, [startMerge, endMerge], isMobile ? [R2 * 0.81, R2 * 0.81] : [0, R2 * 0.81]);
 
   // 3. E-commerce (Center start -> Top pentagon)
   const x2 = useTransform(scrollYProgress, [startMerge, endMerge], [0, 0]);
-  const y2 = useTransform(scrollYProgress, [startMerge, endMerge], [0, -R2 * 1.2]);
+  const y2 = useTransform(scrollYProgress, [startMerge, endMerge], isMobile ? [-R2 * 1.2, -R2 * 1.2] : [0, -R2 * 1.2]);
 
   // 4. CRM (Mid Right start -> Bottom Right pentagon)
-  const x3 = useTransform(scrollYProgress, [startMerge, endMerge], [SPACING, R2 * 0.59]);
-  const y3 = useTransform(scrollYProgress, [startMerge, endMerge], [0, R2 * 0.81]);
+  const x3 = useTransform(scrollYProgress, [startMerge, endMerge], isMobile ? [R2 * 0.59, R2 * 0.59] : [SPACING, R2 * 0.59]);
+  const y3 = useTransform(scrollYProgress, [startMerge, endMerge], isMobile ? [R2 * 0.81, R2 * 0.81] : [0, R2 * 0.81]);
 
   // 5. Automation (Far Right start -> Top Right pentagon)
-  const x4 = useTransform(scrollYProgress, [startMerge, endMerge], [SPACING * 2, R2 * 0.95]);
-  const y4 = useTransform(scrollYProgress, [startMerge, endMerge], [0, -R2 * 0.31]);
+  const x4 = useTransform(scrollYProgress, [startMerge, endMerge], isMobile ? [R2 * 0.95, R2 * 0.95] : [SPACING * 2, R2 * 0.95]);
+  const y4 = useTransform(scrollYProgress, [startMerge, endMerge], isMobile ? [-R2 * 0.31, -R2 * 0.31] : [0, -R2 * 0.31]);
 
-  const circleDraw = useTransform(scrollYProgress, [drawStart, drawEnd], [0, 1]);
-  const iconOpacity = useTransform(scrollYProgress, [drawStart, drawEnd], [0, 1]);
-  const iconRotate = useTransform(scrollYProgress, [drawStart, drawEnd], [180, 0]);
+  const circleDraw = useTransform(scrollYProgress, [drawStart, drawEnd], isMobile ? [1, 1] : [0, 1]);
+  const iconOpacity = useTransform(scrollYProgress, [drawStart, drawEnd], isMobile ? [1, 1] : [0, 1]);
+  const iconRotate = useTransform(scrollYProgress, [drawStart, drawEnd], isMobile ? [0, 0] : [180, 0]);
 
   const illuminateOpacity = useTransform(scrollYProgress, [illuminateStart, illuminateEnd], [0, 1]);
 
@@ -244,13 +244,13 @@ export default function MarketingSystemSection() {
   return (
     <section id="servizi" className="relative w-full bg-[#050B14] text-white">
       {/* 1. SCROLLING INTRO OR STATIC ON MOBILE */}
-      <div ref={introRef} className={`relative w-full z-0 ${isMobile ? "h-[300vh]" : "h-[380vh]"}`}>
+      <div ref={introRef} className={`relative w-full z-0 ${isMobile ? "h-[250vh]" : "h-[380vh]"}`}>
         <div className={`sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-4`}>
           <motion.div 
             className={`flex flex-col items-center justify-center space-y-4 md:space-y-6 w-full`}
           >
             <div className={`flex ${isMobile ? "flex-col" : "flex-row flex-wrap"} items-center justify-center space-y-4 md:space-y-0 md:space-x-3 w-full max-w-5xl mx-auto`}>
-              <motion.h2 style={{ opacity: op1, y: introY1 }} className={`font-display font-medium text-white/90 text-center ${isMobile ? "text-3xl sm:text-4xl px-2" : "text-[3vw] sm:text-[2.2vw] md:text-[2vw] lg:text-[1.8vw] xl:text-3xl whitespace-nowrap"}`}>
+              <motion.h2 style={isMobile ? { opacity: 1, y: 0 } : { opacity: op1, y: introY1 }} className={`font-display font-medium text-white/90 text-center ${isMobile ? "text-3xl sm:text-4xl px-2" : "text-[3vw] sm:text-[2.2vw] md:text-[2vw] lg:text-[1.8vw] xl:text-3xl whitespace-nowrap"}`}>
                 {p1}
               </motion.h2>
               <motion.h2 style={{ opacity: op2, y: introY2 }} className={`font-display font-medium text-white/90 text-center ${isMobile ? "text-2xl sm:text-3xl px-2 max-w-sm" : "text-[3vw] sm:text-[2.2vw] md:text-[2vw] lg:text-[1.8vw] xl:text-3xl whitespace-nowrap"}`}>
@@ -281,7 +281,7 @@ export default function MarketingSystemSection() {
       </div>
 
       {/* 3. STICKY CANVAS */}
-      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[540vh]" : "h-[550vh]"}`}>
+      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[420vh]" : "h-[550vh]"}`}>
         <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden">
           
           {/* Canvas */}
