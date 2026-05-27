@@ -121,6 +121,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
   const phrase3Ref = useRef<HTMLDivElement>(null);
   const punch1Ref = useRef<HTMLDivElement>(null);
   const punch2Ref = useRef<HTMLDivElement>(null);
+  const desktopBgRef = useRef<HTMLDivElement>(null);
   const sequenceTriggered = useRef(false);
   const animTime = useRef(0);
   const splash1Triggered = useRef(false);
@@ -761,6 +762,22 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                 }
             }
         }
+        
+        if (!isMobile && desktopBgRef.current) {
+            // First phrase starts entering at S = S_HITS[0] - 0.06 = 0.14
+            // and finishes at S_HITS[0] = 0.20
+            if (S < 0.14) {
+                desktopBgRef.current.style.opacity = '1';
+            } else if (S < 0.20) {
+                const fadeP = (S - 0.14) / 0.06;
+                desktopBgRef.current.style.opacity = lerp(1, 0.15, fadeP).toString();
+            } else if (S < 0.85) {
+                desktopBgRef.current.style.opacity = '0.15';
+            } else {
+                const exitFadeP = clamp((S - 0.85) / 0.15, 0, 1);
+                desktopBgRef.current.style.opacity = lerp(0.15, 0, exitFadeP).toString();
+            }
+        }
 
         const safeStyle = (ref: React.RefObject<HTMLElement | null>, props: any) => {
             if (ref.current) Object.assign(ref.current.style, props);
@@ -980,8 +997,9 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
             className="fixed inset-0 z-0 pointer-events-none overflow-hidden"
           >
             <motion.div 
-              className="w-full h-full relative" 
-              style={{ opacity: isMobile ? heroBgOpacityMobile : heroContentOpacityDesktop }}
+              ref={desktopBgRef}
+              className="w-full h-full relative"
+              style={isMobile ? { opacity: heroBgOpacityMobile } : undefined}
             >
               <picture className="w-full h-full block">
                 <source

@@ -10,11 +10,11 @@ const SystemCard = ({ index, scrollYProgress, isMobile }: any) => {
 
   // Timings manually tuned for slower entry on specific cards - reduced by 25% for faster appearance
   const desk_t_props = [
-    { start: 0.12, duration: 0.15 }, 
-    { start: 0.22, duration: 0.15 }, 
-    { start: 0.32, duration: 0.15 }, 
-    { start: 0.42, duration: 0.15 }, 
-    { start: 0.53, duration: 0.11 }  
+    { start: 0.12, duration: 0.10 }, 
+    { start: 0.18, duration: 0.10 }, 
+    { start: 0.24, duration: 0.10 }, 
+    { start: 0.30, duration: 0.10 }, 
+    { start: 0.36, duration: 0.09 }  
   ];
 
   const mob_t_props = [
@@ -136,9 +136,9 @@ export default function MarketingSystemSection() {
     offset: ["start start", "end end"]
   });
 
-  // Map 100% of the new shorter section to be equal to 65% (desktop) or 100% (mobile) of the old animation values.
+  // Map 100% of the new shorter section to be equal to 46% (desktop) or 100% (mobile) of the old animation values.
   // This causes the section to unpin immediately as soon as the last card finishes its animation.
-  const mappedYDesk = useTransform(rawScrollYProgress, [0, 1], [0, 0.65]);
+  const mappedYDesk = useTransform(rawScrollYProgress, [0, 1], [0, 0.46]);
   const mappedYMob = useTransform(rawScrollYProgress, [0, 1], [0, 1]);
   const scrollYProgress = isMobile ? mappedYMob : mappedYDesk;
 
@@ -278,7 +278,7 @@ export default function MarketingSystemSection() {
       </div>
 
       {/* 3. STICKY CANVAS */}
-      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[650vh]" : "h-[700vh]"}`}>
+      <div ref={containerRef} className={`relative w-full ${isMobile ? "h-[650vh]" : "h-[450vh]"}`}>
         <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden">
           
           {/* Canvas */}
