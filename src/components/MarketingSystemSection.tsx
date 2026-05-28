@@ -183,7 +183,7 @@ export default function MarketingSystemSection() {
   const yDeskOffset = 800; // amount to move world up
   const yMobOffset = 1150; 
   const worldYDesktop = useTransform(scrollYProgress, [0, 0.10, 0.22, 1], [0, 0, -yDeskOffset, -yDeskOffset]);
-  const worldYMobile = useTransform(scrollYProgress, [0, 0.08, 0.22, 1], [0, 0, -yMobOffset, -yMobOffset]);
+  const worldYMobile = useTransform(scrollYProgress, [0, 0.02, 0.14, 0.22, 1], [0, 0, -975, -yMobOffset, -yMobOffset]);
   const worldY = isMobile ? worldYMobile : worldYDesktop;
 
   const illuminateStart = isMobile ? 0.02 : 0.08;

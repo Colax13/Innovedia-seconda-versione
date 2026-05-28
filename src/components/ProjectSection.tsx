@@ -169,46 +169,27 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
             overflow: "hidden",
             cursor: "pointer"
           }} className="group" onClick={togglePlay}>
-            {isActive ? (
-              <motion.video
-                ref={videoRef}
-                src={optVideoSrc || project.img || project.coverImage}
-                poster={project.img || project.coverImage}
-                preload="auto"
-                muted={isMuted}
-                loop
-                playsInline
-                animate={{
-                  scale: hovered ? 1.05 : 1,
-                }}
-                transition={{
-                  duration: 0.8,
-                  ease: [0.23, 1, 0.32, 1]
-                }}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
-            ) : (
-              <MotionOptimizedImage
-                src={project.img || project.coverImage}
-                alt={project.title}
-                animate={{
-                  scale: hovered ? 1.05 : 1,
-                }}
-                transition={{
-                  duration: 0.8,
-                  ease: [0.23, 1, 0.32, 1]
-                }}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
-            )}
+            <motion.video
+              ref={videoRef}
+              src={optVideoSrc ? `${optVideoSrc}#t=0.001` : (project.img || project.coverImage)}
+              poster={project.img || project.coverImage}
+              preload="metadata"
+              muted={isMuted}
+              loop
+              playsInline
+              animate={{
+                scale: hovered ? 1.05 : 1,
+              }}
+              transition={{
+                duration: 0.8,
+                ease: [0.23, 1, 0.32, 1]
+              }}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
             {/* Play mask for playing/pausing overlay */}
             {(!isPlaying || !isActive) && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors duration-300">

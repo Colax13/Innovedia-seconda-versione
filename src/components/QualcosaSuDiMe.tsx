@@ -57,8 +57,8 @@ export default function QualcosaSuDiMe() {
         <div className="max-w-7xl mx-auto flex relative px-8">
           
           {/* IMAGES LEFT - STICKY */}
-          <div className="w-[45%] relative">
-            <div className="sticky top-0 h-screen flex flex-col justify-center pr-8">
+          <div className="w-1/2 relative">
+            <div className="sticky top-0 h-screen flex flex-col justify-center pr-8 lg:pr-16">
               <motion.div 
                  initial={{ opacity: 0, x: -50 }}
                  whileInView={{ opacity: 1, x: 0 }}
@@ -72,7 +72,7 @@ export default function QualcosaSuDiMe() {
           </div>
 
           {/* TEXT CONTENT RIGHT - NORMAL SCROLLING FLOW */}
-          <div className="w-[55%] relative z-30 pt-[30vh] pb-[30vh] flex flex-col gap-40">
+          <div className="w-1/2 relative z-30 pt-[30vh] pb-[30vh] flex flex-col gap-40 pl-8 lg:pl-16">
             
             {/* Layer 0 / Title */}
             <motion.div

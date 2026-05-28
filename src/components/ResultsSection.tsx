@@ -341,7 +341,7 @@ const ResultsSection: React.FC = () => {
               </span>
             </h3>
             <p className="font-sans text-xl text-white/60 leading-relaxed">
-              Partendo dalla figura di Daniele, abbiamo sviluppato una strategia social che andasse a valorizzare il suo lavoro come parrucchiere, sfruttandolo como frontman dell'azienda.
+              Partendo dalla figura di Daniele, abbiamo sviluppato una strategia social che andasse a valorizzare il suo lavoro come parrucchiere, sfruttandolo come frontman dell'azienda.
             </p>
           </motion.div>
 
@@ -357,11 +357,9 @@ const ResultsSection: React.FC = () => {
                  <div 
                    key={`desk-vid-${i}`} 
                    className="w-full aspect-[9/16] rounded-xl overflow-hidden border border-white/10 bg-white/5 relative group"
-                   onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play().catch(()=>{}); }}
-                   onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.pause(); }}
                  >
-                   <video src={vid.src} preload="none" loop muted playsInline className={`w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out ${vid.grayscale ? 'grayscale opacity-50' : ''}`}></video>
-                   <div className={`absolute inset-0 bg-gradient-to-t pointer-events-none ${vid.grayscale ? 'from-black/80 via-black/40 to-transparent' : 'from-black/80 via-transparent to-transparent'}`}></div>
+                   <video src={vid.src} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"></video>
+                   <div className="absolute inset-0 bg-gradient-to-t pointer-events-none from-black/80 via-transparent to-transparent"></div>
                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center pointer-events-none">
                       <span className="font-tech text-center text-[10px] text-white/80 uppercase tracking-widest leading-tight">{vid.title}</span>
                    </div>
@@ -481,7 +479,7 @@ const ResultsSection: React.FC = () => {
                 </span>
               </h3>
               <p className="font-sans text-lg md:text-xl text-white/60 leading-relaxed max-w-lg mx-auto lg:mx-0">
-                Partendo dalla figura di Daniele, abbiamo sviluppato una strategia social che andasse a valorizzare il suo lavoro come parrucchiere, sfruttandolo como frontman dell'azienda.
+                Partendo dalla figura di Daniele, abbiamo sviluppato una strategia social che andasse a valorizzare il suo lavoro come parrucchiere, sfruttandolo come frontman dell'azienda.
               </p>
             </motion.div>
 
@@ -499,17 +497,15 @@ const ResultsSection: React.FC = () => {
                    <div 
                      key={`desk-vid-${i}`} 
                      className="w-full max-w-[260px] aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative group"
-                     onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play().catch(()=>{}); }}
-                     onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.pause(); }}
                    >
                      {/* Use a placeholder image or a static layout if video doesn't play natively on grids without scroll, 
                          but playing multiple videos is fine or muted autoplay */}
-                     <video src={vid.src} preload="none" loop muted playsInline className={`w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out ${vid.grayscale ? 'grayscale opacity-50' : ''}`}></video>
-                     <div className={`absolute inset-0 bg-gradient-to-t pointer-events-none ${vid.grayscale ? 'from-black/80 via-black/40 to-transparent' : 'from-black/80 via-transparent to-transparent'}`}></div>
+                     <video src={vid.src} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"></video>
+                     <div className="absolute inset-0 bg-gradient-to-t pointer-events-none from-black/80 via-transparent to-transparent"></div>
                      <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none">
                        <div className="flex items-center gap-2">
-                         <div className={`w-8 h-8 rounded-full flex items-center justify-center border backdrop-blur-md ${vid.grayscale ? 'bg-[#00E5FF]/10 border-[#00E5FF]/30' : 'bg-[#00E5FF]/20 border-[#00E5FF]/50'}`}>
-                           <div className={`w-0 h-0 border-t-4 border-l-6 border-b-4 border-transparent border-l-white ml-1 ${vid.grayscale ? 'opacity-60' : ''}`}></div>
+                         <div className="w-8 h-8 rounded-full flex items-center justify-center border backdrop-blur-md bg-[#00E5FF]/20 border-[#00E5FF]/50">
+                           <div className="w-0 h-0 border-t-4 border-l-6 border-b-4 border-transparent border-l-white ml-1"></div>
                          </div>
                          <span className="font-tech text-[10px] text-white/80 uppercase tracking-widest">{vid.title}</span>
                        </div>
@@ -522,12 +518,12 @@ const ResultsSection: React.FC = () => {
                <div className="lg:hidden flex flex-wrap justify-center gap-3 mt-4">
                  {videos.map((vid, i) => (
                       <div key={`mob-vid-${i}`} className="w-[calc(50%-6px)] aspect-[9/16] rounded-xl overflow-hidden border border-white/10 bg-white/5 relative group">
-                        <video src={vid.src} preload="none" loop muted playsInline className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none ${vid.grayscale ? 'grayscale opacity-50' : 'opacity-80'}`}></video>
-                        <div className={`absolute inset-0 bg-gradient-to-t pointer-events-none ${vid.grayscale ? 'from-black/80 via-black/40 to-transparent' : 'from-black/80 via-transparent to-transparent'}`}></div>
+                        <video src={vid.src} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"></video>
+                        <div className="absolute inset-0 bg-gradient-to-t pointer-events-none from-black/80 via-transparent to-transparent"></div>
                         <div className="absolute bottom-4 left-3 right-3 flex items-center justify-between pointer-events-none">
                           <div className="flex items-center gap-1.5">
-                            <div className={`w-6 h-6 shrink-0 rounded-full flex items-center justify-center border backdrop-blur-md ${vid.grayscale ? 'bg-[#00E5FF]/10 border-[#00E5FF]/30' : 'bg-[#00E5FF]/20 border-[#00E5FF]/50'}`}>
-                               <div className={`w-0 h-0 border-t-[3px] border-l-[5px] border-b-[3px] border-transparent border-l-white ml-1 ${vid.grayscale ? 'opacity-60' : ''}`}></div>
+                            <div className="w-6 h-6 shrink-0 rounded-full flex items-center justify-center border backdrop-blur-md bg-[#00E5FF]/20 border-[#00E5FF]/50">
+                               <div className="w-0 h-0 border-t-[3px] border-l-[5px] border-b-[3px] border-transparent border-l-white ml-1"></div>
                             </div>
                             <span className="font-tech text-[8px] text-white/80 uppercase tracking-widest truncate max-w-[100px] leading-tight flex-1">{vid.title}</span>
                           </div>

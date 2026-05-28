@@ -27,9 +27,9 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
           <FormModal
             isOpen={isAnalysisOpen}
             onClose={() => setIsAnalysisOpen(false)}
-            title="Richiesta Analisi Gratuita"
+            title="Richiedi una Collaborazione"
           >
-            <AnalysisForm onSuccess={() => setIsAnalysisOpen(false)} />
+            <ServiceForm onSuccess={() => setIsAnalysisOpen(false)} />
           </FormModal>
         </React.Suspense>
       )}
@@ -41,7 +41,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
             onClose={() => setIsServiceOpen(false)}
             title="Parlami del tuo Progetto"
           >
-            <ServiceForm onSuccess={() => setIsServiceOpen(false)} />
+            <AnalysisForm onSuccess={() => setIsServiceOpen(false)} />
           </FormModal>
         </React.Suspense>
       )}
