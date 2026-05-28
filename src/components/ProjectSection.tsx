@@ -752,7 +752,7 @@ export default function ProjectSection() {
       </div>
 
       {/* Portfolio Progetti Section */}
-      <div className="w-full flex flex-col relative z-20">
+      <div id="lavori" className="w-full flex flex-col relative z-20">
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="sticky top-0 w-full h-screen">
              <picture className="w-full h-full block">
@@ -775,7 +775,6 @@ export default function ProjectSection() {
 
         <div className="w-full flex flex-col relative z-10">
           <ProjectCarousel 
-            id="lavori"
             subtitle="LAVORI DI CUI VADO FIERO"
             title="Portfolio Progetti"
             data={webProjects}

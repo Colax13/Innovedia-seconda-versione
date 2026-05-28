@@ -11,6 +11,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('');
   const location = useLocation();
   const isHome = location.pathname === '/';
 
@@ -31,6 +32,61 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!isHome) return;
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: 0
+    };
+
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      let currentActiveId = '';
+      
+      const visibleEntries = entries.filter(e => e.isIntersecting);
+      
+      if (visibleEntries.length > 0) {
+        // If multiple sections intersect, get the highest one on page
+        visibleEntries.sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
+        currentActiveId = visibleEntries[0].target.id;
+      }
+      
+      if (currentActiveId) {
+        let activeName = '';
+        if (currentActiveId === 'servizi') activeName = 'Servizi';
+        if (currentActiveId === 'successi') activeName = 'Successi';
+        if (currentActiveId === 'chi-sono') activeName = 'Chi sono';
+        if (currentActiveId === 'lavori') activeName = 'Lavori';
+        if (currentActiveId === 'contatti') activeName = 'Contatti';
+        if (activeName) {
+          setActiveSection(activeName);
+        }
+      } else {
+         // Se stiamo in cima e le altre sezioni non sono attive
+         if (window.scrollY < 300) {
+           setActiveSection('');
+         }
+      }
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    const targetIDs = ['servizi', 'successi', 'chi-sono', 'lavori', 'contatti'];
+    
+    // Add small delay to let DOM render
+    const timeoutId = setTimeout(() => {
+      targetIDs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    }, 500);
+
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
+  }, [isHome]);
+
   // Lock scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -47,8 +103,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
     setMobileMenuOpen(false);
     if (isHome) {
       e.preventDefault();
-      const id = target.toLowerCase().replace(' ', '-');
-      // Special case for 'Metodo' which might be 'brand-impact' section
+      const id = target.toLowerCase().replace(/ /g, '-');
       const targetId = id === 'metodo' ? 'metodo' : id;
       const element = document.getElementById(targetId);
       if (element) {
@@ -91,32 +146,42 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
           <Link 
             to="/"
             className="text-white font-display text-lg md:text-xl font-bold tracking-tight cursor-pointer select-none mr-0 md:mr-12 hover:opacity-80 transition-opacity z-[101]"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => {
+              setMobileMenuOpen(false);
+              if (isHome) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setActiveSection('');
+              }
+            }}
           >
             LUDOVICO COLASANTI
           </Link>
 
           {/* Links (Desktop) */}
           <div className="hidden md:flex gap-8 items-center">
-            {menuItems.map((item) => (
+            {menuItems.map((item) => {
+                 const isActive = activeSection === item;
+                 return (
                  <a 
                    key={item} 
                    href={isHome ? `#${item.toLowerCase().replace(/ /g, '-')}` : `/#${item.toLowerCase().replace(/ /g, '-')}`}
                    onClick={(e) => handleNavClick(e, item)}
-                   className="text-[10px] font-sans font-bold uppercase tracking-[0.15em] text-gray-400 hover:text-white transition-colors duration-300"
+                   className={`text-[10px] font-sans font-bold uppercase tracking-[0.15em] transition-colors duration-300 ${isActive ? 'text-[#00E5FF]' : 'text-gray-400 hover:text-white'}`}
                  >
                    {item}
                  </a>
-            ))}
+                 );
+            })}
           </div>
           
             <div className="hidden md:block ml-12">
               <a 
                 href={isHome ? "#contatti" : "/#contatti"} 
                 onClick={(e) => handleNavClick(e, 'Contatti')}
-                className="relative px-5 py-2 overflow-hidden rounded-full group bg-white/10 hover:bg-white transition-colors duration-300 border border-[#00E5FF] flex items-center justify-center"
+                className={`relative px-5 py-2 overflow-hidden rounded-full group transition-colors duration-300 border flex items-center justify-center ${activeSection === 'Contatti' ? 'bg-white border-white' : 'bg-white/10 hover:bg-white border-[#00E5FF]'}`}
               >
-                  <span className="relative z-10 text-[10px] font-sans font-bold uppercase tracking-wider text-white group-hover:text-black transition-colors duration-300 leading-none">
+                  <span className={`relative z-10 text-[10px] font-sans font-bold uppercase tracking-wider transition-colors duration-300 leading-none ${activeSection === 'Contatti' ? 'text-black' : 'text-white group-hover:text-black'}`}>
                       Parliamo
                   </span>
               </a>

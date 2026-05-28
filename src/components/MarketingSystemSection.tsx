@@ -242,7 +242,7 @@ export default function MarketingSystemSection() {
   ];
 
   return (
-    <section id="servizi" className="relative w-full bg-[#050B14] text-white">
+    <section className="relative w-full bg-[#050B14] text-white">
       {/* 1. SCROLLING INTRO OR STATIC ON MOBILE */}
       <div ref={introRef} className={`relative w-full z-0 ${isMobile ? "h-[250vh]" : "h-[380vh]"}`}>
         <div className={`sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-4`}>
@@ -264,7 +264,7 @@ export default function MarketingSystemSection() {
         </div>
       </div>
 
-      <div className={`relative z-20 w-full bg-[#050B14] -mt-[100vh] pt-32 shadow-[0_-30px_50px_rgba(5,11,20,1)]`}>
+      <div id="servizi" className={`relative z-20 w-full bg-[#050B14] -mt-[100vh] pt-32 shadow-[0_-30px_50px_rgba(5,11,20,1)]`}>
         {/* 2. STATIC TITLE & SYSTEM SECTION */}
         <div className="w-full max-w-7xl mx-auto px-4 pb-4 md:mt-12 z-20 relative">
           <div className="w-full text-center flex flex-col justify-center items-center border-b border-white/10 pb-8">
