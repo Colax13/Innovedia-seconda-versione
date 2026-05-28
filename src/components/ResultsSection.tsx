@@ -242,16 +242,16 @@ const ResultsSection: React.FC = () => {
       alt: "Hair Spa"
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084408/Screenshot_1_bvb6od.jpg",
-      alt: "Website UI"
+      src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774624472/Screenshot_3_w8ts30.jpg",
+      alt: "Salone UI"
     },
     {
       src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839205/Buoni_e-commerce_u3fsgi.jpg",
       alt: "Checkout UI"
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774624472/Screenshot_3_w8ts30.jpg",
-      alt: "Salone UI"
+      src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_1400,c_limit/v1773084408/Screenshot_3_wqhnxk.jpg",
+      alt: "Website UI"
     }
   ];
 
