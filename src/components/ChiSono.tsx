@@ -269,7 +269,7 @@ export default function ChiSono() {
             {/* Photo Container */}
             <div className="relative overflow-hidden rounded-xl bg-pixar-card border border-white/5">
               <motion.img
-                src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774028261/Senza_titolo-1_yamovm.png"
+                src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1780068683/34651091-dfe1-4626-b3a3-8a1d56c616fd_gmowqo.png"
                 alt="Ludovico Colasanti"
                 className="w-full h-auto block object-cover"
                 loading="lazy"

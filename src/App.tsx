@@ -6,6 +6,7 @@ import QualcosaSuDiMe from './components/QualcosaSuDiMe';
 import ProjectSection from './components/ProjectSection';
 import MarketingSystemSection from './components/MarketingSystemSection';
 import ResultsSection from './components/ResultsSection';
+import OtherCollaborationsSection from './components/OtherCollaborationsSection';
 import UnifiedBackground from './components/UnifiedBackground';
 const ProjectPage = React.lazy(() => import('./components/project/ProjectPage').then(m => ({ default: m.ProjectPage })));
 import FinalCTA from './components/FinalCTA';
@@ -51,6 +52,7 @@ function HomePage() {
       <ResultsSection />
       <QualcosaSuDiMe />
       <ProjectSection />
+      <OtherCollaborationsSection />
       <FinalCTA />
       <footer className="bg-black/80 backdrop-blur-md py-12 text-center border-t border-white/5 relative z-10">
         <div className="flex justify-center gap-8 mb-8 text-xs font-tech uppercase tracking-widest text-gray-500">

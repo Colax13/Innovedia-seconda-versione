@@ -2,6 +2,78 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
 import { useForms } from '../context/FormContext';
 import OptimizedImage from './OptimizedImage';
+import { VideoTogglePlayer } from './VideoTogglePlayer';
+import { Volume2, VolumeX } from 'lucide-react';
+
+const StrategyVideo = ({ vid, index, type }: { vid: any, index: number, type: 'desktop' | 'desktop2' | 'mobile' }) => {
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMuted(!isMuted);
+  };
+
+  if (type === 'desktop') {
+    return (
+      <div className="w-full aspect-[9/16] rounded-xl overflow-hidden border border-white/10 bg-white/5 relative group">
+        <video ref={videoRef} src={vid.src} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"></video>
+        <div className="absolute inset-0 bg-gradient-to-t pointer-events-none from-black/80 via-transparent to-transparent"></div>
+        <button onClick={toggleMute} className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors pointer-events-auto shadow-lg" title={isMuted ? "Attiva audio" : "Disattiva audio"}>
+           {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+        </button>
+        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center pointer-events-none">
+           <span className="font-tech text-center text-[10px] text-white/80 uppercase tracking-widest leading-tight">{vid.title}</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === 'desktop2') {
+    return (
+       <div className="w-full max-w-[260px] aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative group">
+         <video ref={videoRef} src={vid.src} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"></video>
+         <div className="absolute inset-0 bg-gradient-to-t pointer-events-none from-black/80 via-transparent to-transparent"></div>
+         <button onClick={toggleMute} className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors pointer-events-auto shadow-lg" title={isMuted ? "Attiva audio" : "Disattiva audio"}>
+            {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+         </button>
+         <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none">
+           <div className="flex items-center gap-2">
+             <div className="w-8 h-8 rounded-full flex items-center justify-center border backdrop-blur-md bg-[#00E5FF]/20 border-[#00E5FF]/50">
+               <div className="w-0 h-0 border-t-4 border-l-6 border-b-4 border-transparent border-l-white ml-1"></div>
+             </div>
+             <span className="font-tech text-[10px] text-white/80 uppercase tracking-widest">{vid.title}</span>
+           </div>
+         </div>
+       </div>
+    );
+  }
+
+  return (
+      <div className="w-[calc(50%-6px)] aspect-[9/16] rounded-xl overflow-hidden border border-white/10 bg-white/5 relative group">
+        <video ref={videoRef} src={vid.src} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"></video>
+        <div className="absolute inset-0 bg-gradient-to-t pointer-events-none from-black/80 via-transparent to-transparent"></div>
+        <button onClick={toggleMute} className="absolute top-3 right-3 z-20 w-7 h-7 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors pointer-events-auto shadow-lg" title={isMuted ? "Attiva audio" : "Disattiva audio"}>
+           {isMuted ? <VolumeX size={12} /> : <Volume2 size={12} />}
+        </button>
+        <div className="absolute bottom-4 left-3 right-3 flex items-center justify-between pointer-events-none">
+          <div className="flex items-center gap-1.5">
+            <div className="w-6 h-6 shrink-0 rounded-full flex items-center justify-center border backdrop-blur-md bg-[#00E5FF]/20 border-[#00E5FF]/50">
+               <div className="w-0 h-0 border-t-[3px] border-l-[5px] border-b-[3px] border-transparent border-l-white ml-1"></div>
+            </div>
+            <span className="font-tech text-[8px] text-white/80 uppercase tracking-widest truncate max-w-[100px] leading-tight flex-1">{vid.title}</span>
+          </div>
+        </div>
+      </div>
+  );
+};
 
 export function FlipButton({ text, onClick, primary = false, noBorder = false, className = '' }: { text: string, onClick?: () => void, primary?: boolean, noBorder?: boolean, className?: string }) {
   return (
@@ -352,18 +424,14 @@ const ResultsSection: React.FC = () => {
              transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
              className="w-full max-w-4xl mx-auto"
           >
-             <div className="grid grid-cols-5 gap-4 lg:gap-8 w-full">
+              <div className="grid grid-cols-5 gap-4 lg:gap-8 w-full">
                {videos.map((vid, i) => (
-                 <div 
-                   key={`desk-vid-${i}`} 
-                   className="w-full aspect-[9/16] rounded-xl overflow-hidden border border-white/10 bg-white/5 relative group"
-                 >
-                   <video src={vid.src} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"></video>
-                   <div className="absolute inset-0 bg-gradient-to-t pointer-events-none from-black/80 via-transparent to-transparent"></div>
-                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center pointer-events-none">
-                      <span className="font-tech text-center text-[10px] text-white/80 uppercase tracking-widest leading-tight">{vid.title}</span>
-                   </div>
-                 </div>
+                 <StrategyVideo
+                   key={`desk-vid-${i}`}
+                   vid={vid}
+                   index={i}
+                   type="desktop"
+                 />
                ))}
              </div>
           </motion.div>
@@ -494,41 +562,24 @@ const ResultsSection: React.FC = () => {
                {/* DESKTOP GRID */}
                <div className="hidden lg:flex flex-wrap justify-center gap-4 w-full">
                  {videos.map((vid, i) => (
-                   <div 
-                     key={`desk-vid-${i}`} 
-                     className="w-full max-w-[260px] aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-white/5 relative group"
-                   >
-                     {/* Use a placeholder image or a static layout if video doesn't play natively on grids without scroll, 
-                         but playing multiple videos is fine or muted autoplay */}
-                     <video src={vid.src} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"></video>
-                     <div className="absolute inset-0 bg-gradient-to-t pointer-events-none from-black/80 via-transparent to-transparent"></div>
-                     <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none">
-                       <div className="flex items-center gap-2">
-                         <div className="w-8 h-8 rounded-full flex items-center justify-center border backdrop-blur-md bg-[#00E5FF]/20 border-[#00E5FF]/50">
-                           <div className="w-0 h-0 border-t-4 border-l-6 border-b-4 border-transparent border-l-white ml-1"></div>
-                         </div>
-                         <span className="font-tech text-[10px] text-white/80 uppercase tracking-widest">{vid.title}</span>
-                       </div>
-                     </div>
-                   </div>
+                   <StrategyVideo
+                     key={`desk-vid-${i}`}
+                     vid={vid}
+                     index={i}
+                     type="desktop2"
+                   />
                  ))}
                </div>
 
                {/* MOBILE GRID (2x2 + 1 centered) */}
                <div className="lg:hidden flex flex-wrap justify-center gap-3 mt-4">
                  {videos.map((vid, i) => (
-                      <div key={`mob-vid-${i}`} className="w-[calc(50%-6px)] aspect-[9/16] rounded-xl overflow-hidden border border-white/10 bg-white/5 relative group">
-                        <video src={vid.src} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"></video>
-                        <div className="absolute inset-0 bg-gradient-to-t pointer-events-none from-black/80 via-transparent to-transparent"></div>
-                        <div className="absolute bottom-4 left-3 right-3 flex items-center justify-between pointer-events-none">
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-6 h-6 shrink-0 rounded-full flex items-center justify-center border backdrop-blur-md bg-[#00E5FF]/20 border-[#00E5FF]/50">
-                               <div className="w-0 h-0 border-t-[3px] border-l-[5px] border-b-[3px] border-transparent border-l-white ml-1"></div>
-                            </div>
-                            <span className="font-tech text-[8px] text-white/80 uppercase tracking-widest truncate max-w-[100px] leading-tight flex-1">{vid.title}</span>
-                          </div>
-                        </div>
-                      </div>
+                   <StrategyVideo
+                     key={`mob-vid-${i}`}
+                     vid={vid}
+                     index={i}
+                     type="mobile"
+                   />
                  ))}
                </div>
             </motion.div>

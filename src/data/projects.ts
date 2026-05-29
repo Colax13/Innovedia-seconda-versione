@@ -179,6 +179,46 @@ export const projects = [
             ]
         }
     },
+    {
+        id: 110,
+        title: "Video Taglio",
+        category: "Video",
+        color: "#00E5FF",
+        videoSrc: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1776813461/0422_u3cqlq.mov",
+        tags: ["Salone", "Taglio", "Reels"],
+        brief: "Video Taglio per RD Salon.",
+        detail: {
+            year: "2024",
+            client: "RD Salon",
+            role: "Video Production",
+            duration: "1 giorno",
+            overview: "Focus sui dettagli del taglio nel salone.",
+            heroImage: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80",
+            sections: [
+                { type: 'full', videoSrc: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1776813461/0422_u3cqlq.mov" }
+            ]
+        }
+    },
+    {
+        id: 111,
+        title: "Tour Salone",
+        category: "Video",
+        color: "#C084FC",
+        videoSrc: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1779913352/Compresso_fzavti.mov",
+        tags: ["Tour", "Salone", "Commercial"],
+        brief: "Video Tour per RD Salon.",
+        detail: {
+            year: "2024",
+            client: "RD Salon",
+            role: "Video Production",
+            duration: "1 settimana",
+            overview: "Panoramica degli spazi e dell'atmosfera del salone.",
+            heroImage: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80",
+            sections: [
+                { type: 'full', videoSrc: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1779913352/Compresso_fzavti.mov" }
+            ]
+        }
+    },
     { 
         id: 4, 
         title: "RD SALON", 

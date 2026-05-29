@@ -93,23 +93,59 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
     if (isVideo && videoRef.current) {
       if (isActive) {
         videoRef.current.play().catch(() => {});
-        setIsPlaying(true);
       } else {
         videoRef.current.pause();
-        setIsPlaying(false);
       }
     }
   }, [isActive, isVideo]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !isVideo) return;
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+
+    const handleGlobalPlay = (e: Event) => {
+      const target = e.target as HTMLVideoElement;
+      if (target !== video && target.hasAttribute('data-exclusive-play') && !video.paused) {
+        video.pause();
+      }
+    };
+    
+    document.addEventListener('play', handleGlobalPlay, true);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting && !video.paused) {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    
+    observer.observe(video);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+      document.removeEventListener('play', handleGlobalPlay, true);
+      observer.disconnect();
+    };
+  }, [isVideo]);
 
   const togglePlay = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play();
-        setIsPlaying(true);
       } else {
         videoRef.current.pause();
-        setIsPlaying(false);
       }
     }
   };
@@ -171,6 +207,7 @@ const NeonCard = React.memo(({ project, onMouseEnter, onMouseLeave, isActive, is
           }} className="group" onClick={togglePlay}>
             <motion.video
               ref={videoRef}
+              data-exclusive-play="true"
               src={optVideoSrc ? `${optVideoSrc}#t=0.001` : (project.img || project.coverImage)}
               poster={project.img || project.coverImage}
               preload="metadata"
@@ -775,6 +812,7 @@ export default function ProjectSection() {
 
         <div className="w-full flex flex-col relative z-10">
           <ProjectCarousel 
+            id="portfolio-progetti"
             subtitle="LAVORI DI CUI VADO FIERO"
             title="Portfolio Progetti"
             data={webProjects}
