@@ -196,7 +196,7 @@ const OtherCollaborationsSection: React.FC = () => {
                  Per la redazione Alis, ho realizzato le interviste a figure di altissimo calibro, come i direttori di Trans EU e Telepass. Un lavoro in cui precisione comunicativa e qualità delle riprese si sono fuse per documentare l'importanza dell'evento fieristico.
                </p>
                <p className="font-sans text-white/40 text-sm mt-4 italic">
-                 Un ringraziamento a ITSxellence per l'opportunità.
+                 Un ringraziamento a ITSSIxellence per l'opportunità.
                </p>
             </motion.div>
             <motion.div 
@@ -239,10 +239,12 @@ const OtherCollaborationsSection: React.FC = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="lg:w-2/3 grid grid-cols-2 lg:grid-cols-3 gap-4"
+              className="lg:w-2/3 flex flex-wrap lg:grid lg:grid-cols-3 gap-4 justify-center"
             >
               {restaldiVideos.map((vid, i) => (
-                <CollabVideo key={i} vid={vid} />
+                <div key={i} className="w-[calc(50%-0.5rem)] lg:w-full">
+                  <CollabVideo vid={vid} />
+                </div>
               ))}
             </motion.div>
           </div>

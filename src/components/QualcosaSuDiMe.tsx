@@ -10,7 +10,7 @@ export default function QualcosaSuDiMe() {
          <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-[#1A1A1C] p-1.5 transition-transform duration-500 hover:rotate-0">
              <div className="w-full h-full rounded-lg overflow-hidden relative">
                 <OptimizedImage 
-                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1780068683/34651091-dfe1-4626-b3a3-8a1d56c616fd_gmowqo.png" 
+                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774028261/Senza_titolo-1_yamovm.png" 
                   alt="Ludovico" 
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
                 />
