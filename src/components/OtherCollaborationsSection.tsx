@@ -193,10 +193,10 @@ const OtherCollaborationsSection: React.FC = () => {
                </h3>
                <div className="w-12 h-[2px] bg-[#00E5FF]"></div>
                <p className="font-sans text-white/60 text-lg leading-relaxed">
-                 Per la redazione Alis, ho realizzato le interviste a figure di altissimo calibro, come i direttori di Trans EU e Telepass. Un lavoro in cui precisione comunicativa e qualità delle riprese si sono fuse per documentare l'importanza dell'evento fieristico.
+                 Per la redazione Alis, ho realizzato le interviste a figure di altissimo calibro di aziende come Trans-EU e Telepass. Un lavoro in cui l'estrapolare informazioni da brevi interviste e riportarle in maniera interessante erano alla base della comunicazione dell'evento fieristico.
                </p>
                <p className="font-sans text-white/40 text-sm mt-4 italic">
-                 Un ringraziamento a ITSSIxellence per l'opportunità.
+                 Un ringraziamento a ITSSIxellence e Daniela Ubaldi per l'opportunità.
                </p>
             </motion.div>
             <motion.div 
