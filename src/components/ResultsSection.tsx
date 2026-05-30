@@ -343,7 +343,7 @@ const ResultsSection: React.FC = () => {
   ];
 
   return (
-    <div id="successi">
+    <div id="casi-studio">
     {/* =========================================
         DESKTOP VIEW (Normal Scrolling + Overlay)
         ========================================= */}

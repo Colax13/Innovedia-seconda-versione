@@ -54,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
       if (currentActiveId) {
         let activeName = '';
         if (currentActiveId === 'servizi') activeName = 'Servizi';
-        if (currentActiveId === 'successi') activeName = 'Successi';
+        if (currentActiveId === 'casi-studio') activeName = 'Casi studio';
         if (currentActiveId === 'chi-sono') activeName = 'Chi sono';
         if (currentActiveId === 'lavori') activeName = 'Lavori';
         if (currentActiveId === 'contatti') activeName = 'Contatti';
@@ -71,7 +71,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    const targetIDs = ['servizi', 'successi', 'chi-sono', 'lavori', 'contatti'];
+    const targetIDs = ['servizi', 'casi-studio', 'chi-sono', 'lavori', 'contatti'];
     
     // Add small delay to let DOM render
     const timeoutId = setTimeout(() => {
@@ -112,7 +112,7 @@ const Navbar: React.FC<NavbarProps> = ({ show = true }) => {
     }
   };
 
-  const menuItems = ['Servizi', 'Successi', 'Chi sono', 'Lavori'];
+  const menuItems = ['Servizi', 'Casi studio', 'Chi sono', 'Lavori'];
 
   return (
     <>

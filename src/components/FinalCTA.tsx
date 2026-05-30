@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { useForms } from '../context/FormContext';
 
 const FinalCTA: React.FC = () => {
-  const { openAnalysisForm, openServiceForm } = useForms();
+  const { openServiceForm } = useForms();
 
   return (
     <section id="contatti" className="relative min-h-screen flex items-center justify-center overflow-hidden text-white py-32 z-20">
@@ -49,15 +49,6 @@ const FinalCTA: React.FC = () => {
               className="cursor-pointer px-10 py-5 bg-[#00E5FF] text-black font-display font-bold text-sm uppercase tracking-widest rounded-full hover:shadow-[0_0_30px_rgba(0, 229, 255, 0.45)] transition-all duration-300 text-center"
             >
               PARLAMI DEL TUO PROGETTO
-            </motion.button>
-            
-            <motion.button
-              whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.05)' }}
-              whileTap={{ scale: 0.98 }}
-              onClick={openAnalysisForm}
-              className="cursor-pointer px-10 py-5 bg-transparent border border-white/10 text-white font-display font-bold text-sm uppercase tracking-widest rounded-full transition-all duration-300 text-center"
-            >
-              RICHIEDI UNA COLLABORAZIONE
             </motion.button>
           </div>
 
