@@ -11,18 +11,18 @@ const CYAN = "#00E5FF";
 const BG = "#050508";
 
 const IMGS = {
-  hero:      "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773855714/Hero_page_uvt2fm.jpg",
-  about:     "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773855717/La_nostra_visione_sulla_home_page_hqbwrn.jpg",
-  progetti:  "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773857618/Progetto_sulla_home_page_ihioag.jpg",
-  servizi:   "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773880115/servizi_sulla_homepage_rkdd4y.jpg",
-  catalogo:  "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773857156/Pagina_il_nostro_catalogo_lp1jpi.jpg",
-  detCat:    "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773857153/Pagina_dettaglio_catalogo_o1pg6h.jpg",
-  det1:      "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773857155/Pagina_dettaglio_progetti_1_xf3tjh.jpg",
-  det2:      "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773857153/Pagina_dettagli_progetti_sezione_2_wc6gyq.jpg",
-  chiSiamo1: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773855717/pagina_chi_siamo_1_xhfnxe.jpg",
-  chiSiamo2: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773855717/pagina_chi_siamo_2_w6bad8.jpg",
-  chiSiamo3: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773855719/pagina_chi_siamo_3_ccpws6.jpg",
-  contatti:  "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773855759/Pagina_contatti_v2d9ua.jpg",
+  hero:      "/media/images/Hero_page_uvt2fm.webp",
+  about:     "/media/images/La_nostra_visione_sulla_home_page_hqbwrn.webp",
+  progetti:  "/media/images/Progetto_sulla_home_page_ihioag.webp",
+  servizi:   "/media/images/servizi_sulla_homepage_rkdd4y.webp",
+  catalogo:  "/media/images/Pagina_il_nostro_catalogo_lp1jpi.webp",
+  detCat:    "/media/images/Pagina_dettaglio_catalogo_o1pg6h.webp",
+  det1:      "/media/images/Pagina_dettaglio_progetti_1_xf3tjh.webp",
+  det2:      "/media/images/Pagina_dettagli_progetti_sezione_2_wc6gyq.webp",
+  chiSiamo1: "/media/images/pagina_chi_siamo_1_xhfnxe.webp",
+  chiSiamo2: "/media/images/pagina_chi_siamo_2_w6bad8.webp",
+  chiSiamo3: "/media/images/pagina_chi_siamo_3_ccpws6.webp",
+  contatti:  "/media/images/Pagina_contatti_v2d9ua.webp",
 };
 
 function useInView(t = 0.1) {

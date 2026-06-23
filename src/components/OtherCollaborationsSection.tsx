@@ -76,27 +76,27 @@ const CollabVideo = ({ vid }: { vid: any }) => {
 const OtherCollaborationsSection: React.FC = () => {
 
   const brands = [
-    { name: 'Acqua Orsini', logo: 'https://res.cloudinary.com/dcmd1ukvx/image/upload/v1780069411/LOGO-NUOVO-ACQUA-ORSINI-_BIANCO-e1772549784234_bjx1gu.png' },
+    { name: 'Acqua Orsini', logo: '/media/images/LOGO-NUOVO-ACQUA-ORSINI-_BIANCO-e1772549784234_bjx1gu.webp' },
     { name: 'LET EXPO', logo: 'https://www.letexpo.it/wp-content/uploads/2024/11/letexpo-120x79.png' },
     { name: 'Restaldi Biliardi', logo: 'https://www.biliardi.com/wp-content/uploads/2023/02/logo-restaldi-v2.png' }
   ];
 
   const orsiniVideos = [
-    { src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1780065854/Vin%C3%B2forum_fatynv.mp4", title: "Vinòforum" },
-    { src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1780065764/Barshow_mood_dvscoz.mp4", title: "Barshow Mood" },
-    { src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1780065934/Film_Festival_fwts0r.mp4", title: "Film Festival" },
-    { src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1780065757/Barshow_jvq2go.mp4", title: "Barshow" }
+    { src: "/media/videos/Vinoforum_fatynv.mp4", title: "Vinòforum" },
+    { src: "/media/videos/Barshow_mood_dvscoz.mp4", title: "Barshow Mood" },
+    { src: "/media/videos/Film_Festival_fwts0r.mp4", title: "Film Festival" },
+    { src: "/media/videos/Barshow_jvq2go.mp4", title: "Barshow" }
   ];
 
   const letExpoVideos = [
-    { src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1780065948/Mood_Itssi_uztsq5.mp4", title: "Event Mood" },
-    { src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1780065941/L_zf9r3z.mp4", title: "Intervista" }
+    { src: "/media/videos/Mood_Itssi_uztsq5.mp4", title: "Event Mood" },
+    { src: "/media/videos/L_zf9r3z.mp4", title: "Intervista" }
   ];
 
   const restaldiVideos = [
-    { src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1780068832/Spike_Heel_ftmzab.mp4", title: "Spike" },
-    { src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1780065613/Storia_aoguby.mp4", title: "Storia" },
-    { src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/v1780065606/Numeri_Seriali_sukbdg.mp4", title: "Numeri Seriali" }
+    { src: "/media/videos/Spike_Heel_ftmzab.mp4", title: "Spike" },
+    { src: "/media/videos/Storia_aoguby.mp4", title: "Storia" },
+    { src: "/media/videos/Numeri_Seriali_sukbdg.mp4", title: "Numeri Seriali" }
   ];
 
   return (

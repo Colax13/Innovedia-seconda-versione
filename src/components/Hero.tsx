@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 
 const SRCS = [
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773839205/Buoni_e-commerce_u3fsgi.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1769514522/GfSERVICE_SITE_q76eod.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773848189/Logo_su_panino_tpz4ke.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773085193/Screenshot_8_u2ex4b.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1769513413/Hair_Spa_sofu9v.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773089052/Screenshot_8_exvaml.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773839517/social_qm63bp.jpg',
-  'https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_400/v1773084327/Screenshot_5_pursfi.jpg',
+  '/media/images/Buoni_e-commerce_u3fsgi.webp',
+  '/media/images/GfSERVICE_SITE_q76eod.webp',
+  '/media/images/Logo_su_panino_tpz4ke.webp',
+  '/media/images/Screenshot_8_u2ex4b.webp',
+  '/media/images/Hair_Spa_sofu9v.webp',
+  '/media/images/Screenshot_8_exvaml.webp',
+  '/media/images/social_qm63bp.webp',
+  '/media/images/Screenshot_5_pursfi.webp',
 ];
 
 const CARD_W = 154; // reduced by 30% from 220
@@ -1004,10 +1004,10 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
               <picture className="w-full h-full block">
                 <source
                   media="(min-width: 768px)"
-                  srcSet="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_1920/v1779229305/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.png"
+                  srcSet="/media/images/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.webp"
                 />
                 <img
-                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_800/v1779915062/1ee18e70-7e9b-4ed4-8348-b35ec129788b_szqcwm.png"
+                  src="/media/images/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.webp"
                   alt="Hero Background"
                   className="w-full h-full object-cover object-top md:object-center"
                 />

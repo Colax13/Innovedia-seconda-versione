@@ -322,7 +322,7 @@ const ProjectRDSalon: React.FC = () => {
       {/* HERO */}
       <section id="hero">
         <div id="hbg">
-          <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379623/1765792030088_xvxpzz.jpg" alt="RD Salon" />
+          <OptimizedImage src="/media/images/1765792030088_xvxpzz.webp" alt="RD Salon" />
           <div id="hov"></div>
         </div>
         <div id="hline"></div>
@@ -371,7 +371,7 @@ const ProjectRDSalon: React.FC = () => {
       <div className="inn" style={{ paddingBottom: '12px' }}>
         <div className="rv">
           <div className="fiw" style={{ aspectRatio: '1919/921' }}>
-            <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084408/Screenshot_1_bvb6od.jpg" alt="Homepage" style={{ height: '100%', objectPosition: 'top' }} />
+            <OptimizedImage src="/media/images/Screenshot_1_bvb6od.webp" alt="Homepage" style={{ height: '100%', objectPosition: 'top' }} />
           </div>
           <p className="ic">01 — Homepage above the fold</p>
         </div>
@@ -387,7 +387,7 @@ const ProjectRDSalon: React.FC = () => {
             <p className="sp2">Nero profondo, viola come accento, tipografia bold — un sistema visivo che comunica lusso prima ancora che l'utente legga una parola. La sfida era costruire un'estetica riconoscibile al primo sguardo, coerente su sito, social e stampa.</p>
           </div>
           <div className="rv" style={{ transitionDelay: '.12s' }}>
-            <div className="si"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084408/Screenshot_2_cpkr0t.jpg" alt="Servizi" /></div>
+            <div className="si"><OptimizedImage src="/media/images/Screenshot_2_cpkr0t.webp" alt="Servizi" /></div>
           </div>
         </div>
       </div>
@@ -398,11 +398,11 @@ const ProjectRDSalon: React.FC = () => {
       <div className="inn" style={{ paddingBottom: '12px' }}>
         <div className="tc">
           <div className="rv">
-            <div className="ci" style={{ aspectRatio: '1919/921' }}><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084408/Screenshot_3_wqhnxk.jpg" alt="Lavori" style={{ height: '100%' }} /></div>
+            <div className="ci" style={{ aspectRatio: '1919/921' }}><OptimizedImage src="/media/images/Screenshot_3_wqhnxk.webp" alt="Lavori" style={{ height: '100%' }} /></div>
             <p className="cc">02 — Sezione Lavori</p>
           </div>
           <div className="rv" style={{ transitionDelay: '.1s' }}>
-            <div className="ci" style={{ aspectRatio: '1919/921' }}><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084409/Screenshot_6_kscqtg.jpg" alt="Storia" style={{ height: '100%' }} /></div>
+            <div className="ci" style={{ aspectRatio: '1919/921' }}><OptimizedImage src="/media/images/Screenshot_6_kscqtg.webp" alt="Storia" style={{ height: '100%' }} /></div>
             <p className="cc">03 — Sezione Storia</p>
           </div>
         </div>
@@ -413,7 +413,7 @@ const ProjectRDSalon: React.FC = () => {
         <div className="sg">
           <div className="rv sg-item-2" style={{ transitionDelay: '.1s' }}>
             <div className="ec">
-              <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084327/Screenshot_5_pursfi.jpg" alt="Landing Page Hair Spa" style={{ aspectRatio: '1919/921' }} />
+              <OptimizedImage src="/media/images/Screenshot_5_pursfi.webp" alt="Landing Page Hair Spa" style={{ aspectRatio: '1919/921' }} />
             </div>
             <p className="ic">04 — landing page hair spa</p>
           </div>
@@ -426,7 +426,7 @@ const ProjectRDSalon: React.FC = () => {
             <div className="sb"></div>
             <p className="sp2">Il sito dialoga con l'Hair Spa — sezione dedicata che porta il cliente da un'esperienza all'altra, aumentando il valore medio senza aumentare i costi.</p>
             <div style={{ marginTop: '24px' }}>
-              <div className="ec"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084327/Screenshot_5_pursfi.jpg" alt="Hair Spa" style={{ aspectRatio: '1919/921', objectPosition: 'top' }} /></div>
+              <div className="ec"><OptimizedImage src="/media/images/Screenshot_5_pursfi.webp" alt="Hair Spa" style={{ aspectRatio: '1919/921', objectPosition: 'top' }} /></div>
               <p className="ic">05 — Landing Page Hair Spa</p>
             </div>
           </div>
@@ -455,7 +455,7 @@ const ProjectRDSalon: React.FC = () => {
 
       {/* Mobile-only feed photo move */}
       <div className="inn block md:hidden mb-10 rv">
-          <div className="si"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839517/social_qm63bp.jpg" alt="Social feed" /></div>
+          <div className="si"><OptimizedImage src="/media/images/social_qm63bp.webp" alt="Social feed" /></div>
       </div>
 
       <div className="inn" style={{ paddingBottom: '80px' }}>
@@ -467,7 +467,7 @@ const ProjectRDSalon: React.FC = () => {
             <p className="sp2">Ogni tipo di contenuto serve uno scopo preciso: il mood video cattura l'attenzione, la consulenza dimostra la competenza, la brand story crea fiducia. Insieme costruiscono un profilo che vende senza sembrare che stia vendendo.</p>
           </div>
           <div className="rv hidden md:block" style={{ transitionDelay: '.12s' }}>
-            <div className="si"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839517/social_qm63bp.jpg" alt="Social feed" /></div>
+            <div className="si"><OptimizedImage src="/media/images/social_qm63bp.webp" alt="Social feed" /></div>
           </div>
         </div>
       </div>
@@ -479,7 +479,7 @@ const ProjectRDSalon: React.FC = () => {
 
           {/* MOOD */}
           <div className="vc" id="vc1" onClick={() => openV(1)}>
-            <video className="vthumb" src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1776813461/0422_u3cqlq.mov" muted playsInline preload="metadata"></video>
+            <video className="vthumb" src="/media/videos/0422_u3cqlq.mp4" muted playsInline preload="metadata"></video>
             <div className="vov"></div>
             <div className="vplay"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             <div className="vlbl">
@@ -489,14 +489,14 @@ const ProjectRDSalon: React.FC = () => {
             <div className={`vplayer ${activeVideo === 1 ? 'active' : ''}`} id="vp1">
               <div className="vcls" onClick={(e) => closeV(e, 1)}>✕</div>
               <video controls playsInline muted preload="auto" style={{ width: '100%', height: '100%', objectFit: 'contain' }}>
-                <source src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1776813461/0422_u3cqlq.mov" type="video/mp4" />
+                <source src="/media/videos/0422_u3cqlq.mp4" type="video/mp4" />
               </video>
             </div>
           </div>
 
           {/* CONSULENZA */}
           <div className="vc" id="vc2" onClick={() => openV(2)}>
-            <video className="vthumb" src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1773845155/0318_tflaqt.mov" muted playsInline preload="metadata"></video>
+            <video className="vthumb" src="/media/videos/0318_tflaqt.mp4" muted playsInline preload="metadata"></video>
             <div className="vov"></div>
             <div className="vplay"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             <div className="vlbl">
@@ -506,14 +506,14 @@ const ProjectRDSalon: React.FC = () => {
             <div className={`vplayer ${activeVideo === 2 ? 'active' : ''}`} id="vp2">
               <div className="vcls" onClick={(e) => closeV(e, 2)}>✕</div>
               <video controls playsInline muted preload="auto" style={{ width: '100%', height: '100%', objectFit: 'contain' }}>
-                <source src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1773845155/0318_tflaqt.mov" type="video/mp4" />
+                <source src="/media/videos/0318_tflaqt.mp4" type="video/mp4" />
               </video>
             </div>
           </div>
 
           {/* BRAND STORY */}
           <div className="vc" id="vc3" onClick={() => openV(3)}>
-            <video className="vthumb" src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1773845362/lv_0_20260318153958_r4ecdo.mp4" muted playsInline preload="metadata"></video>
+            <video className="vthumb" src="/media/videos/placeholder.mp4" muted playsInline preload="metadata"></video>
             <div className="vov"></div>
             <div className="vplay"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             <div className="vlbl">
@@ -523,7 +523,7 @@ const ProjectRDSalon: React.FC = () => {
             <div className={`vplayer ${activeVideo === 3 ? 'active' : ''}`} id="vp3">
               <div className="vcls" onClick={(e) => closeV(e, 3)}>✕</div>
               <video controls playsInline muted preload="auto" style={{ width: '100%', height: '100%', objectFit: 'contain' }}>
-                <source src="https://res.cloudinary.com/dcmd1ukvx/video/upload/v1773845362/lv_0_20260318153958_r4ecdo.mp4" type="video/mp4" />
+                <source src="/media/videos/placeholder.mp4" type="video/mp4" />
               </video>
             </div>
           </div>
@@ -552,7 +552,7 @@ const ProjectRDSalon: React.FC = () => {
           </div>
           <div className="rv hidden md:block" style={{ transitionDelay: '.12s' }}>
             <div className="si" style={{ border: '1px solid rgba(192,132,252,0.2)' }}>
-              <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839205/Buoni_e-commerce_u3fsgi.jpg" alt="Automazioni Mockup" />
+              <OptimizedImage src="/media/images/Buoni_e-commerce_u3fsgi.webp" alt="Automazioni Mockup" />
             </div>
           </div>
         </div>
@@ -569,7 +569,7 @@ const ProjectRDSalon: React.FC = () => {
               La cliente acquista online, il sistema le manda un buono Hair Spa in automatico. Nessun intervento manuale.
             </p>
             <div className="si" style={{ marginTop: '16px', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-              <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1776813820/Screenshot_1_dnc1tc.png" alt="Mockup Buono" style={{ height: '175px', width: '264.641px', objectFit: 'cover' }} />
+              <OptimizedImage src="/media/images/Screenshot_1_dnc1tc.webp" alt="Mockup Buono" style={{ height: '175px', width: '264.641px', objectFit: 'cover' }} />
             </div>
           </div>
 
@@ -584,7 +584,7 @@ const ProjectRDSalon: React.FC = () => {
               Newsletter, promozioni stagionali, auguri di compleanno, festività. Comunicazioni personalizzate che mantengono il salone nella testa della cliente tutto l'anno.
             </p>
             <div className="si" style={{ marginTop: '16px', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-              <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1776813922/Screenshot_2_xigq1m.png" alt="Mockup Email" style={{ height: '165px', objectFit: 'cover' }} />
+              <OptimizedImage src="/media/images/Screenshot_2_xigq1m.webp" alt="Mockup Email" style={{ height: '165px', objectFit: 'cover' }} />
             </div>
           </div>
 
@@ -622,7 +622,7 @@ const ProjectRDSalon: React.FC = () => {
       <div className="inn" style={{ paddingBottom: '80px' }}>
         <div className="sg">
           <div className="rv" style={{ transitionDelay: '.1s' }}>
-            <div className="si" style={{ borderRadius: '12px' }}><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379623/1765792030088_xvxpzz.jpg" alt="Salone vista natura" style={{ aspectRatio: '4/5', objectFit: 'cover' }} /></div>
+            <div className="si" style={{ borderRadius: '12px' }}><OptimizedImage src="/media/images/1765792030088_xvxpzz.webp" alt="Salone vista natura" style={{ aspectRatio: '4/5', objectFit: 'cover' }} /></div>
           </div>
           <div className="rv hidden md:block">
             <span className="lbl">Il servizio fotografico</span>
@@ -651,26 +651,26 @@ const ProjectRDSalon: React.FC = () => {
       <div className="inn" style={{ paddingBottom: '12px' }}>
         <span className="lbl rv">Galleria — clicca per ingrandire</span>
         <div className="fg rv" style={{ transitionDelay: '.08s' }}>
-          <div className="fc fw" style={{ aspectRatio: '2/1' }} onClick={(e) => openLB('https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379698/1765792005078_pabsbi.jpg')}>
-            <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379698/1765792005078_pabsbi.jpg" alt="Lavaggi vista natura" style={{ height: '100%' }} />
+          <div className="fc fw" style={{ aspectRatio: '2/1' }} onClick={(e) => openLB('/media/images/1765792005078_pabsbi.webp')}>
+            <OptimizedImage src="/media/images/1765792005078_pabsbi.webp" alt="Lavaggi vista natura" style={{ height: '100%' }} />
           </div>
-          <div className="fc" style={{ aspectRatio: '1/1' }} onClick={(e) => openLB('https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379650/1765792022641_xwemu6.jpg')}>
-            <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379650/1765792022641_xwemu6.jpg" alt="Logo" style={{ objectFit: 'contain', background: '#0a0610', padding: '20px', height: '100%' }} />
+          <div className="fc" style={{ aspectRatio: '1/1' }} onClick={(e) => openLB('/media/images/1765792022641_xwemu6.webp')}>
+            <OptimizedImage src="/media/images/1765792022641_xwemu6.webp" alt="Logo" style={{ objectFit: 'contain', background: '#0a0610', padding: '20px', height: '100%' }} />
           </div>
-          <div className="fc" style={{ aspectRatio: '1/1' }} onClick={(e) => openLB('https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379687/1765791978731_yhe4jd.jpg')}>
-            <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379687/1765791978731_yhe4jd.jpg" alt="Salone interno" style={{ height: '100%' }} />
+          <div className="fc" style={{ aspectRatio: '1/1' }} onClick={(e) => openLB('/media/images/1765791978731_yhe4jd.webp')}>
+            <OptimizedImage src="/media/images/1765791978731_yhe4jd.webp" alt="Salone interno" style={{ height: '100%' }} />
           </div>
-          <div className="fc" style={{ aspectRatio: '1/1' }} onClick={(e) => openLB('https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379657/_DSC6220_azzc67.jpg')}>
-            <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379657/_DSC6220_azzc67.jpg" alt="Dettaglio sedute" style={{ height: '100%' }} />
+          <div className="fc" style={{ aspectRatio: '1/1' }} onClick={(e) => openLB('/media/images/_DSC6220_azzc67.webp')}>
+            <OptimizedImage src="/media/images/_DSC6220_azzc67.webp" alt="Dettaglio sedute" style={{ height: '100%' }} />
           </div>
-          <div className="fc" style={{ aspectRatio: '1/1' }} onClick={(e) => openLB('https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379620/1765792026288_k9gsoc.jpg')}>
-            <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379620/1765792026288_k9gsoc.jpg" alt="Salone dettaglio" style={{ height: '100%' }} />
+          <div className="fc" style={{ aspectRatio: '1/1' }} onClick={(e) => openLB('/media/images/1765792026288_k9gsoc.webp')}>
+            <OptimizedImage src="/media/images/1765792026288_k9gsoc.webp" alt="Salone dettaglio" style={{ height: '100%' }} />
           </div>
-          <div className="fc fw" style={{ aspectRatio: '2/1' }} onClick={(e) => openLB('https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379623/1765792030088_xvxpzz.jpg')}>
-            <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379623/1765792030088_xvxpzz.jpg" alt="Salone vista natura" style={{ height: '100%' }} />
+          <div className="fc fw" style={{ aspectRatio: '2/1' }} onClick={(e) => openLB('/media/images/1765792030088_xvxpzz.webp')}>
+            <OptimizedImage src="/media/images/1765792030088_xvxpzz.webp" alt="Salone vista natura" style={{ height: '100%' }} />
           </div>
-          <div className="fc hidden md:block" style={{ aspectRatio: '1/1' }} onClick={(e) => openLB('https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379651/_DSC6210_w1l1lm.jpg')}>
-            <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1767379651/_DSC6210_w1l1lm.jpg" alt="Salone" style={{ height: '100%' }} />
+          <div className="fc hidden md:block" style={{ aspectRatio: '1/1' }} onClick={(e) => openLB('/media/images/_DSC6210_w1l1lm.webp')}>
+            <OptimizedImage src="/media/images/_DSC6210_w1l1lm.webp" alt="Salone" style={{ height: '100%' }} />
           </div>
         </div>
       </div>

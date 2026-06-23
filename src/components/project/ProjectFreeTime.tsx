@@ -195,7 +195,7 @@ const ProjectFreeTime: React.FC = () => {
 
       <section id="hero">
         <div id="hbg">
-          <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773848189/Logo_su_panino_tpz4ke.jpg" alt="Free Time" />
+          <OptimizedImage src="/media/images/Logo_su_panino_tpz4ke.webp" alt="Free Time" />
           <div id="hov"></div>
         </div>
         <div id="hl"></div>
@@ -224,7 +224,7 @@ const ProjectFreeTime: React.FC = () => {
 
         <div className="rv" style={{ marginBottom: '12px' }}>
           <div className="fw" style={{ aspectRatio: '982/552', background: '#1a0e08' }}>
-            <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773848189/Logo_su_panino_tpz4ke.jpg" alt="Logotipo" style={{ objectFit: 'contain', height: '100%', width: '100%' }} />
+            <OptimizedImage src="/media/images/Logo_su_panino_tpz4ke.webp" alt="Logotipo" style={{ objectFit: 'contain', height: '100%', width: '100%' }} />
           </div>
           <p className="cap">01 - Logotipo versione principale</p>
         </div>
@@ -238,7 +238,7 @@ const ProjectFreeTime: React.FC = () => {
             <p className="spt">Il locale non aveva nessuna identita visiva preesistente. La sfida era tradurre un concept semplice in un sistema visivo che funzionasse su tutto: insegna, bicchieri, Instagram, carta dei cocktail.</p>
           </div>
           <div className="rv" style={{ transitionDelay: '.12s' }}>
-            <div className="si"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773848189/Colori_pnnbwy.jpg" alt="Brand board colori" /></div>
+            <div className="si"><OptimizedImage src="/media/images/Colori_pnnbwy.webp" alt="Brand board colori" /></div>
           </div>
         </div>
 
@@ -246,15 +246,15 @@ const ProjectFreeTime: React.FC = () => {
 
         <div className="thc rv" style={{ marginBottom: '12px' }}>
           <div>
-            <div className="c3"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773703708/Gemini_Generated_Image_ho1v9vho1v9vho1v_sitiyb.png" alt="Mockup negozio" /></div>
+            <div className="c3"><OptimizedImage src="/media/images/Gemini_Generated_Image_ho1v9vho1v9vho1v_sitiyb.webp" alt="Mockup negozio" /></div>
             <p className="cc">02 - Mockup negozio</p>
           </div>
           <div>
-            <div className="c3"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773853375/Risorsa_18_svrn49.png" alt="Mockup social media" /></div>
+            <div className="c3"><OptimizedImage src="/media/images/Risorsa_18_svrn49.webp" alt="Mockup social media" /></div>
             <p className="cc">03 - Mockup social media</p>
           </div>
           <div>
-            <div className="c3"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773703708/Gemini_Generated_Image_gdiljxgdiljxgdil_un00pz.png" alt="Mockup packaging" /></div>
+            <div className="c3"><OptimizedImage src="/media/images/Gemini_Generated_Image_gdiljxgdiljxgdil_un00pz.webp" alt="Mockup packaging" /></div>
             <p className="cc">04 - Mockup packaging</p>
           </div>
         </div>
@@ -268,7 +268,7 @@ const ProjectFreeTime: React.FC = () => {
 
         <div className="sg rv" style={{ marginBottom: '112px' }}>
           <div className="rv" style={{ transitionDelay: '.12s' }}>
-            <div className="si"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773082283/Brandin_Free_time-03_ekwrt3.jpg" alt="Logo principale" /></div>
+            <div className="si"><OptimizedImage src="/media/images/Brandin_Free_time-03_ekwrt3.webp" alt="Logo principale" /></div>
           </div>
           <div>
             <span className="lbl">La soluzione</span>
@@ -280,11 +280,11 @@ const ProjectFreeTime: React.FC = () => {
 
         <div className="tc rv" style={{ marginBottom: '12px' }}>
           <div>
-            <div className="ci"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773703115/Gemini_Generated_Image_7l8w6z7l8w6z7l8w_gec3j0.png" alt="Mockup insegna" /></div>
+            <div className="ci"><OptimizedImage src="/media/images/Gemini_Generated_Image_7l8w6z7l8w6z7l8w_gec3j0.webp" alt="Mockup insegna" /></div>
             <p className="cc">05 - Mockup insegna</p>
           </div>
           <div>
-            <div className="ci"><OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773080745/Pattern_mhidws.png" alt="Pattern decorativo" /></div>
+            <div className="ci"><OptimizedImage src="/media/images/Pattern_mhidws.webp" alt="Pattern decorativo" /></div>
             <p className="cc">06 - Pattern decorativo</p>
           </div>
         </div>
@@ -292,7 +292,7 @@ const ProjectFreeTime: React.FC = () => {
 
         <div className="rv" style={{ marginBottom: '12px' }}>
           <div className="fw" style={{ aspectRatio: '21/9' }}>
-            <OptimizedImage src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773703709/Gemini_Generated_Image_w3osfaw3osfaw3os_wmy3jw.png" alt="Mockup carta panino" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+            <OptimizedImage src="/media/images/Gemini_Generated_Image_w3osfaw3osfaw3os_wmy3jw.webp" alt="Mockup carta panino" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
           </div>
           <p className="cap">07 - Mockup carta panino</p>
         </div>

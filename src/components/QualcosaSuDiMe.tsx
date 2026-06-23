@@ -10,7 +10,7 @@ export default function QualcosaSuDiMe() {
          <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] bg-[#1A1A1C] p-1.5 transition-transform duration-500 hover:rotate-0">
              <div className="w-full h-full rounded-lg overflow-hidden relative">
                 <OptimizedImage 
-                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774028261/Senza_titolo-1_yamovm.png" 
+                  src="/media/images/Senza_titolo-1_yamovm.webp" 
                   alt="Ludovico" 
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
                 />
@@ -22,7 +22,7 @@ export default function QualcosaSuDiMe() {
          <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] bg-[#1A1A1C] p-2 transition-transform duration-500 hover:rotate-0">
              <div className="w-full h-full rounded-lg overflow-hidden relative">
                 <OptimizedImage 
-                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/v1779236620/io_che_parlo_rcrvap.png" 
+                  src="/media/images/io_che_parlo_rcrvap.webp" 
                   alt="Ludovico Portrait" 
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
                 />

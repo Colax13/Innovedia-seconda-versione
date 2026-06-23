@@ -287,42 +287,42 @@ const ResultsSection: React.FC = () => {
 
   const videos = [
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1779913352/Compresso_fzavti.mov",
+      src: "/media/videos/Compresso_fzavti.mp4",
       title: "Tour Salone",
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1773845155/0318_tflaqt.mov",
+      src: "/media/videos/0318_tflaqt.mp4",
       title: "Consulenza Colore"
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1776813461/0422_u3cqlq.mov",
+      src: "/media/videos/0422_u3cqlq.mp4",
       title: "Video Taglio"
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1779909947/spa_compresso_bhvzqr.mp4",
+      src: "/media/videos/spa_compresso_bhvzqr.mp4",
       title: "Hair Spa",
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/video/upload/f_auto,q_auto/v1773845362/lv_0_20260318153958_r4ecdo.mp4",
+      src: "/media/videos/placeholder.mp4",
       title: "La Storia del Brand"
     }
   ];
 
   const images = [
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773084327/Screenshot_5_pursfi.jpg",
+      src: "/media/images/Screenshot_5_pursfi.webp",
       alt: "Hair Spa"
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1774624472/Screenshot_3_w8ts30.jpg",
+      src: "/media/images/Screenshot_3_w8ts30.webp",
       alt: "Salone UI"
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/v1773839205/Buoni_e-commerce_u3fsgi.jpg",
+      src: "/media/images/Buoni_e-commerce_u3fsgi.webp",
       alt: "Checkout UI"
     },
     {
-      src: "https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_1400,c_limit/v1773084408/Screenshot_3_wqhnxk.jpg",
+      src: "/media/images/Screenshot_3_wqhnxk.webp",
       alt: "Website UI"
     }
   ];

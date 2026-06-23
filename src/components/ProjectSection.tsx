@@ -795,10 +795,10 @@ export default function ProjectSection() {
              <picture className="w-full h-full block">
                 <source
                   media="(min-width: 768px)"
-                  srcSet="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_1920/v1779229305/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.png"
+                  srcSet="/media/images/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.webp"
                 />
                 <img
-                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_800/v1779915062/1ee18e70-7e9b-4ed4-8348-b35ec129788b_szqcwm.png"
+                  src="/media/images/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.webp"
                   alt="Portfolio Progetti Background"
                   className="w-full h-full object-cover opacity-20 mix-blend-luminosity grayscale object-top"
                 />
@@ -831,10 +831,10 @@ export default function ProjectSection() {
              <picture className="w-full h-full block">
                 <source
                   media="(min-width: 768px)"
-                  srcSet="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_1920/v1779914776/eae9364b-4b3b-4702-9f3c-e874ae494c83_dk0wzw.png"
+                  srcSet="/media/images/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.webp"
                 />
                 <img
-                  src="https://res.cloudinary.com/dcmd1ukvx/image/upload/f_auto,q_auto,w_800/v1779915049/a701991e-50ab-4e84-9099-2f7f9528a485_zrhx13.png"
+                  src="/media/images/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.webp"
                   alt="Portfolio Video Background"
                   className="w-full h-full object-cover opacity-20 mix-blend-luminosity grayscale object-top"
                 />
