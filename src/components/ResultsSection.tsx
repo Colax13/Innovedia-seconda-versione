@@ -303,7 +303,7 @@ const ResultsSection: React.FC = () => {
       title: "Hair Spa",
     },
     {
-      src: "/media/videos/placeholder.mp4",
+      src: "/media/videos/Storia_del_brand.mp4",
       title: "La Storia del Brand"
     }
   ];

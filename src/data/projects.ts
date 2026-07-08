@@ -501,68 +501,6 @@ export const projects = [
             ]
         }
     },
-    { 
-        id: 2, 
-        title: "FUNERAL HOME", 
-        subtitle: "WEB DESIGN — CONCEPT PROJECT", 
-        category: "Project Work",
-        color: "#E6C27A", 
-        img: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/55/a4/b4/3d/c4/v1_E10/E103JXB9.jpg?w=800&cf_fit=scale-down&q=85&format=auto&s=9a8e391fbf07a17867c93ccba06a7c8d9fa0b275989246623d17c06088544caf",
-        coverImage: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/55/a4/b4/3d/c4/v1_E10/E103JXB9.jpg?w=800&cf_fit=scale-down&q=85&format=auto&s=9a8e391fbf07a17867c93ccba06a7c8d9fa0b275989246623d17c06088544caf",
-        middleImage: "/media/images/Screenshot_1_ygkfos.webp",
-        sfida: "Un concept personale nato da una domanda: come si progetta un sito per chi vive il momento più difficile della propria vita? Ogni scelta — colore, spazio, parola — doveva bilanciare rispetto ed eleganza senza risultare fredda o distante.",
-        soluzione: "Ho sviluppato un'identità editoriale chiara con sfumature oro, navigazione essenziale e una sezione manifesti integrata in homepage per rispondere al bisogno più immediato di chi arriva sul sito. Un esercizio di design empatico.",
-        tags: ["WEB DESIGN", "UX/UI", "CONCEPT PROJECT", "EDITORIAL TONE"],
-        carouselImages: [
-            { url: "/media/images/Screenshot_1_ygkfos.webp", caption: "About Aziendale" },
-            { url: "/media/images/Screenshot_8_exvaml.webp", caption: "Hero Page" },
-            { url: "/media/images/Screenshot_4_d6u1nh.webp", caption: "Gestionale" },
-            { url: "/media/images/Screenshot_2_ai8qiq.webp", caption: "I Miei Servizi" },
-            { url: "/media/placeholder.webp", caption: "Sezione Manifesti" }
-        ],
-        link: "https://agenziafunebre.colasantiludovico.it/",
-        detail: {
-            year: "2024",
-            location: "Concept Project",
-            client: "Personal Project",
-            role: "Web Designer",
-            duration: "2 settimane",
-            where: "Digital",
-            overview: "Un concept nato da una domanda: come si progetta un sito per chi vive il momento più difficile della propria vita? Ogni scelta — colore, spazio, parola — doveva bilanciare rispetto ed eleganza senza risultare fredda o distante.",
-            heroImage: "https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/55/a4/b4/3d/c4/v1_E10/E103JXB9.jpg?w=800&cf_fit=scale-down&q=85&format=auto&s=9a8e391fbf07a17867c93ccba06a7c8d9fa0b275989246623d17c06088544caf",
-            sections: [
-                { type: 'full', images: [{ url: "/media/images/Screenshot_1_ygkfos.webp", caption: "About Aziendale" }] },
-                { 
-                    type: 'split', 
-                    subtitle: "La sfida", 
-                    title: "Design\nper il\nlutto.", 
-                    text: "Il design per le onoranze funebri è spesso datato o eccessivamente freddo. La sfida era creare un'interfaccia che fosse allo stesso tempo professionale, rassicurante e facile da usare in momenti di forte stress emotivo.",
-                    images: [{ url: "/media/images/Screenshot_8_exvaml.webp", caption: "Hero Page" }]
-                },
-                {
-                    type: 'two-cols',
-                    images: [
-                        { url: "/media/images/Screenshot_4_d6u1nh.webp", caption: "Gestionale" },
-                        { url: "/media/images/Screenshot_2_ai8qiq.webp", caption: "I Nostri Servizi" }
-                    ]
-                },
-                {
-                    type: 'split', 
-                    subtitle: "La soluzione",
-                    title: "Eleganza\ne\nChiarezza.",
-                    text: "Ho scelto una palette di toni caldi e oro su fondo scuro per trasmettere solennità. La navigazione è ridotta all'essenziale, con un focus immediato sulla ricerca dei manifesti e sui contatti d'emergenza.",
-                    images: [{ url: "/media/placeholder.webp", caption: "Sezione Manifesti" }],
-                    reverse: true
-                }
-            ],
-            quote: "Il design non deve solo apparire bello,<br>deve saper stare accanto alle persone.",
-            stats: [
-                { value: "100%", label: "Design empatico" },
-                { value: "2 sett.", label: "Tempo di sviluppo" },
-                { value: "Gold", label: "Palette cromatica rassicurante" }
-            ]
-        }
-    },
     {
         id: 6,
         title: "GENTLE BOOZERS",

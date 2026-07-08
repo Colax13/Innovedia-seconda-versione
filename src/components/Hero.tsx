@@ -1007,7 +1007,7 @@ export default function Hero({ onPhaseChange, skipAnimation }: HeroProps) {
                   srcSet="/media/images/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.webp"
                 />
                 <img
-                  src="/media/images/22047c79-f69d-4dd2-8716-63361481a40f_ww9k5d.webp"
+                  src="/media/images/mobile_hero.webp"
                   alt="Hero Background"
                   className="w-full h-full object-cover object-top md:object-center"
                 />

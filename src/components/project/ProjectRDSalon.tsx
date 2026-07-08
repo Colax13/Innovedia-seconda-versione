@@ -513,7 +513,7 @@ const ProjectRDSalon: React.FC = () => {
 
           {/* BRAND STORY */}
           <div className="vc" id="vc3" onClick={() => openV(3)}>
-            <video className="vthumb" src="/media/videos/placeholder.mp4" muted playsInline preload="metadata"></video>
+            <video className="vthumb" src="/media/videos/Storia_del_brand.mp4" muted playsInline preload="metadata"></video>
             <div className="vov"></div>
             <div className="vplay"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             <div className="vlbl">
@@ -523,7 +523,7 @@ const ProjectRDSalon: React.FC = () => {
             <div className={`vplayer ${activeVideo === 3 ? 'active' : ''}`} id="vp3">
               <div className="vcls" onClick={(e) => closeV(e, 3)}>✕</div>
               <video controls playsInline muted preload="auto" style={{ width: '100%', height: '100%', objectFit: 'contain' }}>
-                <source src="/media/videos/placeholder.mp4" type="video/mp4" />
+                <source src="/media/videos/Storia_del_brand.mp4" type="video/mp4" />
               </video>
             </div>
           </div>
